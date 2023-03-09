@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+
+  postgres:
+    container_name: read-it-postgres
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - read-it-postgres-data:/data/postgres
+      - ./sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+    networks:
+      - infrastucture
+    env_file:
+      - env/ReadIt_Postgres.env
+
+networks:
+  infrastucture:
+    name: infrastucture
+    driver: bridge
+  public:
+    name: public
+    driver: bridge
+
+volumes:
+  read-it-postgres-data:
+    name: read-it-postgres-data
+  
+
