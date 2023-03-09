@@ -12,13 +12,13 @@ services:
       - read-it-postgres-data:/data/postgres
       - ./sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
     networks:
-      - infrastucture
+      - infrastructure
     env_file:
       - env/ReadIt_Postgres.env
 
 networks:
-  infrastucture:
-    name: infrastucture
+  infrastructure:
+    name: infrastructure
     driver: bridge
 
 volumes:
