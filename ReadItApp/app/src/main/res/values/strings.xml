@@ -3,4 +3,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="profile">Profile</string>
     <string name="home">Home</string>
+    <string name="default_web_client_id">todo</string>
+    <string name="sign_in_before_you_start">Sign in before you start</string>
 </resources>

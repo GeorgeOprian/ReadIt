@@ -13,6 +13,9 @@ import android.view.MenuItem;
 import com.example.readitapp.R;
 import com.example.readitapp.fragments.HomeFragment;
 import com.example.readitapp.fragments.ProfileFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -22,13 +25,24 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView leftNavigationView;
     private Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        configureGoogleSignIn();
         initMenu();
+    }
+
+    private void configureGoogleSignIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
     private void initMenu() {
@@ -90,5 +104,13 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        super.onBackPressed();
     }
 }
