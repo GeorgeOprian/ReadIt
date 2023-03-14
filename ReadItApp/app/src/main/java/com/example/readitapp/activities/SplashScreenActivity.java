@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.readitapp.R;
+import com.example.readitapp.utils.FirebaseConstants;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -19,7 +20,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void startApp() {
-        if(true) { //is signed in
+        if(FirebaseConstants.user != null) {
             Intent mainIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
             startActivity(mainIntent);
             finish();

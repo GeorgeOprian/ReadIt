@@ -7,17 +7,20 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.readitapp.R;
 import com.example.readitapp.fragments.HomeFragment;
 import com.example.readitapp.fragments.ProfileFragment;
+import com.example.readitapp.utils.FirebaseConstants;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
@@ -79,6 +81,13 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_profile:
                 selectedFragment = new ProfileFragment();
                 drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.nav_signOut:
+                mGoogleSignInClient.signOut();
+                FirebaseConstants.mAuth.signOut();
+                Intent signIn = new Intent(MainActivity.this, SignInActivity.class);
+                startActivity(signIn);
+                finish();
                 break;
         }
 

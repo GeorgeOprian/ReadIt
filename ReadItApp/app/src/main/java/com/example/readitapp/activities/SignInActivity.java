@@ -1,5 +1,6 @@
 package com.example.readitapp.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,10 +15,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -37,9 +40,7 @@ public class SignInActivity extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setOnClickListener(v -> signIn());
@@ -88,24 +89,24 @@ public class SignInActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("SignInActivity", "signInWithCredential:success");
-                        FirebaseUser user = FirebaseConstants.mAuth.getCurrentUser();
-                        FirebaseConstants.user = user;
-//                            FirebaseConstants.db.collection(getString(R.string.persoana)).whereEqualTo(getString(R.string.email), user.getEmail())
-//                                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
-//                                        Intent intentMain = new Intent((Context) SignInActivity.this, MainActivity.class);
-//                                        SignInActivity.this.startActivity(intentMain);
-//                                        SignInActivity.this.finish();
-//                                    } else {
-//                                        addNewUser(user);
-//                                        Intent intentMain = new Intent((Context) SignInActivity.this, MainActivity.class);
-//                                        SignInActivity.this.startActivity(intentMain);
-//                                        SignInActivity.this.finish();
-//                                    }
+//                        FirebaseUser user = FirebaseConstants.mAuth.getCurrentUser();
+//                        FirebaseConstants.user = user;
+//                        FirebaseConstants.db.collection(getString(R.string.persoana)).whereEqualTo(getString(R.string.email), user.getEmail())
+//                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                    Intent intentMain = new Intent(SignInActivity.this, MainActivity.class);
+                                    startActivity(intentMain);
+                                    finish();
+//                                } else {
+////                                    addNewUser(user);
+//                                    Intent intentMain = new Intent(SignInActivity.this, MainActivity.class);
+//                                    SignInActivity.this.startActivity(intentMain);
+//                                    SignInActivity.this.finish();
 //                                }
-//                            });
+//                            }
+//                        });
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("SignInActivity", "signInWithCredential:failure", task.getException());

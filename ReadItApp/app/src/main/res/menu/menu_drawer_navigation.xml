@@ -5,6 +5,11 @@
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_baseline_person_outline_24"
             android:title="@string/profile" />
+
+        <item
+            android:id="@+id/nav_signOut"
+            android:icon="@drawable/ic_baseline_log_out_new_24"
+            android:title="@string/sign_out" />
     </group>
 
 </menu>

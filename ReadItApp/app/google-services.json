@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "809878602966",
+    "project_id": "readit-2c5f0",
+    "storage_bucket": "readit-2c5f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809878602966:android:68e4872e79cb72f9a9b577",
+        "android_client_info": {
+          "package_name": "com.example.readitapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809878602966-pho3ohiq9b6iupqnage161kld2df0oc6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.readitapp",
+            "certificate_hash": "fbf18bdaf89364c9976760d9f9c0bcd52b1c791d"
+          }
+        },
+        {
+          "client_id": "809878602966-q8lt8pn010l6sq7fnnll926dcj0cobke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAho90PfaGf7GlTMnDG_O8-mr3t67flHGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809878602966-fbvjn7t8lco4icqn2de1o86qhvg3b5lj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
