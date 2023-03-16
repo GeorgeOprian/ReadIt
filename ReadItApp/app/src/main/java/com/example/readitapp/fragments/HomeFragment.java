@@ -38,6 +38,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<VolumesResponse> call, retrofit2.Response<VolumesResponse> response) {
 
+                if (response.isSuccessful()) {
+
+
+                }
             }
 
             @Override
