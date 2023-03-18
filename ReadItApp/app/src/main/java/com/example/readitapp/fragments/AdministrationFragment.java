@@ -12,27 +12,40 @@ import android.widget.Button;
 import com.example.readitapp.R;
 import com.example.readitapp.api.googlebooks.GoogleBooksAPIBuilder;
 import com.example.readitapp.model.googlebooks.VolumesResponse;
+import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 
 public class AdministrationFragment extends Fragment {
 
+    private View view;
+    private Button searchButton;
+    private TextInputEditText title;
+    private TextInputEditText author;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_administration, container, false);
+        view = inflater.inflate(R.layout.fragment_administration, container, false);
 
-        Button button = view.findViewById(R.id.button);
-
-        button.setOnClickListener(view1 -> callGoogleAPI());
+        initView();
+        searchButton.setOnClickListener(view1 -> callGoogleAPI());
 
         return view;
     }
 
+    private void initView() {
+        searchButton = view.findViewById(R.id.search_button);
+        title = view.findViewById(R.id.textInputEditTextTitle);
+        author = view.findViewById(R.id.textInputEditTextAuthor);
+    }
+
     private void callGoogleAPI() {
 
-        Call<VolumesResponse> call = GoogleBooksAPIBuilder.getInstance().getVolumes("flowers+inauthor:keyes", GoogleBooksAPIBuilder.API_KEY);
+        String searchValue = title.getText() + "+inauthor:" + author.getText();
+
+        Call<VolumesResponse> call = GoogleBooksAPIBuilder.getInstance().getVolumes(searchValue, GoogleBooksAPIBuilder.API_KEY);
 
         call.enqueue(new Callback<VolumesResponse>() {
             @Override

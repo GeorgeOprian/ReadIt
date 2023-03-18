@@ -6,4 +6,8 @@
     <string name="sign_in_before_you_start">Sign in before you start</string>
     <string name="sign_out">Sign out</string>
     <string name="administration">Administration</string>
+    <string name="search_books">Search for books</string>
+    <string name="title">Title</string>
+    <string name="search">Search</string>
+    <string name="author">Author</string>
 </resources>

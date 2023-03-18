@@ -3,17 +3,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.AdministrationFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:padding="10dp"
+            android:text="@string/search_books"
+            android:textAlignment="center"
+            android:textSize="40sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutTitle"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView"
+            android:hint="@string/title"
+            android:padding="10dp"
+            app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditTextTitle"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:fontFamily="serif"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutAuthor"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textInputLayoutTitle"
+            android:hint="@string/author"
+            android:padding="10dp"
+            app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditTextAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:fontFamily="serif"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
-            android:id="@+id/button"
+            android:id="@+id/search_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:layout_below="@+id/textInputLayoutAuthor"
+            android:layout_centerInParent="true"
+            android:text="@string/search" />
 
     </RelativeLayout>
 

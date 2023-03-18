@@ -11,7 +11,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.readitapp.R;
 import com.example.readitapp.fragments.AdministrationFragment;
 import com.example.readitapp.fragments.HomeFragment;
@@ -23,6 +26,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         setSupportActionBar(toolbar);
+        updateNavHeader();
         setLeftNavigationView();
         setBottomNavigationView();
         getSupportFragmentManager()
@@ -135,5 +141,14 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
         super.onBackPressed();
+    }
+
+    private void updateNavHeader() {
+        View headerView = leftNavigationView.getHeaderView(0);
+        CircleImageView circleImageView = headerView.findViewById(R.id.profile_image);
+        TextView name = headerView.findViewById(R.id.name);
+
+        name.setText(FirebaseConstants.user.getDisplayName());
+        Glide.with(this).load(FirebaseConstants.user.getPhotoUrl()).into(circleImageView);
     }
 }
