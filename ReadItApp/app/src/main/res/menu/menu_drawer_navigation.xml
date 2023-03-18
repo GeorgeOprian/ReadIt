@@ -7,6 +7,11 @@
             android:title="@string/profile" />
 
         <item
+            android:id="@+id/nav_administration"
+            android:icon="@drawable/ic_baseline_admin_panel_settings_24"
+            android:title="@string/administration" />
+
+        <item
             android:id="@+id/nav_signOut"
             android:icon="@drawable/ic_baseline_log_out_new_24"
             android:title="@string/sign_out" />

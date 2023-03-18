@@ -5,4 +5,5 @@
     <string name="home">Home</string>
     <string name="sign_in_before_you_start">Sign in before you start</string>
     <string name="sign_out">Sign out</string>
+    <string name="administration">Administration</string>
 </resources>

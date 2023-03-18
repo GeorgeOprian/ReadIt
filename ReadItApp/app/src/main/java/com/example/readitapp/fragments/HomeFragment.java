@@ -23,31 +23,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        Button button = view.findViewById(R.id.button);
-
-        button.setOnClickListener(view1 -> callGoogleAPI());
-
         return view;
     }
 
-    private void callGoogleAPI() {
-
-        Call<VolumesResponse> call = GoogleBooksAPIBuilder.getInstance().getVolumes("flowers+inauthor:keyes", GoogleBooksAPIBuilder.API_KEY);
-
-        call.enqueue(new Callback<VolumesResponse>() {
-            @Override
-            public void onResponse(Call<VolumesResponse> call, retrofit2.Response<VolumesResponse> response) {
-
-                if (response.isSuccessful()) {
-
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<VolumesResponse> call, Throwable t) {
-
-            }
-        });
-    }
 }

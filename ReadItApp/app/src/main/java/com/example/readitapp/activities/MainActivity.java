@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.readitapp.R;
+import com.example.readitapp.fragments.AdministrationFragment;
 import com.example.readitapp.fragments.HomeFragment;
 import com.example.readitapp.fragments.ProfileFragment;
 import com.example.readitapp.utils.FirebaseConstants;
@@ -24,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String USER_ADMIN = "readitapp.adm@gmail.com";
     private DrawerLayout drawerLayout;
     private NavigationView leftNavigationView;
     private Toolbar toolbar;
@@ -72,7 +75,14 @@ public class MainActivity extends AppCompatActivity {
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        hideAdmin();
         leftNavigationView.setNavigationItemSelectedListener(item -> switchLeftNav(item));
+    }
+
+    private void hideAdmin() {
+        Menu nav_Menu = leftNavigationView.getMenu();
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        nav_Menu.findItem(R.id.nav_administration).setVisible(currentUser.equals(USER_ADMIN));
     }
 
     private boolean switchLeftNav(MenuItem item) {
@@ -80,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.nav_profile:
                 selectedFragment = new ProfileFragment();
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.nav_administration:
+                selectedFragment = new AdministrationFragment();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_signOut:
