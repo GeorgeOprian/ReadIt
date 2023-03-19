@@ -11,7 +11,9 @@ import android.widget.Button;
 
 import com.example.readitapp.R;
 import com.example.readitapp.api.googlebooks.GoogleBooksAPIBuilder;
+import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.googlebooks.VolumesResponse;
+import com.example.readitapp.model.webserver.WebServerModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;
@@ -31,7 +33,7 @@ public class AdministrationFragment extends Fragment {
 
         initView();
         searchButton.setOnClickListener(view1 -> callGoogleAPI());
-
+//        searchButton.setOnClickListener(view1 -> callWebServerAPI());
         return view;
     }
 
@@ -39,6 +41,29 @@ public class AdministrationFragment extends Fragment {
         searchButton = view.findViewById(R.id.search_button);
         title = view.findViewById(R.id.textInputEditTextTitle);
         author = view.findViewById(R.id.textInputEditTextAuthor);
+    }
+
+    private void callWebServerAPI() {
+        String searchValue = title.getText() + "+inauthor:" + author.getText();
+
+        Call<WebServerModel> call = WebServerAPIBuilder.getInstance().test();
+
+        call.enqueue(new Callback<WebServerModel>() {
+            @Override
+            public void onResponse(Call<WebServerModel> call, retrofit2.Response<WebServerModel> response) {
+
+                if (response.isSuccessful()) {
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WebServerModel> call, Throwable t) {
+                int test = 1;
+                test++;
+            }
+        });
     }
 
     private void callGoogleAPI() {
