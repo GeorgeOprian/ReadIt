@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
 import com.example.readitapp.R;
 import com.example.readitapp.fragments.AdministrationFragment;
 import com.example.readitapp.fragments.HomeFragment;
