@@ -71,9 +71,11 @@ public class SignInActivity extends AppCompatActivity {
                     // Google Sign In was successful, authenticate with Firebase
                     GoogleSignInAccount account = task.getResult(ApiException.class);
                     Log.d("SignInActivity", "firebaseAuthWithGoogle:" + account.getId());
+                    // TODO: 19.03.2023 toast-uri in loc de log
                     firebaseAuthWithGoogle(account.getIdToken());
                 } catch (ApiException e) {
                     // Google Sign In failed, update UI appropriately
+                    // TODO: 19.03.2023 toast-uri in loc de log
                     Log.w("SignInActivity", "Google sign in failed", e);
                 }
             } else {
@@ -96,6 +98,12 @@ public class SignInActivity extends AppCompatActivity {
 //                            @Override
 //                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
 //                                if (task.isSuccessful() && !task.getResult().isEmpty()) {
+
+                        // TODO: 19.03.2023 facem un call la web server ca sa verificam daca userul e admin sau nu
+                        // TODO: 19.03.2023 pornesc trimit la main activity informatia de admin prin extra
+
+
+
                                     Intent intentMain = new Intent(SignInActivity.this, MainActivity.class);
                                     startActivity(intentMain);
                                     finish();

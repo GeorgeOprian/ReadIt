@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/")
-public class TestController {
+@RequestMapping("/books")
+public class BooksController {
 
-	@GetMapping("/test")
-	public Test test(){
+	@GetMapping
+	public Test getBooks(){
 		return new Test("test");
 	}
-
 
 }
