@@ -8,8 +8,6 @@ import retrofit2.http.Query;
 
 public interface GoogleBooksAPIService {
 
-    //q=flowers+inauthor:keyes
-
     @GET("/books/v1/volumes")
     Call<VolumesResponse> getVolumes(
             @Query("q") String q,

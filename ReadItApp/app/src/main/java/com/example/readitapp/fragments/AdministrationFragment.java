@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,13 +38,16 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
 
     private AdminBooksAdapter adapter;
 
+    private static final String IN_TITLE_SEARCH_QUERY = "intitle:";
+    private static final String IN_AUTHOR_SEARCH_QUERY = "inauthor:";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_administration, container, false);
 
         initView();
-        searchButton.setOnClickListener(view1 -> callGoogleAPI());
+        searchButton.setOnClickListener(view -> callGoogleAPI());
 //        searchButton.setOnClickListener(view1 -> callWebServerAPI());
         return view;
     }
@@ -75,22 +79,27 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
             public void onResponse(Call<WebServerModel> call, retrofit2.Response<WebServerModel> response) {
 
                 if (response.isSuccessful()) {
-                    Log.d("Test", "response is successful");
+                    Toast.makeText(getContext(), response.body().getTest(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<WebServerModel> call, Throwable t) {
-                Log.d("Test", "response is not successful");
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void callGoogleAPI() {
 
-        String searchValue = title.getText() + "+inauthor:" + author.getText();
+        String query = createSearchQuery();
 
-        Call<VolumesResponse> call = GoogleBooksAPIBuilder.getInstance().getVolumes(searchValue, GoogleBooksAPIBuilder.API_KEY);
+        if (query == null) {
+            Toast.makeText(getContext(), "You must provide a value to search.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Call<VolumesResponse> call = GoogleBooksAPIBuilder.getInstance().getVolumes(query, GoogleBooksAPIBuilder.API_KEY);
 
         call.enqueue(new Callback<VolumesResponse>() {
             @Override
@@ -111,4 +120,34 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
     public void onItemClick(Item item) {
         Toast.makeText(getContext(), item.getVolumeInfo().getTitle(), Toast.LENGTH_SHORT).show();
     }
+
+    private String createSearchQuery() {
+        String titleRequest = getSearchValue(title.getText(), IN_TITLE_SEARCH_QUERY);
+        String authorRequest = getSearchValue(author.getText(), IN_AUTHOR_SEARCH_QUERY);
+
+        if (titleRequest != null && authorRequest != null) {
+            return titleRequest + "+" + authorRequest;
+        }
+
+        if (titleRequest != null) {
+            return titleRequest;
+        }
+
+        return authorRequest;
+    }
+
+    private String getSearchValue(Editable titleText, String queryParam) {
+
+        if (titleText == null) {
+            return null;
+        }
+
+        String titleString = titleText.toString();
+        if (titleString.isEmpty() && titleString.trim().isEmpty()) {
+            return null;
+        }
+
+        return queryParam + titleString;
+    }
+
 }

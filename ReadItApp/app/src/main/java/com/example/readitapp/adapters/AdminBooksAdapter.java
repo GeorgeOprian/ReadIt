@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.readitapp.R;
+import com.example.readitapp.model.googlebooks.ImageLinks;
 import com.example.readitapp.model.googlebooks.Item;
 import com.example.readitapp.model.googlebooks.VolumeInfo;
 import com.squareup.picasso.Picasso;
@@ -60,14 +61,14 @@ public class AdminBooksAdapter extends RecyclerView.Adapter<AdminBooksAdapter.Bo
 
         private final ImageView poster;
         private final TextView title;
-        private final TextView genres;
+        private final TextView authors;
         private final TextView rating;
 
         public BooksViewHolder(@NonNull View view) {
             super(view);
             poster = view.findViewById(R.id.poster);
             title = view.findViewById(R.id.title);
-            genres = view.findViewById(R.id.genres_values);
+            authors = view.findViewById(R.id.author_value);
             rating = view.findViewById(R.id.rating_value);
 
             this.view = view;
@@ -76,16 +77,25 @@ public class AdminBooksAdapter extends RecyclerView.Adapter<AdminBooksAdapter.Bo
 
         public void bind(Item itemsResult) {
             VolumeInfo volumeInfo = itemsResult.getVolumeInfo();
-            Picasso.get().load(volumeInfo.getImageLinks().getSmallThumbnail()).into(poster);
+            ImageLinks imageLinks = volumeInfo.getImageLinks();
+            if (imageLinks != null) {
+                Picasso.get().load(imageLinks.getSmallThumbnail()).into(poster);
+            }
             title.setText(volumeInfo.getTitle());
-            genres.setText("test");// FIXME: 20.03.2023 change value
-            rating.setText("test");// FIXME: 20.03.2023 change value
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemClickListener.onItemClick(itemsResult);
-                }
-            });
+
+            if (volumeInfo.getAuthors() != null && !volumeInfo.getAuthors().isEmpty()) {
+                authors.setText(String.join(",", volumeInfo.getAuthors()));
+            } else {
+                authors.setText("");
+            }
+
+            if (volumeInfo.getRatingsCount() != null && volumeInfo.getRatingsCount() != 0) {
+                rating.setText(volumeInfo.getRatingsCount().toString());
+            } else {
+                rating.setText("");
+            }
+
+            view.setOnClickListener(v -> itemClickListener.onItemClick(itemsResult));
         }
 
     }

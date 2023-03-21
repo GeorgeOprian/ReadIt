@@ -46,11 +46,11 @@
             app:layout_constraintVertical_bias="0.114" />
 
         <TextView
-            android:id="@+id/genres_lable"
+            android:id="@+id/author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="160dp"
-            android:text="Genre"
+            android:text="Author"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -59,7 +59,7 @@
             app:layout_constraintVertical_bias="0.216" />
 
         <TextView
-            android:id="@+id/genres_values"
+            android:id="@+id/author_value"
             android:layout_width="142dp"
             android:layout_height="38dp"
             android:layout_marginLeft="10dp"
@@ -71,7 +71,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.491"
-            app:layout_constraintStart_toEndOf="@+id/genres_lable"
+            app:layout_constraintStart_toEndOf="@+id/author"
             app:layout_constraintTop_toBottomOf="@+id/title"
             app:layout_constraintVertical_bias="0.307" />
 
@@ -85,7 +85,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/poster"
-            app:layout_constraintTop_toBottomOf="@+id/genres_values"
+            app:layout_constraintTop_toBottomOf="@+id/author_value"
             app:layout_constraintVertical_bias="0.421" />
 
         <TextView
@@ -98,7 +98,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.26"
             app:layout_constraintStart_toEndOf="@+id/rating_lable"
-            app:layout_constraintTop_toBottomOf="@+id/genres_values"
+            app:layout_constraintTop_toBottomOf="@+id/author_value"
             app:layout_constraintVertical_bias="0.357" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
