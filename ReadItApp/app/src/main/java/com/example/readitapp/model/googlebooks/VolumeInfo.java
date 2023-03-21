@@ -36,7 +36,7 @@ public class VolumeInfo {
     private List<String> categories;
     @SerializedName("averageRating")
     @Expose
-    private Integer averageRating;
+    private Double averageRating;
     @SerializedName("ratingsCount")
     @Expose
     private Integer ratingsCount;
@@ -131,11 +131,11 @@ public class VolumeInfo {
         this.categories = categories;
     }
 
-    public Integer getAverageRating() {
+    public Double getAverageRating() {
         return averageRating;
     }
 
-    public void setAverageRating(Integer averageRating) {
+    public void setAverageRating(Double averageRating) {
         this.averageRating = averageRating;
     }
 

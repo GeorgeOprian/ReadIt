@@ -1,0 +1,49 @@
+{
+  "kind": "books#volumes",
+  "totalItems": 200,
+  "items": [
+    {
+      "kind": "books#volume",
+      "id": "WqorAQAAIAAJ",
+      "etag": "p68LPiC0+vw",
+      "volumeInfo": {
+        "title": "This Charming Man",
+        "authors": [
+          "Marian Keyes"
+        ],
+        "publishedDate": "2008",
+        "description": "Lola Daly has just found out that her boyfriend, gorgeous, charming and powerful politician Paddy de Courcy, is getting married - to someone else. Heartbroken, she flees Dublin to a cottage in the countryside. Can a new set of friends help her to get over him?",
+        "industryIdentifiers": [
+          {
+            "type": "OTHER",
+            "identifier": "STANFORD:36105131702651"
+          }
+        ],
+        "pageCount": 696,
+        "printType": "BOOK",
+        "categories": [
+          "Chick lit"
+        ],
+        "averageRating": 3.5,
+        "ratingsCount": 38,
+        "maturityRating": "NOT_MATURE",
+        "imageLinks": {
+          "smallThumbnail": "http://books.google.com/books/content?id=WqorAQAAIAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+          "thumbnail": "http://books.google.com/books/content?id=WqorAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+        },
+        "language": "en",
+        "previewLink": "http://books.google.ro/books?id=WqorAQAAIAAJ&dq=inauthor:keyes&hl=&cd=1&source=gbs_api",
+        "infoLink": "http://books.google.ro/books?id=WqorAQAAIAAJ&dq=inauthor:keyes&hl=&source=gbs_api",
+        "canonicalVolumeLink": "https://books.google.com/books/about/This_Charming_Man.html?hl=&id=WqorAQAAIAAJ"
+      },
+      "saleInfo": {
+        "country": "RO",
+        "saleability": "NOT_FOR_SALE",
+        "isEbook": false
+      },
+      "searchInfo": {
+        "textSnippet": "Lola Daly has just found out that her boyfriend, gorgeous, charming and powerful politician Paddy de Courcy, is getting married - to someone else."
+      }
+    }
+  ]
+}
