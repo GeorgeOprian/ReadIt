@@ -18,9 +18,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.readitapp.R;
 import com.example.readitapp.fragments.AdministrationFragment;
+import com.example.readitapp.fragments.BooksFragment;
 import com.example.readitapp.fragments.HomeFragment;
 import com.example.readitapp.fragments.ProfileFragment;
 import com.example.readitapp.utils.FirebaseConstants;
+import com.example.readitapp.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -32,7 +34,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String USER_ADMIN = "readitapp.adm@gmail.com";
     private DrawerLayout drawerLayout;
     private NavigationView leftNavigationView;
     private Toolbar toolbar;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
         updateNavHeader();
         setLeftNavigationView();
         setBottomNavigationView();
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     private void hideAdmin() {
         Menu nav_Menu = leftNavigationView.getMenu();
         String currentUser = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        nav_Menu.findItem(R.id.nav_administration).setVisible(currentUser.equals(USER_ADMIN));
+        nav_Menu.findItem(R.id.nav_administration).setVisible(currentUser.equals(Utils.USER_ADMIN));
     }
 
     private boolean switchLeftNav(MenuItem item) {
@@ -121,10 +123,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void setBottomNavigationView() {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
+            Fragment selectedFragment = new HomeFragment();
             switch (item.getItemId()) {
                 case R.id.nav_home:
                     selectedFragment = new HomeFragment();
+                    break;
+                case R.id.nav_books:
+                    selectedFragment = new BooksFragment();
                     break;
             }
             getSupportFragmentManager()
@@ -149,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         CircleImageView circleImageView = headerView.findViewById(R.id.profile_image);
         TextView name = headerView.findViewById(R.id.name);
 
-        name.setText(FirebaseConstants.user.getDisplayName());
-        Glide.with(this).load(FirebaseConstants.user.getPhotoUrl()).into(circleImageView);
+        name.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        Glide.with(this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into(circleImageView);
     }
 }

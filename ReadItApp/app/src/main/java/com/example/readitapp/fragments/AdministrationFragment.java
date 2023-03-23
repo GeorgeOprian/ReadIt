@@ -1,16 +1,22 @@
 package com.example.readitapp.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,6 +28,7 @@ import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.googlebooks.Item;
 import com.example.readitapp.model.googlebooks.VolumesResponse;
 import com.example.readitapp.model.webserver.WebServerModel;
+import com.example.readitapp.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;
@@ -33,9 +40,7 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
     private Button searchButton;
     private TextInputEditText title;
     private TextInputEditText author;
-
     private RecyclerView recyclerView;
-
     private AdminBooksAdapter adapter;
 
     private static final String IN_TITLE_SEARCH_QUERY = "intitle:";
@@ -59,10 +64,9 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
 
         recyclerView = view.findViewById(R.id.container);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         initAdapter();
-
         recyclerView.setAdapter(adapter);
+        registerForContextMenu(recyclerView);
     }
 
     private void initAdapter() {
@@ -106,6 +110,7 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
             public void onResponse(Call<VolumesResponse> call, retrofit2.Response<VolumesResponse> response) {
                 if (response.isSuccessful()) {
                     adapter.submitList(response.body().getItems());
+                    Utils.hideKeyboard(AdministrationFragment.this);
                 }
             }
 
@@ -150,4 +155,22 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
         return queryParam + titleString;
     }
 
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v,
+                                    @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.menu_floating_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add:
+                //add in db
+                Toast.makeText(getContext(), "Book added.", Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 }

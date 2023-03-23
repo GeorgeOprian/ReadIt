@@ -45,6 +45,7 @@ public class AdminBooksAdapter extends RecyclerView.Adapter<AdminBooksAdapter.Bo
     @Override
     public void onBindViewHolder(@NonNull BooksViewHolder holder, int position) {
         holder.bind(localDataSet.get(position));
+        holder.itemView.setLongClickable(true);
     }
 
     @Override
@@ -75,8 +76,8 @@ public class AdminBooksAdapter extends RecyclerView.Adapter<AdminBooksAdapter.Bo
 
         }
 
-        public void bind(Item itemsResult) {
-            VolumeInfo volumeInfo = itemsResult.getVolumeInfo();
+        public void bind(Item itemResult) {
+            VolumeInfo volumeInfo = itemResult.getVolumeInfo();
             ImageLinks imageLinks = volumeInfo.getImageLinks();
             if (imageLinks != null) {
                 Picasso.get().load(imageLinks.getSmallThumbnail()).into(poster);
@@ -95,7 +96,7 @@ public class AdminBooksAdapter extends RecyclerView.Adapter<AdminBooksAdapter.Bo
                 rating.setText("");
             }
 
-            view.setOnClickListener(v -> itemClickListener.onItemClick(itemsResult));
+            view.setOnClickListener(v -> itemClickListener.onItemClick(itemResult));
         }
 
     }
