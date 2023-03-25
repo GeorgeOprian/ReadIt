@@ -3,9 +3,10 @@ package com.example.readitapp.model.googlebooks;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class VolumeInfo {
+public class VolumeInfo implements Serializable {
 
     @SerializedName("title")
     @Expose

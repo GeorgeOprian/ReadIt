@@ -3,7 +3,9 @@ package com.example.readitapp.model.googlebooks;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ListPrice {
+import java.io.Serializable;
+
+public class ListPrice implements Serializable {
 
     @SerializedName("amount")
     @Expose

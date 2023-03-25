@@ -123,7 +123,14 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
 
     @Override
     public void onItemClick(Item item) {
-        Toast.makeText(getContext(), item.getVolumeInfo().getTitle(), Toast.LENGTH_SHORT).show();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Utils.ITEM, item);
+        Fragment selectedFragment = new BookFragment();
+        selectedFragment.setArguments(bundle);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, selectedFragment)
+                .addToBackStack("tag")
+                .commit();
     }
 
     private String createSearchQuery() {
