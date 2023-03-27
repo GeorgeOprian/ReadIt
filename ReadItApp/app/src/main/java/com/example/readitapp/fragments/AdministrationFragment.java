@@ -1,6 +1,5 @@
 package com.example.readitapp.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,13 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -24,10 +21,8 @@ import com.example.readitapp.R;
 import com.example.readitapp.adapters.AdminBooksAdapter;
 import com.example.readitapp.adapters.OnAdminBookClickListener;
 import com.example.readitapp.api.googlebooks.GoogleBooksAPIBuilder;
-import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.googlebooks.Item;
 import com.example.readitapp.model.googlebooks.VolumesResponse;
-import com.example.readitapp.model.webserver.WebServerModel;
 import com.example.readitapp.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -53,7 +48,6 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
 
         initView();
         searchButton.setOnClickListener(view -> callGoogleAPI());
-//        searchButton.setOnClickListener(view1 -> callWebServerAPI());
         return view;
     }
 
@@ -71,27 +65,6 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
 
     private void initAdapter() {
         adapter = new AdminBooksAdapter(this);
-    }
-
-    private void callWebServerAPI() {
-        String searchValue = title.getText() + "+inauthor:" + author.getText();
-
-        Call<WebServerModel> call = WebServerAPIBuilder.getInstance().test();
-
-        call.enqueue(new Callback<WebServerModel>() {
-            @Override
-            public void onResponse(Call<WebServerModel> call, retrofit2.Response<WebServerModel> response) {
-
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), response.body().getTest(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<WebServerModel> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     private void callGoogleAPI() {
