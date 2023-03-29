@@ -91,9 +91,9 @@ public class BookFragment extends Fragment {
         InputBookModel inputBookModel = createInputBookModel();
         Call<WebServerModel> call = WebServerAPIBuilder.getInstance().test();
 
-        call.enqueue(new Callback<InputBookModel>() {
+        call.enqueue(new Callback<WebServerModel>() {
             @Override
-            public void onResponse(Call<InputBookModel> call, retrofit2.Response<InputBookModel> response) {
+            public void onResponse(Call<WebServerModel> call, retrofit2.Response<WebServerModel> response) {
 
 //                if (response.isSuccessful()) {
 //                    Utils.hideKeyboard(BookFragment.this);
@@ -102,7 +102,7 @@ public class BookFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<InputBookModel> call, Throwable t) {
+            public void onFailure(Call<WebServerModel> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
