@@ -1,10 +1,17 @@
 package com.example.readitapp.model.webserver;
 
 import com.example.readitapp.model.googlebooks.Item;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class InputBookModel  {
 
+    @SerializedName("item")
+    @Expose
     private Item item;
+
+    @SerializedName("inStock")
+    @Expose
     private Integer inStock;
 
     public InputBookModel() {

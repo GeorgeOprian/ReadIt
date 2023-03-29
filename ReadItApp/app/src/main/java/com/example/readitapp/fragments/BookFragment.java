@@ -1,11 +1,10 @@
 package com.example.readitapp.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +88,28 @@ public class BookFragment extends Fragment {
 
     private void callWebServerAPI() {
 
+        InputBookModel inputBookModel = createInputBookModel();
         Call<WebServerModel> call = WebServerAPIBuilder.getInstance().test();
+
+        call.enqueue(new Callback<InputBookModel>() {
+            @Override
+            public void onResponse(Call<InputBookModel> call, retrofit2.Response<InputBookModel> response) {
+
+//                if (response.isSuccessful()) {
+//                    Utils.hideKeyboard(BookFragment.this);
+//                    Toast.makeText(getContext(), response.body().getTest(), Toast.LENGTH_LONG).show();
+//                }
+            }
+
+            @Override
+            public void onFailure(Call<InputBookModel> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @NonNull
+    private InputBookModel createInputBookModel() {
         String inStock = inStockTextView.getText().toString();
         int inStockValue;
         if (inStock != null) {
@@ -98,22 +118,7 @@ public class BookFragment extends Fragment {
             inStockValue = 0;
         }
         InputBookModel inputBookModel = new InputBookModel(item, inStockValue);
-
-        call.enqueue(new Callback<WebServerModel>() {
-            @Override
-            public void onResponse(Call<WebServerModel> call, retrofit2.Response<WebServerModel> response) {
-
-                if (response.isSuccessful()) {
-                    Utils.hideKeyboard(BookFragment.this);
-                    Toast.makeText(getContext(), response.body().getTest(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<WebServerModel> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+        return inputBookModel;
     }
 
 }
