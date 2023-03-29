@@ -1,9 +1,11 @@
 package com.example.readitapp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +19,10 @@ import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.googlebooks.ImageLinks;
 import com.example.readitapp.model.googlebooks.Item;
 import com.example.readitapp.model.googlebooks.VolumeInfo;
+import com.example.readitapp.model.webserver.InputBookModel;
 import com.example.readitapp.model.webserver.WebServerModel;
 import com.example.readitapp.utils.Utils;
+import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
@@ -33,6 +37,7 @@ public class BookFragment extends Fragment {
     private TextView authors;
     private TextView rating;
     private Button addButton;
+    private TextInputEditText inStockTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,10 +84,20 @@ public class BookFragment extends Fragment {
         authors = view.findViewById(R.id.author_value);
         rating = view.findViewById(R.id.rating_value);
         addButton = view.findViewById(R.id.add_button);
+        inStockTextView = view.findViewById(R.id.textInputLayoutStock);
     }
 
     private void callWebServerAPI() {
+
         Call<WebServerModel> call = WebServerAPIBuilder.getInstance().test();
+        String inStock = inStockTextView.getText().toString();
+        int inStockValue;
+        if (inStock != null) {
+            inStockValue = Integer.valueOf(inStock);
+        } else {
+            inStockValue = 0;
+        }
+        InputBookModel inputBookModel = new InputBookModel(item, inStockValue);
 
         call.enqueue(new Callback<WebServerModel>() {
             @Override
@@ -100,4 +115,5 @@ public class BookFragment extends Fragment {
             }
         });
     }
+
 }
