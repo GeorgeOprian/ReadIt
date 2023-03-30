@@ -1,10 +1,12 @@
 package com.dis.readit.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data
-@Entity
+@Data @NoArgsConstructor
+@Entity(name = "BookThumbnail")
 @Table(name = "book_thumbnail")
 public class BookThumbnail {
 
@@ -19,4 +21,8 @@ public class BookThumbnail {
 	@Column(name ="thumbnail")
 	private String thumbnail;
 
+	public BookThumbnail(String smallThumbnail, String thumbnail) {
+		this.smallThumbnail = smallThumbnail;
+		this.thumbnail = thumbnail;
+	}
 }

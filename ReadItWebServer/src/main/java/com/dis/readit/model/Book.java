@@ -1,14 +1,16 @@
 package com.dis.readit.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.Hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @ToString
-@Data
-@Entity
+@Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@Entity(name = "Book")
 @Table(name = "book")
 public class Book {
 
@@ -28,7 +30,7 @@ public class Book {
 
 	@Column(name = "publishedDate")
 	private String publishedDate;
-	@Column(name = "description")
+	@Column(name = "description", length = 2048)
 	private String description;
 
 	@Column(name = "isbn")
@@ -46,13 +48,39 @@ public class Book {
 	@Column(name = "language")
 	private String language;
 
-	@OneToMany
-	@JoinColumn(name = "BOOK_ID", foreignKey = @ForeignKey(name = "FK_BOOK_CATEGORY"))
-	private List<BookCategory> categories;
+	@Column(name = "in_stock")
+	private Integer inStock;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "thumbnail_id")
 	private BookThumbnail thumbnail;
 
+	@OneToMany(
+			mappedBy = "book",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private List<BookCategory> bookCategories = new ArrayList<>();
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+			return false;
+		Book book = (Book) o;
+		return getBookId() != null && Objects.equals(getBookId(), book.getBookId());
+	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
+
+	public void addCategory(Category category) {
+		BookCategory bookCategory = new BookCategory(this, category);
+		bookCategories.add(bookCategory);
+		category.getBookCategories().add(bookCategory);
+	}
 
 }

@@ -1,20 +1,79 @@
 package com.dis.readit.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
-@Entity
+import java.io.Serializable;
+import java.util.Objects;
+
+@Entity(name = "BookCategory")
 @Table(name = "book_category")
+@Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class BookCategory {
 
-	@Id
-	@Column(name ="category_Id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer categoryId;
+	@EmbeddedId
+	private BookCategoryId id;
 
-	@Column(name = "category")
-	private String category;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@MapsId("bookId")
+	@JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "FK_BOOK_CATEGORY"))
+	private Book book;
 
+	@ManyToOne(cascade = CascadeType.ALL)
+	@MapsId("categoryId")
+	@JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "FK_CATEGORY_BOOK"))
+	private Category category;
+
+	public BookCategory(Book book, Category category) {
+		this.book = book;
+		this.category = category;
+
+		id = new BookCategoryId(book.getBookId(), category.getCategoryId());
+	}
+
+
+	@Embeddable
+	@AllArgsConstructor
+	public class BookCategoryId implements Serializable {
+
+		@Column(name = "book_id")
+		private Integer bookId;
+
+		@Column(name = "category_id")
+		private Integer categoryId;
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+
+			if (o == null || getClass() != o.getClass())
+				return false;
+
+			BookCategoryId that = (BookCategoryId) o;
+			return Objects.equals(bookId, that.bookId) &&
+					Objects.equals(categoryId, that.categoryId);
+		}
+
+		public Integer getBookId() {
+			return bookId;
+		}
+
+		public void setBookId(Integer bookId) {
+			this.bookId = bookId;
+		}
+
+		public Integer getCategoryId() {
+			return categoryId;
+		}
+
+		public void setCategoryId(Integer categoryId) {
+			this.categoryId = categoryId;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(bookId, categoryId);
+		}
+	}
 
 }
