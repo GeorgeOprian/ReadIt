@@ -24,7 +24,8 @@ public class Category {
 	@OneToMany(
 			mappedBy = "category",
 			cascade = CascadeType.ALL,
-			orphanRemoval = true
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
 	)
 	private List<BookCategory> bookCategories = new ArrayList<>();
 

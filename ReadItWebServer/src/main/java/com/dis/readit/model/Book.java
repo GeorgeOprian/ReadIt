@@ -14,8 +14,10 @@ import java.util.Objects;
 @Table(name = "book")
 public class Book {
 
+	// TODO gop 01.04.2023: de schimbat field-urile sa fie cu _
+
 	@Id
-	@Column(name ="bookId")
+	@Column(name ="book_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer bookId;
 
@@ -28,7 +30,7 @@ public class Book {
 	@Column(name = "publisher")
 	private String publisher;
 
-	@Column(name = "publishedDate")
+	@Column(name = "published_date")
 	private String publishedDate;
 	@Column(name = "description", length = 2048)
 	private String description;
@@ -36,13 +38,13 @@ public class Book {
 	@Column(name = "isbn")
 	private String isbn; //industryIdentifiers[0]
 
-	@Column(name = "pageCount")
+	@Column(name = "page_count")
 	private Integer pageCount;
-	@Column(name = "averageRating")
+	@Column(name = "average_rating")
 	private Double averageRating;
-	@Column(name = "ratingsCount")
+	@Column(name = "ratings_count")
 	private Integer ratingsCount;
-	@Column(name = "maturityRating")
+	@Column(name = "maturity_rating")
 	private String maturityRating;
 
 	@Column(name = "language")

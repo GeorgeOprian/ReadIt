@@ -1,5 +1,6 @@
 package com.dis.readit.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ public class BookCategory {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@MapsId("bookId")
 	@JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "FK_BOOK_CATEGORY"))
+	@JsonManagedReference
 	private Book book;
 
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -33,26 +35,14 @@ public class BookCategory {
 
 
 	@Embeddable
-	@AllArgsConstructor
-	public class BookCategoryId implements Serializable {
+	@AllArgsConstructor @NoArgsConstructor
+	public static class BookCategoryId implements Serializable {
 
 		@Column(name = "book_id")
 		private Integer bookId;
 
 		@Column(name = "category_id")
 		private Integer categoryId;
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) return true;
-
-			if (o == null || getClass() != o.getClass())
-				return false;
-
-			BookCategoryId that = (BookCategoryId) o;
-			return Objects.equals(bookId, that.bookId) &&
-					Objects.equals(categoryId, that.categoryId);
-		}
 
 		public Integer getBookId() {
 			return bookId;
@@ -68,6 +58,18 @@ public class BookCategory {
 
 		public void setCategoryId(Integer categoryId) {
 			this.categoryId = categoryId;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+
+			if (o == null || getClass() != o.getClass())
+				return false;
+
+			BookCategoryId that = (BookCategoryId) o;
+			return Objects.equals(bookId, that.bookId) &&
+					Objects.equals(categoryId, that.categoryId);
 		}
 
 		@Override
