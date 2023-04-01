@@ -11,10 +11,8 @@ import java.util.Objects;
 @ToString
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 @Entity(name = "Book")
-@Table(name = "book")
+@Table(name = "book", uniqueConstraints = @UniqueConstraint(name = "UK_ISBN", columnNames = "ISBN"))
 public class Book {
-
-	// TODO gop 01.04.2023: de schimbat field-urile sa fie cu _
 
 	@Id
 	@Column(name ="book_id")
@@ -35,8 +33,8 @@ public class Book {
 	@Column(name = "description", length = 2048)
 	private String description;
 
-	@Column(name = "isbn")
-	private String isbn; //industryIdentifiers[0]
+	@Column(name = "isbn", length = 13)
+	private String isbn;
 
 	@Column(name = "page_count")
 	private Integer pageCount;
@@ -54,7 +52,7 @@ public class Book {
 	private Integer inStock;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "thumbnail_id")
+	@JoinColumn(name = "thumbnail_id", foreignKey = @ForeignKey(name = "FK_BOOK_THUMBNAIL"))
 	private BookThumbnail thumbnail;
 
 	@OneToMany(

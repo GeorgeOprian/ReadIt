@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BookService {
 
-	String insertBook(InputBookModel inputBookModel);
+	BookDto insertBook(InputBookModel inputBookModel);
 
 	List<BookDto> loadAllBooks();
 }

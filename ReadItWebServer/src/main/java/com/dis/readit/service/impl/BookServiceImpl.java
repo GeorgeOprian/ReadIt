@@ -5,6 +5,7 @@ import com.dis.readit.dtos.input.InputBookModel;
 import com.dis.readit.dtos.input.VolumeInfo;
 import com.dis.readit.dtos.output.BookDto;
 import com.dis.readit.dtos.output.CategoryDto;
+import com.dis.readit.exception.BookAlreadyExistsException;
 import com.dis.readit.mapper.BookMapper;
 import com.dis.readit.mapper.CategoriesMapper;
 import com.dis.readit.model.Book;
@@ -15,7 +16,9 @@ import com.dis.readit.repository.CategoryRepository;
 import com.dis.readit.service.BookService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,20 +40,43 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public String insertBook(InputBookModel inputBookModel) {
+	public BookDto insertBook(InputBookModel inputBookModel) {
+
 
 		Book book = createBook(inputBookModel);
 
-		List<Category> categories = createCategories(inputBookModel);
+		Optional<Book> bookOptional = bookRepository.findByIsbn(book.getIsbn());
 
-		categoryRepository.saveAll(categories);
+		if (bookOptional.isPresent()) {
+			throw new BookAlreadyExistsException("A book with the same ISBN already exists.");
+		}
 
-		for (Category category : categories) {
+		List<Category> existentCategories = saveCategories(inputBookModel);
+
+		for (Category category : existentCategories) {
 			book.addCategory(category);
 		}
 
 		Book savedBook = bookRepository.save(book);
-		return savedBook.getBookId() + savedBook.getTitle();
+
+		return createBookDto(savedBook);
+	}
+
+	private List<Category> saveCategories(InputBookModel inputBookModel) {
+		List<Category> inputCategories = createCategories(inputBookModel);
+		List<Category> categoriesToSave = new ArrayList<>();
+		List<Category> existentCategories = new ArrayList<>();
+		for (Category category : inputCategories) {
+			Optional<Category> existentCategory = categoryRepository.findByCategoryName(category.getCategoryName());
+			if (existentCategory.isEmpty()) {
+				categoriesToSave.add(category);
+			} else {
+				existentCategories.add(existentCategory.get());
+			}
+		}
+
+		existentCategories.addAll(categoryRepository.saveAll(categoriesToSave));
+		return existentCategories;
 	}
 
 	@Override

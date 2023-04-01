@@ -9,7 +9,7 @@ import java.util.List;
 @ToString
 @EqualsAndHashCode
 @Entity(name = "Category")
-@Table(name = "category")
+@Table(name = "category", uniqueConstraints = @UniqueConstraint(name = "UK_CATEGORY", columnNames = "CATEGORY_NAME"))
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class Category {
 

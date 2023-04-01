@@ -3,6 +3,8 @@ package com.dis.readit.controller;
 import com.dis.readit.dtos.input.InputBookModel;
 import com.dis.readit.dtos.output.BookDto;
 import com.dis.readit.service.BookService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +21,8 @@ public class BooksController {
 	}
 
 	@PostMapping("/addBook")
-	public String addBook(@RequestBody InputBookModel request) {
-
-		service.insertBook(request);
-
-		return "test";
+	public ResponseEntity<BookDto> addBook(@RequestBody InputBookModel request) {
+		return ResponseEntity.ok(service.insertBook(request));
 	}
 
 	@GetMapping("/all")
