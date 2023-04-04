@@ -33,7 +33,7 @@ public class Book {
 	@Column(name = "description", length = 2048)
 	private String description;
 
-	@Column(name = "isbn", length = 13)
+	@Column(name = "isbn")
 	private String isbn;
 
 	@Column(name = "page_count")

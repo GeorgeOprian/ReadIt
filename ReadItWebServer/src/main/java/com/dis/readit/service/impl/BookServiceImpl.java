@@ -63,6 +63,11 @@ public class BookServiceImpl implements BookService {
 
 	private List<Category> saveCategories(InputBookModel inputBookModel) {
 		List<Category> inputCategories = createCategories(inputBookModel);
+
+		if (inputCategories == null) {
+			return new ArrayList<>();
+		}
+
 		List<Category> categoriesToSave = new ArrayList<>();
 		List<Category> existentCategories = new ArrayList<>();
 		for (Category category : inputCategories) {
@@ -101,6 +106,9 @@ public class BookServiceImpl implements BookService {
 	private List<Category> createCategories(InputBookModel inputBookModel) {
 
 		VolumeInfo volumeInfo = inputBookModel.getItem().getVolumeInfo();
+		if (volumeInfo.getCategories() == null) {
+			return null;
+		}
 
 		return volumeInfo.getCategories().stream().map(category -> new Category(category)).collect(Collectors.toList());
 
@@ -125,8 +133,9 @@ public class BookServiceImpl implements BookService {
 		book.setInStock(inputBookModel.getInStock());
 
 		ImageLinks imageLinks = volumeInfo.getImageLinks();
-		book.setThumbnail(new BookThumbnail(imageLinks.getSmallThumbnail(), imageLinks.getThumbnail()));
-
+		if(imageLinks != null) {
+			book.setThumbnail(new BookThumbnail(imageLinks.getSmallThumbnail(), imageLinks.getThumbnail()));
+		}
 
 		return book;
 	}
