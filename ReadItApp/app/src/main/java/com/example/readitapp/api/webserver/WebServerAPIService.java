@@ -1,5 +1,6 @@
 package com.example.readitapp.api.webserver;
 
+import com.example.readitapp.model.webserver.BookDto;
 import com.example.readitapp.model.webserver.InputBookModel;
 
 import retrofit2.Call;
@@ -9,5 +10,5 @@ import retrofit2.http.POST;
 public interface WebServerAPIService {
 
     @POST("/books/addBook")
-    Call<String> addBook(@Body InputBookModel body);
+    Call<BookDto> addBook(@Body InputBookModel body);
 }

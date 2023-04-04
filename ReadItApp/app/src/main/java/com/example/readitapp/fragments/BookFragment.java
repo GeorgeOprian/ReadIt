@@ -18,6 +18,7 @@ import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.googlebooks.ImageLinks;
 import com.example.readitapp.model.googlebooks.Item;
 import com.example.readitapp.model.googlebooks.VolumeInfo;
+import com.example.readitapp.model.webserver.BookDto;
 import com.example.readitapp.model.webserver.InputBookModel;
 import com.example.readitapp.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
@@ -89,20 +90,19 @@ public class BookFragment extends Fragment {
     private void callWebServerAPI() {
 
         InputBookModel inputBookModel = createInputBookModel();
-        Call<String> call = WebServerAPIBuilder.getInstance().addBook(inputBookModel);
+        Call<BookDto> call = WebServerAPIBuilder.getInstance().addBook(inputBookModel);
+        Utils.hideKeyboard(BookFragment.this);
 
-        call.enqueue(new Callback<String>() {
+        call.enqueue(new Callback<BookDto>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-
+            public void onResponse(Call<BookDto> call, Response<BookDto> response) {
                 if (response.isSuccessful()) {
-                    Utils.hideKeyboard(BookFragment.this);
-                    Toast.makeText(getContext(), response.body(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), response.body().getTitle(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<BookDto> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
