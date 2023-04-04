@@ -81,9 +81,15 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
         call.enqueue(new Callback<VolumesResponse>() {
             @Override
             public void onResponse(Call<VolumesResponse> call, retrofit2.Response<VolumesResponse> response) {
+                Utils.hideKeyboard(AdministrationFragment.this);
+
                 if (response.isSuccessful()) {
+
+                    if (response.body().getItems() == null || response.body().getItems().isEmpty()) {
+                        Toast.makeText(getContext(), "No book was found.", Toast.LENGTH_LONG).show();
+                    }
+
                     adapter.submitList(response.body().getItems());
-                    Utils.hideKeyboard(AdministrationFragment.this);
                 }
             }
 

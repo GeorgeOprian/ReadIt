@@ -22,6 +22,8 @@ import com.example.readitapp.model.webserver.BookDto;
 import com.example.readitapp.model.webserver.InputBookModel;
 import com.example.readitapp.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.api.Http;
+import com.google.api.HttpBody;
 import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
@@ -98,6 +100,8 @@ public class BookFragment extends Fragment {
             public void onResponse(Call<BookDto> call, Response<BookDto> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), response.body().getTitle(), Toast.LENGTH_LONG).show();
+                } else if (response.code() == 409) {
+                    Toast.makeText(getContext(), "A book with the same ISBN already exists.", Toast.LENGTH_LONG).show();
                 }
             }
 
