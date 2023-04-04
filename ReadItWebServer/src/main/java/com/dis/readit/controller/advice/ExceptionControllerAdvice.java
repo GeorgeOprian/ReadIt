@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 
-	@ExceptionHandler({ BookAlreadyExistsException.class})
+	@ExceptionHandler(BookAlreadyExistsException.class)
 	public ResponseEntity<ErrorResponse> handleProductNotFound(Exception e) {
 		log.debug("Product not found... ");
 		return ResponseEntity.status(HttpStatus.CONFLICT)
 				.body(ErrorResponse.builder()
-						.code(409)
+						.code(HttpStatus.CONFLICT.value())
 						.message(e.getMessage())
 						.build());
 	}

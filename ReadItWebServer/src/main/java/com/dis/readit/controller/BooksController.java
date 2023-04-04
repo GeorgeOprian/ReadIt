@@ -3,8 +3,6 @@ package com.dis.readit.controller;
 import com.dis.readit.dtos.input.InputBookModel;
 import com.dis.readit.dtos.output.BookDto;
 import com.dis.readit.service.BookService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,5 +27,14 @@ public class BooksController {
 	public ResponseEntity<List<BookDto>> getAllBooks() {
 		return ResponseEntity.ok(service.loadAllBooks());
 	}
+
+	// TODO gop 04.04.2023: find by filter
+
+	// TODO gop 04.04.2023: get one book
+
+	// TODO gop 04.04.2023: update a book
+
+	// TODO gop 04.04.2023: delete a book
+
 
 }

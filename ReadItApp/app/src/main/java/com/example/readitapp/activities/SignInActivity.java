@@ -99,9 +99,11 @@ public class SignInActivity extends AppCompatActivity {
 //                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
 //                                if (task.isSuccessful() && !task.getResult().isEmpty()) {
 
+
+                        // TODO: 04.04.2023 trimit la server username, email, id 
+                        
                         // TODO: 19.03.2023 facem un call la web server ca sa verificam daca userul e admin sau nu
                         // TODO: 19.03.2023 pornesc trimit la main activity informatia de admin prin extra
-
 
 
                                     Intent intentMain = new Intent(SignInActivity.this, MainActivity.class);

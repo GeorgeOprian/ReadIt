@@ -1,6 +1,5 @@
 package com.dis.readit.dtos.output;
 
-import com.dis.readit.model.Category;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -46,7 +45,7 @@ public class BookDto implements Serializable {
 
 	// TODO gop 01.04.2023: vezi userMapper
 	@JsonProperty("thumbnail")
-	private ThumbNailDto thumbnail;
+	private ThumbnailDto thumbnail;
 
 	@JsonProperty("categories")
 	private List<CategoryDto> categories;

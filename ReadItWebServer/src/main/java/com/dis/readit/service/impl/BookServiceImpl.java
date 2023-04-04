@@ -42,7 +42,6 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public BookDto insertBook(InputBookModel inputBookModel) {
 
-
 		Book book = createBook(inputBookModel);
 
 		Optional<Book> bookOptional = bookRepository.findByIsbn(book.getIsbn());
