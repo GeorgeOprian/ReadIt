@@ -1,4 +1,4 @@
-package com.dis.readit.model;
+package com.dis.readit.model.book;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

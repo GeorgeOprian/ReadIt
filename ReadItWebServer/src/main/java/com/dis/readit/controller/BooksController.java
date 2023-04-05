@@ -1,7 +1,7 @@
 package com.dis.readit.controller;
 
-import com.dis.readit.dtos.input.InputBookModel;
-import com.dis.readit.dtos.output.BookDto;
+import com.dis.readit.dtos.input.books.InputBookModel;
+import com.dis.readit.dtos.output.book.BookDto;
 import com.dis.readit.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

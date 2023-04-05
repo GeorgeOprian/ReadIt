@@ -18,12 +18,10 @@ import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.googlebooks.ImageLinks;
 import com.example.readitapp.model.googlebooks.Item;
 import com.example.readitapp.model.googlebooks.VolumeInfo;
-import com.example.readitapp.model.webserver.BookDto;
-import com.example.readitapp.model.webserver.InputBookModel;
+import com.example.readitapp.model.webserver.book.output.BookDto;
+import com.example.readitapp.model.webserver.book.input.InputBookModel;
 import com.example.readitapp.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.api.Http;
-import com.google.api.HttpBody;
 import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;

@@ -1,4 +1,4 @@
-package com.example.readitapp.model.webserver;
+package com.example.readitapp.model.webserver.book.input;
 
 import com.example.readitapp.model.googlebooks.Item;
 import com.google.gson.annotations.Expose;

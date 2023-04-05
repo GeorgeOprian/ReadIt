@@ -1,5 +1,10 @@
 package com.dis.readit.controller;
 
+import com.dis.readit.dtos.input.users.UserCreateDto;
+import com.dis.readit.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -7,10 +12,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
 
-	// TODO gop 04.04.2023: add user
+	private final UserService service;
+
+	public UserController(UserService service) {
+		this.service = service;
+	}
+
+	@PostMapping("/addUser")
+	public ResponseEntity<UserCreateDto> addUser(@RequestBody UserCreateDto userDto) {
+
+		return ResponseEntity.ok(service.addUser(userDto));
+	}
 
 	// TODO gop 04.04.2023: find user by email
-
-
 
 }

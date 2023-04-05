@@ -1,4 +1,4 @@
-package com.dis.readit.dtos.input;
+package com.dis.readit.dtos.input.books;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,26 +1,34 @@
 package com.example.readitapp.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.readitapp.R;
+import com.example.readitapp.api.webserver.WebServerAPIBuilder;
+import com.example.readitapp.fragments.BookFragment;
+import com.example.readitapp.model.webserver.book.output.BookDto;
+import com.example.readitapp.model.webserver.user.input.UserCreateDto;
+import com.example.readitapp.model.webserver.user.output.UserDto;
 import com.example.readitapp.utils.FirebaseConstants;
+import com.example.readitapp.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.QuerySnapshot;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -89,34 +97,13 @@ public class SignInActivity extends AppCompatActivity {
         FirebaseConstants.mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d("SignInActivity", "signInWithCredential:success");
-//                        FirebaseUser user = FirebaseConstants.mAuth.getCurrentUser();
-//                        FirebaseConstants.user = user;
-//                        FirebaseConstants.db.collection(getString(R.string.persoana)).whereEqualTo(getString(R.string.email), user.getEmail())
-//                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                if (task.isSuccessful() && !task.getResult().isEmpty()) {
 
+                        addUserToServer();
 
-                        // TODO: 04.04.2023 trimit la server username, email, id
-                        
-                        // TODO: 19.03.2023 facem un call la web server ca sa verificam daca userul e admin sau nu
-                        // TODO: 19.03.2023 pornesc trimit la main activity informatia de admin prin extra
-
-
-                                    Intent intentMain = new Intent(SignInActivity.this, MainActivity.class);
-                                    startActivity(intentMain);
-                                    finish();
-//                                } else {
-////                                    addNewUser(user);
-//                                    Intent intentMain = new Intent(SignInActivity.this, MainActivity.class);
-//                                    SignInActivity.this.startActivity(intentMain);
-//                                    SignInActivity.this.finish();
-//                                }
-//                            }
-//                        });
+                        Intent intentMain = new Intent(SignInActivity.this, MainActivity.class);
+                        startActivity(intentMain);
+                        finish();
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("SignInActivity", "signInWithCredential:failure", task.getException());
@@ -124,25 +111,27 @@ public class SignInActivity extends AppCompatActivity {
                 });
     }
 
-//    public void addNewUser(FirebaseUser user) {
-//        Map<String, Object> persoana = new HashMap<>();
-//        persoana.put(getString(R.string.nume), user.getDisplayName());
-//        persoana.put(getString(R.string.email), user.getEmail());
-//        persoana.put(getString(R.string.nickname), "");
-//        persoana.put(getString(R.string.data_nasterii), new Date(System.currentTimeMillis()));
-//        persoana.put(getString(R.string.greutate), 0);
-//        persoana.put(getString(R.string.inaltime), 0);
-//        FirebaseConstants.db.collection(getString(R.string.persoana)).add(persoana)
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        Toast.makeText(SignInActivity.this, "Successful", Toast.LENGTH_LONG).show();
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(SignInActivity.this, "Failed", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
+    private void addUserToServer() {
+
+        UserCreateDto user = new UserCreateDto(FirebaseConstants.user.getEmail(), FirebaseConstants.user.getDisplayName());
+
+        Call<UserDto> call = WebServerAPIBuilder.getInstance().addUser(user);
+
+        call.enqueue(new Callback<UserDto>() {
+            @Override
+            public void onResponse(Call<UserDto> call, Response<UserDto> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(SignInActivity.this, "Welcome " + response.body().getUserName(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDto> call, Throwable t) {
+                Toast.makeText(SignInActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+    }
+
 }

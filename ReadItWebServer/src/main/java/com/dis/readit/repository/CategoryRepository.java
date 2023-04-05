@@ -1,6 +1,6 @@
 package com.dis.readit.repository;
 
-import com.dis.readit.model.Category;
+import com.dis.readit.model.book.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.dis.readit.model;
+package com.dis.readit.model.book;
 
 import jakarta.persistence.*;
 import lombok.*;
