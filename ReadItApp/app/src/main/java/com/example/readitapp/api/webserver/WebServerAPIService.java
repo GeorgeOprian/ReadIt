@@ -2,6 +2,7 @@ package com.example.readitapp.api.webserver;
 
 import com.example.readitapp.model.webserver.book.output.BookDto;
 import com.example.readitapp.model.webserver.book.input.InputBookModel;
+import com.example.readitapp.model.webserver.book.output.PageDto;
 import com.example.readitapp.model.webserver.user.input.UserCreateDto;
 import com.example.readitapp.model.webserver.user.output.UserDto;
 
@@ -11,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface WebServerAPIService {
 
@@ -21,5 +23,5 @@ public interface WebServerAPIService {
     Call<UserDto> addUser(@Body UserCreateDto body);
 
     @GET("/books/all")
-    Call<List<BookDto>> getAllBooks();
+    Call<PageDto<BookDto>> getAllBooks(@Query("pageNumber") Integer pageNumber, @Query("pageSize") Integer pageSize, @Query("sortBy") String sortBy);
 }

@@ -100,7 +100,10 @@ public class BookFragment extends Fragment {
                     Toast.makeText(getContext(), response.body().getTitle(), Toast.LENGTH_LONG).show();
                 } else if (response.code() == 409) {
                     Toast.makeText(getContext(), "A book with the same ISBN already exists.", Toast.LENGTH_LONG).show();
+                } else if(response.code() == 500) {
+                    Toast.makeText(getContext(), "The book cannot be inserted", Toast.LENGTH_LONG).show();
                 }
+                getFragmentManager().popBackStack();
             }
 
             @Override
