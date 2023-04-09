@@ -30,7 +30,7 @@ public class Book {
 
 	@Column(name = "published_date")
 	private String publishedDate;
-	@Column(name = "description", length = 2048)
+	@Column(name = "description", columnDefinition = "text")
 	private String description;
 
 	@Column(name = "isbn")
