@@ -20,6 +20,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
@@ -110,7 +111,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private void addUserToServer() {
 
-        UserCreateDto user = new UserCreateDto(FirebaseConstants.user.getEmail(), FirebaseConstants.user.getDisplayName());
+        UserCreateDto user = new UserCreateDto(FirebaseAuth.getInstance().getCurrentUser().getEmail(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
         Call<UserDto> call = WebServerAPIBuilder.getInstance().addUser(user);
 
@@ -127,7 +128,6 @@ public class SignInActivity extends AppCompatActivity {
                 Toast.makeText(SignInActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
 
     }
 
