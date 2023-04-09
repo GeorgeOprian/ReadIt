@@ -8,6 +8,8 @@ import java.io.Serializable;
 
 public class PageMapper {
 
+	private PageMapper() {}
+
 	public static <T extends Serializable> PageDto<T> mapToDto(Page<T> page){
 		PageDto<T> pageDto = new PageDto<>();
 
@@ -15,6 +17,7 @@ public class PageMapper {
 		pageDto.setOffset(page.getPageable().getOffset());
 		pageDto.setPageNumber(page.getPageable().getPageNumber());
 		pageDto.setPageSize(page.getNumberOfElements());
+		pageDto.setTotalPages(page.getTotalPages());
 		pageDto.setTotalSize(page.getTotalElements());
 
 		return pageDto;
