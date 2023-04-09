@@ -26,7 +26,6 @@ public class AdminBooksAdapter extends RecyclerView.Adapter<AdminBooksAdapter.Bo
         itemClickListener = listener;
     }
 
-
     public void submitList(List<Item> items) {
         this.localDataSet = items;
         notifyDataSetChanged();

@@ -9,12 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.readitapp.R;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
-import com.example.readitapp.fragments.BookFragment;
-import com.example.readitapp.model.webserver.book.output.BookDto;
 import com.example.readitapp.model.webserver.user.input.UserCreateDto;
 import com.example.readitapp.model.webserver.user.output.UserDto;
 import com.example.readitapp.utils.FirebaseConstants;
-import com.example.readitapp.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
