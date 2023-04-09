@@ -3,17 +3,22 @@ package com.dis.readit.service.impl;
 import com.dis.readit.dtos.input.books.ImageLinks;
 import com.dis.readit.dtos.input.books.InputBookModel;
 import com.dis.readit.dtos.input.books.VolumeInfo;
+import com.dis.readit.dtos.output.PageDto;
 import com.dis.readit.dtos.output.book.BookDto;
 import com.dis.readit.dtos.output.book.CategoryDto;
 import com.dis.readit.exception.BookAlreadyExistsException;
 import com.dis.readit.mapper.BookMapper;
 import com.dis.readit.mapper.CategoriesMapper;
+import com.dis.readit.mapper.PageMapper;
 import com.dis.readit.model.book.Book;
 import com.dis.readit.model.book.BookThumbnail;
 import com.dis.readit.model.book.Category;
 import com.dis.readit.repository.BookRepository;
 import com.dis.readit.repository.CategoryRepository;
 import com.dis.readit.service.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,14 +34,15 @@ public class BookServiceImpl implements BookService {
 	private final CategoryRepository categoryRepository;
 
 	private final BookMapper bookMapper;
-
 	private final CategoriesMapper categoriesMapper;
+
 
 	public BookServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository, BookMapper mapper, CategoriesMapper categoriesMapper) {
 		this.bookRepository = bookRepository;
 		this.categoryRepository = categoryRepository;
 		this.bookMapper = mapper;
 		this.categoriesMapper = categoriesMapper;
+
 	}
 
 	@Override
@@ -84,10 +90,13 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public List<BookDto> loadAllBooks() {
-		List<Book> loadedBooks = bookRepository.findAll();
+	public PageDto<BookDto> loadBooks(Integer pageNumber, Integer pageSize, String sortBy) {
+		PageRequest pageRequest=  PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sortBy);
 
-		return loadedBooks.stream().map(book -> createBookDto(book)).collect(Collectors.toList());
+		Page<Book> pagedBooks = bookRepository.findAll(pageRequest);
+
+		Page<BookDto> pageBooksDtos = pagedBooks.map(this::createBookDto);
+		return PageMapper.mapToDto(pageBooksDtos);
 	}
 
 	private BookDto createBookDto(Book book) {
@@ -133,7 +142,7 @@ public class BookServiceImpl implements BookService {
 		book.setInStock(inputBookModel.getInStock());
 
 		ImageLinks imageLinks = volumeInfo.getImageLinks();
-		if(imageLinks != null) {
+		if (imageLinks != null) {
 			book.setThumbnail(new BookThumbnail(imageLinks.getSmallThumbnail(), imageLinks.getThumbnail()));
 		}
 

@@ -19,7 +19,6 @@ public class User {
 
 	@Column(name = "user_name")
 	private String userName;
-
 	@Column(name = "is_admin")
 	private boolean isAdmin;
 
