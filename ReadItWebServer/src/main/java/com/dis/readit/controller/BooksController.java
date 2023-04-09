@@ -3,6 +3,7 @@ package com.dis.readit.controller;
 import com.dis.readit.dtos.input.books.InputBookModel;
 import com.dis.readit.dtos.output.PageDto;
 import com.dis.readit.dtos.output.book.BookDto;
+import com.dis.readit.dtos.output.book.BookListDto;
 import com.dis.readit.service.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +24,10 @@ public class BooksController {
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<PageDto<BookDto>> getAllBooks(@RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+	public ResponseEntity<PageDto<BookListDto>> getAllBooks(@RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
 													@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
 													@RequestParam(name = "sortBy", defaultValue = "title", required = false) String sortBy) {
-		return ResponseEntity.ok(service.loadBooks(pageNumber, pageSize, sortBy));
+		return ResponseEntity.ok(service.loadListBooks(pageNumber, pageSize, sortBy));
 	}
 
 	// TODO gop 04.04.2023: find by filter

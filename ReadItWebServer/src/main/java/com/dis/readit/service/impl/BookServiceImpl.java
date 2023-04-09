@@ -5,6 +5,7 @@ import com.dis.readit.dtos.input.books.InputBookModel;
 import com.dis.readit.dtos.input.books.VolumeInfo;
 import com.dis.readit.dtos.output.PageDto;
 import com.dis.readit.dtos.output.book.BookDto;
+import com.dis.readit.dtos.output.book.BookListDto;
 import com.dis.readit.dtos.output.book.CategoryDto;
 import com.dis.readit.exception.BookAlreadyExistsException;
 import com.dis.readit.mapper.BookMapper;
@@ -90,17 +91,30 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public PageDto<BookDto> loadBooks(Integer pageNumber, Integer pageSize, String sortBy) {
+	public PageDto<BookListDto> loadListBooks(Integer pageNumber, Integer pageSize, String sortBy) {
 		PageRequest pageRequest=  PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sortBy);
 
 		Page<Book> pagedBooks = bookRepository.findAll(pageRequest);
 
-		Page<BookDto> pageBooksDtos = pagedBooks.map(this::createBookDto);
+		Page<BookListDto> pageBooksDtos = pagedBooks.map(this::createListBookDto);
 		return PageMapper.mapToDto(pageBooksDtos);
 	}
 
 	private BookDto createBookDto(Book book) {
 		BookDto bookDto = bookMapper.mapToDto(book);
+
+		List<CategoryDto> categories = book.getBookCategories()
+				.stream()
+				.map(bookCategory -> categoriesMapper.mapToDto(bookCategory.getCategory()))
+				.collect(Collectors.toList());
+
+		bookDto.setCategories(categories);
+
+		return bookDto;
+	}
+
+	private BookListDto createListBookDto(Book book) {
+		BookListDto bookDto = bookMapper.mapToListDto(book);
 
 		List<CategoryDto> categories = book.getBookCategories()
 				.stream()
