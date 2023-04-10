@@ -22,6 +22,8 @@ public interface WebServerAPIService {
     @POST("/users/addUser")
     Call<UserDto> addUser(@Body UserCreateDto body);
 
+    int DEFAULT_PAGE_SIZE = 4;
+
     @GET("/books/all")
     Call<PageDto<BookDto>> getAllBooks(@Query("pageNumber") Integer pageNumber, @Query("pageSize") Integer pageSize, @Query("sortBy") String sortBy);
 }

@@ -19,4 +19,8 @@ public class PageDto<T extends Serializable> implements Serializable {
     public Integer getTotalPages() {
         return totalPages;
     }
+
+    public Long getTotalSize() {
+        return totalSize;
+    }
 }

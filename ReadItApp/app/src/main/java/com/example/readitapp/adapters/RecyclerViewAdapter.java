@@ -21,8 +21,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-    private List<BookDto> mItemList;
-    public static OnAdminBookClickListener itemClickListener;
+    private final List<BookDto> mItemList;
 
     public RecyclerViewAdapter(List<BookDto> itemList) {
         mItemList = itemList;
@@ -61,14 +60,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return mItemList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    private void showLoadingView(LoadingViewHolder viewHolder, int position) {
+        //ProgressBar would be displayed
+    }
 
-        private View view;
+    private void populateItemRows(ItemViewHolder viewHolder, int position) {
+        BookDto item = mItemList.get(position);
+        viewHolder.bind(item);
+    }
+
+    public void submitList(List<BookDto> books) {
+        this.mItemList.removeIf(bookDto -> bookDto == null);
+        this.mItemList.addAll(books);
+        notifyDataSetChanged();
+    }
+
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView poster;
         private final TextView title;
         private final TextView authors;
         private final TextView rating;
+        private final View view;
 
         public ItemViewHolder(@NonNull View view) {
             super(view);
@@ -93,8 +106,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             } else {
                 rating.setText("");
             }
-
-//            view.setOnClickListener(v -> itemClickListener.onBookClick(book));
         }
 
     }
@@ -106,20 +117,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             super(itemView);
             progressBar = itemView.findViewById(R.id.progressBar);
         }
-    }
-
-    private void showLoadingView(LoadingViewHolder viewHolder, int position) {
-        //ProgressBar would be displayed
-    }
-
-    private void populateItemRows(ItemViewHolder viewHolder, int position) {
-        BookDto item = mItemList.get(position);
-        viewHolder.bind(item);
-    }
-
-    public void submitList(List<BookDto> books) {
-        this.mItemList.addAll(books);
-        notifyDataSetChanged();
     }
 
 }

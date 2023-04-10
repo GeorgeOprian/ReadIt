@@ -28,14 +28,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.readitapp.api.webserver.WebServerAPIService.DEFAULT_PAGE_SIZE;
+
 public class BooksFragment extends Fragment implements OnAdminBookClickListener {
 
     private RecyclerView recyclerView;
     private View view;
-    private int page = 0;
     private RecyclerViewAdapter recyclerViewAdapter;
     private boolean isLoading = false;
     private List<BookDto> books = new ArrayList<>();
+
+    private int page = 0;
+    private long totalSize = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,7 +75,8 @@ public class BooksFragment extends Fragment implements OnAdminBookClickListener 
 
                 if (!isLoading) {
                     if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == books.size() - 1) {
-                        //bottom of list!
+                        books.add(null);
+                        recyclerView.post(() -> recyclerViewAdapter.notifyItemInserted(books.size() - 1));
                         loadMore();
                         isLoading = true;
                     }
@@ -81,30 +86,21 @@ public class BooksFragment extends Fragment implements OnAdminBookClickListener 
     }
 
     private void loadMore() {
-        books.add(null);
-        recyclerViewAdapter.notifyItemInserted(books.size() - 1);
-
-
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                books.remove(books.size() - 1);
-                int scrollPosition = books.size();
-                recyclerViewAdapter.notifyItemRemoved(scrollPosition);
-                int currentSize = scrollPosition;
-                int nextLimit = currentSize + 10;
-
-                loadAllBooks(++page);
-
-                recyclerViewAdapter.notifyDataSetChanged();
-                isLoading = false;
+        handler.postDelayed(() -> {
+            int position = books.size() - 1;
+            BookDto item = books.get(position);
+            if (item == null) {
+                books.remove(position);
+                recyclerViewAdapter.notifyItemRemoved(position);
             }
-        }, 2000);
-    }
 
-    private void populateData() {
-        loadAllBooks(page);
+            if (books.size() < totalSize) {
+                loadAllBooks(++page);
+                recyclerViewAdapter.notifyDataSetChanged();
+            }
+            isLoading = false;
+        }, 2000);
     }
 
     private void initAdapter() {
@@ -119,13 +115,16 @@ public class BooksFragment extends Fragment implements OnAdminBookClickListener 
     }
 
     private void loadAllBooks(int page) {
-        Call<PageDto<BookDto>> call = WebServerAPIBuilder.getInstance().getAllBooks(page, 4, "title");
+        Call<PageDto<BookDto>> call = WebServerAPIBuilder.getInstance().getAllBooks(page, DEFAULT_PAGE_SIZE, "title");
 
         call.enqueue(new Callback<PageDto<BookDto>>() {
             @Override
             public void onResponse(Call<PageDto<BookDto>> call, Response<PageDto<BookDto>> response) {
                 if (response.isSuccessful()) {
                     PageDto<BookDto> body = response.body();
+                    if(response.body().getTotalSize() != totalSize) {
+                        totalSize = response.body().getTotalSize();
+                    }
                     recyclerViewAdapter.submitList(body.getContent());
                 }
             }
