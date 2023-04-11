@@ -8,6 +8,7 @@ import com.dis.readit.dtos.output.book.BookDto;
 import com.dis.readit.dtos.output.book.BookListDto;
 import com.dis.readit.dtos.output.book.CategoryDto;
 import com.dis.readit.exception.BookAlreadyExistsException;
+import com.dis.readit.exception.EntityNotFound;
 import com.dis.readit.mapper.BookMapper;
 import com.dis.readit.mapper.CategoriesMapper;
 import com.dis.readit.mapper.PageMapper;
@@ -98,6 +99,15 @@ public class BookServiceImpl implements BookService {
 
 		Page<BookListDto> pageBooksDtos = pagedBooks.map(this::createListBookDto);
 		return PageMapper.mapToDto(pageBooksDtos);
+	}
+
+	@Override
+	public BookDto findBookById(Integer bookId) {
+		Optional<Book> bookOpt = bookRepository.findById(bookId);
+
+		bookOpt.orElseThrow(() -> new EntityNotFound("Book with id " + bookId + " was not found"));
+
+		return createBookDto(bookOpt.get());
 	}
 
 	private BookDto createBookDto(Book book) {

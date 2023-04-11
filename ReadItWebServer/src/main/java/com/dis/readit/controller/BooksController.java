@@ -23,6 +23,7 @@ public class BooksController {
 		return ResponseEntity.ok(service.insertBook(request));
 	}
 
+	// TODO gop 04.04.2023: find by filter
 	@GetMapping("/all")
 	public ResponseEntity<PageDto<BookListDto>> getAllBooks(@RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
 													@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
@@ -30,7 +31,11 @@ public class BooksController {
 		return ResponseEntity.ok(service.loadListBooks(pageNumber, pageSize, sortBy));
 	}
 
-	// TODO gop 04.04.2023: find by filter
+	@GetMapping
+	public ResponseEntity<BookDto> getAllBooks(@RequestParam(name = "bookId", defaultValue = "1") Integer bookId) {
+		return ResponseEntity.ok(service.findBookById(bookId));
+	}
+
 
 	// TODO gop 04.04.2023: get one book
 

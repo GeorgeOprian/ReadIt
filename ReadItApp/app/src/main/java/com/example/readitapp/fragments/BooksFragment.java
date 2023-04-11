@@ -14,12 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.readitapp.R;
-import com.example.readitapp.adapters.OnAdminBookClickListener;
-import com.example.readitapp.adapters.RecyclerViewAdapter;
+import com.example.readitapp.adapters.BooksListAdapter;
+import com.example.readitapp.adapters.OnBookListClickListener;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
-import com.example.readitapp.model.googlebooks.Item;
-import com.example.readitapp.model.webserver.book.output.BookDto;
-import com.example.readitapp.model.webserver.book.output.PageDto;
+import com.example.readitapp.model.webserver.book.input.BookDto;
+import com.example.readitapp.model.webserver.book.input.BookListDto;
+import com.example.readitapp.model.webserver.book.input.PageDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +30,13 @@ import retrofit2.Response;
 
 import static com.example.readitapp.api.webserver.WebServerAPIService.DEFAULT_PAGE_SIZE;
 
-public class BooksFragment extends Fragment implements OnAdminBookClickListener {
+public class BooksFragment extends Fragment implements OnBookListClickListener {
 
     private RecyclerView recyclerView;
     private View view;
-    private RecyclerViewAdapter recyclerViewAdapter;
+    private BooksListAdapter booksListAdapter;
     private boolean isLoading = false;
-    private List<BookDto> books = new ArrayList<>();
+    private List<BookListDto> books = new ArrayList<>();
 
     private int page = 0;
     private long totalSize = 0;
@@ -76,7 +76,7 @@ public class BooksFragment extends Fragment implements OnAdminBookClickListener 
                 if (!isLoading) {
                     if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == books.size() - 1) {
                         books.add(null);
-                        recyclerView.post(() -> recyclerViewAdapter.notifyItemInserted(books.size() - 1));
+                        recyclerView.post(() -> booksListAdapter.notifyItemInserted(books.size() - 1));
                         loadMore();
                         isLoading = true;
                     }
@@ -89,48 +89,63 @@ public class BooksFragment extends Fragment implements OnAdminBookClickListener 
         Handler handler = new Handler();
         handler.postDelayed(() -> {
             int position = books.size() - 1;
-            BookDto item = books.get(position);
+            BookListDto item = books.get(position);
             if (item == null) {
                 books.remove(position);
-                recyclerViewAdapter.notifyItemRemoved(position);
+                booksListAdapter.notifyItemRemoved(position);
             }
 
             if (books.size() < totalSize) {
                 loadAllBooks(++page);
-                recyclerViewAdapter.notifyDataSetChanged();
+                booksListAdapter.notifyDataSetChanged();
             }
             isLoading = false;
         }, 2000);
     }
 
     private void initAdapter() {
-        recyclerViewAdapter = new RecyclerViewAdapter(books);
-        recyclerView.setAdapter(recyclerViewAdapter);
+        booksListAdapter = new BooksListAdapter(books, this);
+        recyclerView.setAdapter(booksListAdapter);
         registerForContextMenu(recyclerView);
     }
 
-    @Override
-    public void onItemClick(Item item) {
-
-    }
-
     private void loadAllBooks(int page) {
-        Call<PageDto<BookDto>> call = WebServerAPIBuilder.getInstance().getAllBooks(page, DEFAULT_PAGE_SIZE, "title");
+        Call<PageDto<BookListDto>> call = WebServerAPIBuilder.getInstance().getBookById(page, DEFAULT_PAGE_SIZE, "title");
 
-        call.enqueue(new Callback<PageDto<BookDto>>() {
+        call.enqueue(new Callback<PageDto<BookListDto>>() {
             @Override
-            public void onResponse(Call<PageDto<BookDto>> call, Response<PageDto<BookDto>> response) {
+            public void onResponse(Call<PageDto<BookListDto>> call, Response<PageDto<BookListDto>> response) {
                 if (response.isSuccessful()) {
-                    PageDto<BookDto> body = response.body();
+                    PageDto<BookListDto> body = response.body();
                     if(response.body().getTotalSize() != totalSize) {
                         totalSize = response.body().getTotalSize();
                     }
-                    recyclerViewAdapter.submitList(body.getContent());
+                    booksListAdapter.submitList(body.getContent());
                 }
             }
 
             @Override
-            public void onFailure(Call<PageDto<BookDto>> call, Throwable t) {
+            public void onFailure(Call<PageDto<BookListDto>> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public void onBookClick(BookListDto book) {
+        Call<BookDto> call = WebServerAPIBuilder.getInstance().getBookById(book.getBookId());
+
+        call.enqueue(new Callback<BookDto>() {
+            @Override
+            public void onResponse(Call<BookDto> call, Response<BookDto> response) {
+                if (response.isSuccessful()) {
+                    BookDto book = response.body();
+                    Toast.makeText(getContext(), book.getTitle(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookDto> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

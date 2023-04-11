@@ -11,20 +11,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.readitapp.R;
-import com.example.readitapp.model.webserver.book.output.BookDto;
+import com.example.readitapp.model.webserver.book.input.BookListDto;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-    private final List<BookDto> mItemList;
+    private final List<BookListDto> mItemList;
+    public static OnBookListClickListener bookClickListener;
 
-    public RecyclerViewAdapter(List<BookDto> itemList) {
+    public BooksListAdapter(List<BookListDto> itemList, OnBookListClickListener listener) {
         mItemList = itemList;
+        bookClickListener = listener;
     }
 
     @NonNull
@@ -65,12 +67,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private void populateItemRows(ItemViewHolder viewHolder, int position) {
-        BookDto item = mItemList.get(position);
+        BookListDto item = mItemList.get(position);
         viewHolder.bind(item);
     }
 
-    public void submitList(List<BookDto> books) {
-        this.mItemList.removeIf(bookDto -> bookDto == null);
+    public void submitList(List<BookListDto> books) {
+        this.mItemList.removeIf(bookListDto -> bookListDto == null);
         this.mItemList.addAll(books);
         notifyDataSetChanged();
     }
@@ -94,7 +96,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
 
-        public void bind(BookDto book) {
+        public void bind(BookListDto book) {
             if (book.getThumbnail() != null) {
                 Picasso.get().load(book.getThumbnail().getSmallThumbnail()).into(poster);
             }
@@ -106,6 +108,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             } else {
                 rating.setText("");
             }
+
+            view.setOnClickListener(v -> bookClickListener.onBookClick(book));
         }
 
     }

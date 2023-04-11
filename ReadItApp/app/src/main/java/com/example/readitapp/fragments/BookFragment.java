@@ -18,8 +18,8 @@ import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.googlebooks.ImageLinks;
 import com.example.readitapp.model.googlebooks.Item;
 import com.example.readitapp.model.googlebooks.VolumeInfo;
-import com.example.readitapp.model.webserver.book.output.BookDto;
-import com.example.readitapp.model.webserver.book.input.InputBookModel;
+import com.example.readitapp.model.webserver.book.input.BookListDto;
+import com.example.readitapp.model.webserver.book.output.OutputBookModel;
 import com.example.readitapp.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
@@ -89,13 +89,13 @@ public class BookFragment extends Fragment {
 
     private void callWebServerAPI() {
 
-        InputBookModel inputBookModel = createInputBookModel();
-        Call<BookDto> call = WebServerAPIBuilder.getInstance().addBook(inputBookModel);
+        OutputBookModel inputBookModel = createInputBookModel();
+        Call<BookListDto> call = WebServerAPIBuilder.getInstance().addBook(inputBookModel);
         Utils.hideKeyboard(BookFragment.this);
 
-        call.enqueue(new Callback<BookDto>() {
+        call.enqueue(new Callback<BookListDto>() {
             @Override
-            public void onResponse(Call<BookDto> call, Response<BookDto> response) {
+            public void onResponse(Call<BookListDto> call, Response<BookListDto> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), response.body().getTitle(), Toast.LENGTH_LONG).show();
                 } else if (response.code() == 409) {
@@ -107,14 +107,14 @@ public class BookFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<BookDto> call, Throwable t) {
+            public void onFailure(Call<BookListDto> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     @NonNull
-    private InputBookModel createInputBookModel() {
+    private OutputBookModel createInputBookModel() {
         String inStock = inStockTextView.getText().toString();
         int inStockValue;
         if (inStock != null) {
@@ -122,7 +122,7 @@ public class BookFragment extends Fragment {
         } else {
             inStockValue = 0;
         }
-        InputBookModel inputBookModel = new InputBookModel(item, inStockValue);
+        OutputBookModel inputBookModel = new OutputBookModel(item, inStockValue);
         return inputBookModel;
     }
 

@@ -1,4 +1,4 @@
-package com.example.readitapp.model.webserver.book.output;
+package com.example.readitapp.model.webserver.book.input;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

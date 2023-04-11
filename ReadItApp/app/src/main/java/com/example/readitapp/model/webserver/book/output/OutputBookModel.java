@@ -1,10 +1,10 @@
-package com.example.readitapp.model.webserver.book.input;
+package com.example.readitapp.model.webserver.book.output;
 
 import com.example.readitapp.model.googlebooks.Item;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class InputBookModel  {
+public class OutputBookModel {
 
     @SerializedName("item")
     @Expose
@@ -14,10 +14,10 @@ public class InputBookModel  {
     @Expose
     private Integer inStock;
 
-    public InputBookModel() {
+    public OutputBookModel() {
     }
 
-    public InputBookModel(Item item, Integer inStock) {
+    public OutputBookModel(Item item, Integer inStock) {
         this.item = item;
         this.inStock = inStock;
     }

@@ -10,4 +10,6 @@ public interface BookService {
 	BookDto insertBook(InputBookModel inputBookModel);
 
 	PageDto<BookListDto> loadListBooks(Integer pageNumber, Integer pageSize, String sort);
+
+	BookDto findBookById(Integer bookId);
 }
