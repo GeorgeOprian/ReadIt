@@ -15,13 +15,13 @@ public class BookCategory {
 	@EmbeddedId
 	private BookCategoryId id;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@MapsId("bookId")
 	@JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "FK_BOOK_CATEGORY"))
 	@JsonManagedReference
 	private Book book;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@MapsId("categoryId")
 	@JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "FK_CATEGORY_BOOK"))
 	private Category category;

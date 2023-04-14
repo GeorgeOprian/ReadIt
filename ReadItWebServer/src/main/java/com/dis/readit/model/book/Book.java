@@ -3,6 +3,8 @@ package com.dis.readit.model.book;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.Objects;
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 @Entity(name = "Book")
 @Table(name = "book", uniqueConstraints = @UniqueConstraint(name = "UK_ISBN", columnNames = "ISBN"))
+@DynamicInsert
+@DynamicUpdate
 public class Book {
 
 	@Id
@@ -58,6 +62,7 @@ public class Book {
 	@OneToMany(
 			mappedBy = "book",
 			cascade = CascadeType.ALL,
+			fetch = FetchType.EAGER,
 			orphanRemoval = true
 	)
 	private List<BookCategory> bookCategories = new ArrayList<>();

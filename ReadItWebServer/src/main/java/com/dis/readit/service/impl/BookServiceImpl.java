@@ -18,13 +18,17 @@ import com.dis.readit.model.book.Category;
 import com.dis.readit.repository.BookRepository;
 import com.dis.readit.repository.CategoryRepository;
 import com.dis.readit.service.BookService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,13 +42,14 @@ public class BookServiceImpl implements BookService {
 	private final BookMapper bookMapper;
 	private final CategoriesMapper categoriesMapper;
 
+	private final ObjectMapper objectMapper;
 
-	public BookServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository, BookMapper mapper, CategoriesMapper categoriesMapper) {
+	public BookServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository, BookMapper mapper, CategoriesMapper categoriesMapper, ObjectMapper objectMapper) {
 		this.bookRepository = bookRepository;
 		this.categoryRepository = categoryRepository;
 		this.bookMapper = mapper;
 		this.categoriesMapper = categoriesMapper;
-
+		this.objectMapper = objectMapper;
 	}
 
 	@Override
@@ -171,5 +176,40 @@ public class BookServiceImpl implements BookService {
 		}
 
 		return book;
+	}
+
+	@Override
+	public BookDto updateBook(Integer bookId, Map<String, Object> body) {
+		Optional<Book> bookOpt = bookRepository.findById(bookId);
+
+		bookOpt.orElseThrow(() -> new EntityNotFound("Book with id " + bookId + " was not found"));
+
+		Book bookFromDB = bookOpt.get();
+
+		Book patchedBook = applyPatchToEntity(bookFromDB, Book.class, body);
+
+		Book savedBook = bookRepository.save(patchedBook);
+
+		return bookMapper.mapToDto(savedBook);
+	}
+
+	private <T> T applyPatchToEntity(T bookFromDB, Class classz, Map<String, Object> requestBody) {
+		requestBody.forEach((key, value) -> {
+			Field field = ReflectionUtils.findField(classz, key);
+			field.setAccessible(true);
+			ReflectionUtils.setField(field, bookFromDB, value);
+		});
+
+		return bookFromDB;
+	}
+
+	@Override
+	public void deleteBook(Integer bookId) {
+		Optional<Book> bookOpt = bookRepository.findById(bookId);
+
+		bookOpt.orElseThrow(() -> new EntityNotFound("Book with id " + bookId + " was not found"));
+
+		bookRepository.deleteById(bookId);
+
 	}
 }

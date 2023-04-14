@@ -1,6 +1,7 @@
 package com.dis.readit.dtos.output.book;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -8,6 +9,8 @@ import java.util.List;
 
 @Data
 public class BookListDto implements Serializable {
+
+	@NotNull
 	@JsonProperty("bookId")
 	private Integer bookId;
 
