@@ -48,8 +48,13 @@ public class BookFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if(bundle != null) {
-            item = (Item) bundle.getSerializable(Utils.ITEM);
-            fillBookCardView();
+            if (bundle.getSerializable(Utils.ITEM) != null) {
+                item = (Item) bundle.getSerializable(Utils.ITEM);
+                fillBookCardView(item);
+            } else if (bundle.getSerializable(Utils.BOOK_LIST_DTO) != null) {
+                BookListDto bookListDto = (BookListDto) bundle.getSerializable(Utils.BOOK_LIST_DTO);
+                fillBookCardView(bookListDto);
+            }
         }
 
         addButton.setOnClickListener(view -> callWebServerAPI());
@@ -57,7 +62,23 @@ public class BookFragment extends Fragment {
         return view;
     }
 
-    private void fillBookCardView() {
+    private void fillBookCardView(BookListDto bookListDto) {
+        Picasso.get().load(bookListDto.getThumbnail().getSmallThumbnail()).into(poster);
+        title.setText(bookListDto.getTitle());
+        if (bookListDto.getAuthor() != null && !bookListDto.getAuthor().isEmpty()) {
+            authors.setText( bookListDto.getAuthor());
+        } else {
+            authors.setText("");
+        }
+        if (bookListDto.getRatingsCount() != null && bookListDto.getRatingsCount() != 0) {
+            rating.setText(bookListDto.getRatingsCount().toString());
+        } else {
+            rating.setText("");
+        }
+//        inStockTextView.setText(bookListDto.);
+    }
+
+    private void fillBookCardView(Item item) {
         VolumeInfo volumeInfo = item.getVolumeInfo();
         ImageLinks imageLinks = volumeInfo.getImageLinks();
         if (imageLinks != null) {

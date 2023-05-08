@@ -31,4 +31,6 @@ public class BookListDto implements Serializable {
 	@JsonProperty("categories")
 	private List<CategoryDto> categories;
 
+//	@JsonProperty("inStock")
+//	private Integer inStock;
 }

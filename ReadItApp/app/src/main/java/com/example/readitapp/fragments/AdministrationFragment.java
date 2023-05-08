@@ -141,22 +141,4 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
         return queryParam + titleString;
     }
 
-    @Override
-    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v,
-                                    @Nullable ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        getActivity().getMenuInflater().inflate(R.menu.menu_floating_context, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add:
-                //add in db
-                Toast.makeText(getContext(), "Book added.", Toast.LENGTH_LONG).show();
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
 }

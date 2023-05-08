@@ -7,10 +7,16 @@ import com.example.readitapp.model.webserver.book.input.PageDto;
 import com.example.readitapp.model.webserver.user.input.UserCreateDto;
 import com.example.readitapp.model.webserver.user.output.UserDto;
 
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface WebServerAPIService {
@@ -28,4 +34,10 @@ public interface WebServerAPIService {
 
     @GET("/books")
     Call<BookDto> getBookById(@Query("bookId") Integer bookId);
+
+    @DELETE("/books/delete")
+    Call<Void> deleteBook(@Query("bookId") Integer bookId);
+
+    @PATCH("/books/updatebook/{bookId}")
+    Call<BookDto> updateBook(@Path("bookId") Integer bookId, @Body Map<String, Object> book);
 }

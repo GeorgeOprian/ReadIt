@@ -1,16 +1,22 @@
 package com.example.readitapp.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.example.readitapp.R;
@@ -20,6 +26,8 @@ import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.webserver.book.input.BookDto;
 import com.example.readitapp.model.webserver.book.input.BookListDto;
 import com.example.readitapp.model.webserver.book.input.PageDto;
+import com.example.readitapp.utils.Utils;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,11 +61,26 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
 
     private void initView() {
         recyclerView = view.findViewById(R.id.container);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext()));
 
         initAdapter();
         loadAllBooks(page);
         initScrollListener();
+    }
+
+    class WrapContentLinearLayoutManager extends LinearLayoutManager {
+        public WrapContentLinearLayoutManager(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+            try {
+                super.onLayoutChildren(recycler, state);
+            } catch (IndexOutOfBoundsException e) {
+                Log.e("TAG", "meet a IOOBE in RecyclerView");
+            }
+        }
     }
 
     private void initScrollListener() {
@@ -146,6 +169,62 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
 
             @Override
             public void onFailure(Call<BookDto> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v,
+                                    @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        if(currentUser.equals(Utils.USER_ADMIN)) {
+            super.onCreateContextMenu(menu, v, menuInfo);
+            getActivity().getMenuInflater().inflate(R.menu.menu_floating_context, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.update:
+                updateBook(item.getOrder());
+                return true;
+            case R.id.delete:
+                deleteBook(item.getOrder());
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void updateBook(int bookId) {
+        //bundle book fragment with books.get(bookId)
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Utils.BOOK_LIST_DTO, books.get(bookId));
+        Fragment selectedFragment = new BookFragment();
+        selectedFragment.setArguments(bundle);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, selectedFragment)
+                .addToBackStack("tag")
+                .commit();
+    }
+
+    private void deleteBook(int bookId) {
+        Call<Void> call = WebServerAPIBuilder.getInstance().deleteBook(books.get(bookId).getBookId());
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    books.remove(bookId);
+                    booksListAdapter.notifyDataSetChanged();
+                    Toast.makeText(getContext(), "Book deleted", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

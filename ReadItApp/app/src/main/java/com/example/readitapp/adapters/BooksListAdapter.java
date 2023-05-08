@@ -49,7 +49,7 @@ public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else if (viewHolder instanceof LoadingViewHolder) {
             showLoadingView((LoadingViewHolder) viewHolder, position);
         }
-
+        viewHolder.itemView.setLongClickable(true);
     }
 
     @Override

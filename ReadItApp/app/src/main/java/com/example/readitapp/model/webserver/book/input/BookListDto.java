@@ -36,6 +36,10 @@ public class BookListDto implements Serializable {
     @Expose
     private List<CategoryDto> categories;
 
+//    @SerializedName("inStock")
+//    @Expose
+//    private Integer inStock;
+
     public Integer getBookId() {
         return bookId;
     }

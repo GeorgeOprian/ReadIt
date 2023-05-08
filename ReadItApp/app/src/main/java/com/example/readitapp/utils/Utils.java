@@ -10,6 +10,7 @@ public class Utils {
 
     public static final String USER_ADMIN = "readitapp.adm@gmail.com";
     public static final String ITEM = "item";
+    public static final String BOOK_LIST_DTO= "BookListDto";
 
     public static void hideKeyboard(Fragment fragment) {
         View view = fragment.getActivity().getCurrentFocus();
