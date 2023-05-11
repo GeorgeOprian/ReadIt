@@ -75,7 +75,7 @@ public class BookFragment extends Fragment {
         } else {
             rating.setText("");
         }
-//        inStockTextView.setText(bookListDto.);
+//        inStockTextView.setText(bookListDto.getInStock());
     }
 
     private void fillBookCardView(Item item) {
