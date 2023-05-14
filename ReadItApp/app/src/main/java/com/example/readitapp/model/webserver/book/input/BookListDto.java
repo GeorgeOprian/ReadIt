@@ -36,10 +36,6 @@ public class BookListDto implements Serializable {
     @Expose
     private List<CategoryDto> categories;
 
-    @SerializedName("inStock")
-    @Expose
-    private Integer inStock;
-
     public Integer getBookId() {
         return bookId;
     }
@@ -96,11 +92,4 @@ public class BookListDto implements Serializable {
         this.categories = categories;
     }
 
-    public Integer getInStock() {
-        return inStock;
-    }
-
-    public void setInStock(Integer inStock) {
-        this.inStock = inStock;
-    }
 }
