@@ -1,6 +1,5 @@
 package com.dis.readit.service;
 
-import com.dis.readit.dtos.input.books.InputBookModel;
 import com.dis.readit.dtos.output.PageDto;
 import com.dis.readit.dtos.output.book.BookDto;
 import com.dis.readit.dtos.output.book.BookListDto;

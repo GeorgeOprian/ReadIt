@@ -141,43 +141,6 @@ public class BookServiceImpl implements BookService {
 		return bookDto;
 	}
 
-	private List<Category> createCategories(InputBookModel inputBookModel) {
-
-		VolumeInfo volumeInfo = inputBookModel.getItem().getVolumeInfo();
-		if (volumeInfo.getCategories() == null) {
-			return null;
-		}
-
-		return volumeInfo.getCategories().stream().map(category -> new Category(category)).collect(Collectors.toList());
-
-	}
-
-	private static Book createBook(InputBookModel inputBookModel) {
-		Book book = new Book();
-
-		VolumeInfo volumeInfo = inputBookModel.getItem().getVolumeInfo();
-
-		book.setTitle(volumeInfo.getTitle());
-		book.setAuthor(String.join(", ", volumeInfo.getAuthors()));
-		book.setPublisher(volumeInfo.getPublisher());
-		book.setPublishedDate(volumeInfo.getPublishedDate());
-		book.setDescription(volumeInfo.getDescription());
-		book.setIsbn(volumeInfo.getIndustryIdentifiers().get(0).getIdentifier());
-		book.setPageCount(volumeInfo.getPageCount());
-		book.setAverageRating(volumeInfo.getAverageRating());
-		book.setRatingsCount(volumeInfo.getRatingsCount());
-		book.setMaturityRating(volumeInfo.getMaturityRating());
-		book.setLanguage(volumeInfo.getLanguage());
-		book.setInStock(inputBookModel.getInStock());
-
-		ImageLinks imageLinks = volumeInfo.getImageLinks();
-		if (imageLinks != null) {
-			book.setThumbnail(new BookThumbnail(imageLinks.getSmallThumbnail(), imageLinks.getThumbnail()));
-		}
-
-		return book;
-	}
-
 	@Override
 	public BookDto updateBook(Integer bookId, Map<String, Object> body) {
 		Optional<Book> bookOpt = bookRepository.findById(bookId);
