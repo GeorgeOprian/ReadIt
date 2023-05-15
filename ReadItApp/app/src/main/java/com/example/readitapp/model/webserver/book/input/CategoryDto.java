@@ -11,6 +11,13 @@ public class CategoryDto implements Serializable {
     @Expose
     private String categoryName;
 
+    public CategoryDto() {
+    }
+
+    public CategoryDto(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }

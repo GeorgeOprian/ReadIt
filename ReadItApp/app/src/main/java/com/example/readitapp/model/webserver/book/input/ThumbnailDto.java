@@ -15,6 +15,11 @@ public class ThumbnailDto implements Serializable {
     @Expose
     private String thumbnail;
 
+    public ThumbnailDto(String smallThumbnail, String thumbnail) {
+        this.smallThumbnail = smallThumbnail;
+        this.thumbnail = thumbnail;
+    }
+
     public String getSmallThumbnail() {
         return smallThumbnail;
     }

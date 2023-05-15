@@ -2,16 +2,12 @@ package com.example.readitapp.fragments;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,10 +17,20 @@ import com.example.readitapp.R;
 import com.example.readitapp.adapters.AdminBooksAdapter;
 import com.example.readitapp.adapters.OnAdminBookClickListener;
 import com.example.readitapp.api.googlebooks.GoogleBooksAPIBuilder;
+import com.example.readitapp.model.googlebooks.ImageLinks;
 import com.example.readitapp.model.googlebooks.Item;
+import com.example.readitapp.model.googlebooks.VolumeInfo;
 import com.example.readitapp.model.googlebooks.VolumesResponse;
+import com.example.readitapp.model.webserver.book.input.BookDto;
+import com.example.readitapp.model.webserver.book.input.CategoryDto;
+import com.example.readitapp.model.webserver.book.input.ThumbnailDto;
+import com.example.readitapp.model.webserver.book.output.OutputBookModel;
 import com.example.readitapp.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,13 +109,45 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
     @Override
     public void onItemClick(Item item) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Utils.ITEM, item);
+        BookDto book = createBook(new OutputBookModel(item, 0));
+
+        bundle.putSerializable(Utils.BOOK, book);
+        bundle.putSerializable(Utils.INSERT, 1);
         Fragment selectedFragment = new BookFragment();
         selectedFragment.setArguments(bundle);
         getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, selectedFragment)
                 .addToBackStack("tag")
                 .commit();
+    }
+
+    private static BookDto createBook(OutputBookModel outputBookModel) {
+        BookDto book = new BookDto();
+
+        VolumeInfo volumeInfo = outputBookModel.getItem().getVolumeInfo();
+
+        book.setTitle(volumeInfo.getTitle());
+        book.setAuthor(String.join(", ", volumeInfo.getAuthors()));
+        book.setPublisher(volumeInfo.getPublisher());
+        book.setPublishedDate(volumeInfo.getPublishedDate());
+        book.setDescription(volumeInfo.getDescription());
+        book.setIsbn(volumeInfo.getIndustryIdentifiers().get(0).getIdentifier());
+        book.setPageCount(volumeInfo.getPageCount());
+        book.setAverageRating(volumeInfo.getAverageRating());
+        book.setRatingsCount(volumeInfo.getRatingsCount());
+        book.setMaturityRating(volumeInfo.getMaturityRating());
+        book.setLanguage(volumeInfo.getLanguage());
+        book.setInStock(outputBookModel.getInStock());
+
+        ImageLinks imageLinks = volumeInfo.getImageLinks();
+        if (imageLinks != null) {
+            book.setThumbnail(new ThumbnailDto(imageLinks.getSmallThumbnail(), imageLinks.getThumbnail()));
+        }
+
+        List<CategoryDto> categories = volumeInfo.getCategories().stream().map(CategoryDto::new).collect(Collectors.toList());
+        book.setCategories(categories);
+
+        return book;
     }
 
     private String createSearchQuery() {

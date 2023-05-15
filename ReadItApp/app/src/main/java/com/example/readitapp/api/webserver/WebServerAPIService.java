@@ -22,7 +22,7 @@ import retrofit2.http.Query;
 public interface WebServerAPIService {
 
     @POST("/books/addBook")
-    Call<BookListDto> addBook(@Body OutputBookModel body);
+    Call<BookDto> addBook(@Body BookDto body);
 
     @POST("/users/google-signin")
     Call<UserDto> addUser(@Body String idToken);
