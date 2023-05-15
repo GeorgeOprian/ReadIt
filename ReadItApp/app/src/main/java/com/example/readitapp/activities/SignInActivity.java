@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.readitapp.R;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
-import com.example.readitapp.model.webserver.user.input.UserCreateDto;
 import com.example.readitapp.model.webserver.user.output.UserDto;
 import com.example.readitapp.utils.FirebaseConstants;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -111,9 +110,9 @@ public class SignInActivity extends AppCompatActivity {
 
     private void addUserToServer() {
 
-        UserCreateDto user = new UserCreateDto(FirebaseAuth.getInstance().getCurrentUser().getEmail(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-
-        Call<UserDto> call = WebServerAPIBuilder.getInstance().addUser(user);
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String idToken = currentUser.getIdToken(false).getResult().getToken();
+        Call<UserDto> call = WebServerAPIBuilder.getInstance().addUser(idToken);
 
         call.enqueue(new Callback<UserDto>() {
             @Override

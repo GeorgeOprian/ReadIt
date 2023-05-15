@@ -2,13 +2,13 @@ package com.dis.readit.mapper;
 
 import com.dis.readit.dtos.input.users.UserCreateDto;
 import com.dis.readit.dtos.output.user.UserDto;
-import com.dis.readit.model.user.User;
+import com.dis.readit.model.user.DataBaseUser;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-	UserDto mapToDto(User user);
+	UserDto mapToDto(DataBaseUser dataBaseUser);
 
-	User mapToModel(UserCreateDto user);
+	DataBaseUser mapToModel(UserCreateDto user);
 }

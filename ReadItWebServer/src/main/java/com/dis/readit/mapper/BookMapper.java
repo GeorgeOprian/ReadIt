@@ -15,4 +15,6 @@ public interface BookMapper {
 
 	@Mapping(target = "thumbnail", source = "thumbnail")
 	BookDto mapToDto(Book book);
+
+	Book mapToBo(BookDto dto);
 }

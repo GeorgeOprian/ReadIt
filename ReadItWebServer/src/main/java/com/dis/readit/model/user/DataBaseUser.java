@@ -1,13 +1,14 @@
 package com.dis.readit.model.user;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @ToString
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 @Entity(name = "User")
 @Table(name = "read_it_user")
-public class User {
+public class DataBaseUser {
 
 	@Id
 	@Column(name = "user_id")

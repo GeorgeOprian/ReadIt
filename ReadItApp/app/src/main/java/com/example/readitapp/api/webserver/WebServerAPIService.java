@@ -24,8 +24,8 @@ public interface WebServerAPIService {
     @POST("/books/addBook")
     Call<BookListDto> addBook(@Body OutputBookModel body);
 
-    @POST("/users/addUser")
-    Call<UserDto> addUser(@Body UserCreateDto body);
+    @POST("/users/google-signin")
+    Call<UserDto> addUser(@Body String idToken);
 
     int DEFAULT_PAGE_SIZE = 4;
 

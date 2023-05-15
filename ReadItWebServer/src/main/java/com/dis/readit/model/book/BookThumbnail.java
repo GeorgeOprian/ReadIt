@@ -1,8 +1,9 @@
 package com.dis.readit.model.book;
 
-import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Data @NoArgsConstructor
 @Entity(name = "BookThumbnail")

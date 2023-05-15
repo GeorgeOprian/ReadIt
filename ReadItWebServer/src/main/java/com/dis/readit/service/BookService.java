@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface BookService {
 
-	BookDto insertBook(InputBookModel inputBookModel);
+	BookDto insertBook(BookDto request);
 
 	PageDto<BookListDto> loadListBooks(Integer pageNumber, Integer pageSize, String sort);
 
@@ -18,4 +18,5 @@ public interface BookService {
 	BookDto updateBook(Integer bookId, Map<String, Object> body);
 
 	void deleteBook(Integer bookId);
+
 }

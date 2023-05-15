@@ -1,9 +1,10 @@
 package com.dis.readit.dtos.output.book;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotNull;
+
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -31,6 +32,4 @@ public class BookListDto implements Serializable {
 	@JsonProperty("categories")
 	private List<CategoryDto> categories;
 
-//	@JsonProperty("inStock")
-//	private Integer inStock;
 }

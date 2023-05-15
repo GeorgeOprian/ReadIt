@@ -21,7 +21,7 @@ public class BooksController {
 	}
 
 	@PostMapping("/addBook")
-	public ResponseEntity<BookDto> addBook(@RequestBody InputBookModel request) {
+	public ResponseEntity<BookDto> addBook(@RequestBody BookDto request) {
 		return ResponseEntity.ok(service.insertBook(request));
 	}
 

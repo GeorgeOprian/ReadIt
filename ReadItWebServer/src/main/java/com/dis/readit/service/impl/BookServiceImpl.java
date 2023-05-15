@@ -13,6 +13,7 @@ import com.dis.readit.mapper.BookMapper;
 import com.dis.readit.mapper.CategoriesMapper;
 import com.dis.readit.mapper.PageMapper;
 import com.dis.readit.model.book.Book;
+import com.dis.readit.model.book.BookCategory;
 import com.dis.readit.model.book.BookThumbnail;
 import com.dis.readit.model.book.Category;
 import com.dis.readit.repository.BookRepository;
@@ -53,9 +54,9 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public BookDto insertBook(InputBookModel inputBookModel) {
+	public BookDto insertBook(BookDto request) {
 
-		Book book = createBook(inputBookModel);
+		Book book = bookMapper.mapToBo(request);
 
 		Optional<Book> bookOptional = bookRepository.findByIsbn(book.getIsbn());
 
@@ -63,7 +64,7 @@ public class BookServiceImpl implements BookService {
 			throw new BookAlreadyExistsException("A book with the same ISBN already exists.");
 		}
 
-		List<Category> existentCategories = saveCategories(inputBookModel);
+		List<Category> existentCategories = saveCategories(book.getBookCategories());
 
 		for (Category category : existentCategories) {
 			book.addCategory(category);
@@ -74,8 +75,10 @@ public class BookServiceImpl implements BookService {
 		return createBookDto(savedBook);
 	}
 
-	private List<Category> saveCategories(InputBookModel inputBookModel) {
-		List<Category> inputCategories = createCategories(inputBookModel);
+	private List<Category> saveCategories(List<BookCategory> categoriesFromRequest) {
+
+		List<Category> inputCategories = categoriesFromRequest.stream().map(category -> new Category(category.getCategory().getCategoryName()))
+				.collect(Collectors.toList());
 
 		if (inputCategories == null) {
 			return new ArrayList<>();
@@ -94,7 +97,52 @@ public class BookServiceImpl implements BookService {
 
 		existentCategories.addAll(categoryRepository.saveAll(categoriesToSave));
 		return existentCategories;
+
 	}
+
+//	@Override
+//	public BookDto insertBook(InputBookModel inputBookModel) {
+//
+//		Book book = createBook(inputBookModel);
+//
+//		Optional<Book> bookOptional = bookRepository.findByIsbn(book.getIsbn());
+//
+//		if (bookOptional.isPresent()) {
+//			throw new BookAlreadyExistsException("A book with the same ISBN already exists.");
+//		}
+//
+//		List<Category> existentCategories = saveCategories(inputBookModel);
+//
+//		for (Category category : existentCategories) {
+//			book.addCategory(category);
+//		}
+//
+//		Book savedBook = bookRepository.save(book);
+//
+//		return createBookDto(savedBook);
+//	}
+
+//	private List<Category> saveCategories(InputBookModel inputBookModel) {
+//		List<Category> inputCategories = createCategories(inputBookModel);
+//
+//		if (inputCategories == null) {
+//			return new ArrayList<>();
+//		}
+//
+//		List<Category> categoriesToSave = new ArrayList<>();
+//		List<Category> existentCategories = new ArrayList<>();
+//		for (Category category : inputCategories) {
+//			Optional<Category> existentCategory = categoryRepository.findByCategoryName(category.getCategoryName());
+//			if (existentCategory.isEmpty()) {
+//				categoriesToSave.add(category);
+//			} else {
+//				existentCategories.add(existentCategory.get());
+//			}
+//		}
+//
+//		existentCategories.addAll(categoryRepository.saveAll(categoriesToSave));
+//		return existentCategories;
+//	}
 
 	@Override
 	public PageDto<BookListDto> loadListBooks(Integer pageNumber, Integer pageSize, String sortBy) {
