@@ -90,7 +90,7 @@ public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             poster = view.findViewById(R.id.poster);
             title = view.findViewById(R.id.title);
             authors = view.findViewById(R.id.author_value);
-            rating = view.findViewById(R.id.rating_value);
+            rating = view.findViewById(R.id.category_value);
 
             this.view = view;
 

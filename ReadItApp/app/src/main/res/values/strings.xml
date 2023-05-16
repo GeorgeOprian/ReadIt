@@ -17,4 +17,6 @@
     <string name="update">Update</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
+    <string name="subscription">Subscription</string>
+    <string name="my_books">My books</string>
 </resources>

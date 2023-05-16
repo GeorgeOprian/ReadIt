@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="160dp"
-            android:text="Author"
+            android:text="@string/author"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -66,7 +66,7 @@
             android:autoSizeMaxTextSize="12dp"
             android:autoSizeMinTextSize="10dp"
             android:autoSizeTextType="uniform"
-            android:text="TextView"
+            android:text=""
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.491"
@@ -75,11 +75,11 @@
             app:layout_constraintVertical_bias="0.307" />
 
         <TextView
-            android:id="@+id/rating_lable"
+            android:id="@+id/category_lable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="160dp"
-            android:text="Rating"
+            android:text="Category"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -88,15 +88,14 @@
             app:layout_constraintVertical_bias="0.421" />
 
         <TextView
-            android:id="@+id/rating_value"
+            android:id="@+id/category_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:text="TextView"
+            android:text=""
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.26"
-            app:layout_constraintStart_toEndOf="@+id/rating_lable"
+            app:layout_constraintStart_toEndOf="@+id/category_lable"
             app:layout_constraintTop_toBottomOf="@+id/author_value"
             app:layout_constraintVertical_bias="0.357" />
 
