@@ -161,8 +161,18 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
             @Override
             public void onResponse(Call<BookDto> call, Response<BookDto> response) {
                 if (response.isSuccessful()) {
-                    BookDto book = response.body();
-                    Toast.makeText(getContext(), book.getTitle(), Toast.LENGTH_LONG).show();
+                    Bundle bundle = new Bundle();
+                    BookDto[] bookDto = new BookDto[1];
+
+                    bookDto[0] = response.body();
+                    bundle.putSerializable(Utils.BOOK, bookDto[0]);
+
+                    Fragment selectedFragment = new BookDetailsFragment();
+                    selectedFragment.setArguments(bundle);
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, selectedFragment)
+                            .addToBackStack("tag")
+                            .commit();
                 }
             }
 

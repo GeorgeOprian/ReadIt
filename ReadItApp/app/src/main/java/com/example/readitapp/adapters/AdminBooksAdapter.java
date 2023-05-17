@@ -62,14 +62,14 @@ public class AdminBooksAdapter extends RecyclerView.Adapter<AdminBooksAdapter.Bo
         private final ImageView poster;
         private final TextView title;
         private final TextView authors;
-        private final TextView rating;
+        private final TextView category;
 
         public BooksViewHolder(@NonNull View view) {
             super(view);
             poster = view.findViewById(R.id.poster);
             title = view.findViewById(R.id.title);
             authors = view.findViewById(R.id.author_value);
-            rating = view.findViewById(R.id.rating_value);
+            category = view.findViewById(R.id.category_value);
 
             this.view = view;
 
@@ -89,10 +89,10 @@ public class AdminBooksAdapter extends RecyclerView.Adapter<AdminBooksAdapter.Bo
                 authors.setText("");
             }
 
-            if (volumeInfo.getRatingsCount() != null && volumeInfo.getRatingsCount() != 0) {
-                rating.setText(volumeInfo.getRatingsCount().toString());
+            if (volumeInfo.getCategories() != null && !volumeInfo.getCategories().isEmpty()) {
+                category.setText(String.join(",", volumeInfo.getCategories()));
             } else {
-                rating.setText("");
+                category.setText("");
             }
 
             view.setOnClickListener(v -> itemClickListener.onItemClick(itemResult));

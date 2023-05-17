@@ -12,6 +12,16 @@
             android:title="@string/administration" />
 
         <item
+            android:id="@+id/nav_subscription"
+            android:icon="@drawable/ic_baseline_payment_24"
+            android:title="@string/subscription" />
+
+        <item
+            android:id="@+id/nav_my_books"
+            android:icon="@drawable/ic_baseline_menu_book_24"
+            android:title="@string/my_books" />
+
+        <item
             android:id="@+id/nav_signOut"
             android:icon="@drawable/ic_baseline_log_out_new_24"
             android:title="@string/sign_out" />

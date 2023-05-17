@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.signature.ObjectKey;
 import com.example.readitapp.R;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.webserver.book.input.BookDto;
@@ -115,7 +114,7 @@ public class BookFragment extends Fragment {
         poster = view.findViewById(R.id.poster);
         title = view.findViewById(R.id.title);
         authors = view.findViewById(R.id.author_value);
-        rating = view.findViewById(R.id.rating_value);
+        rating = view.findViewById(R.id.category_value);
         saveButton = view.findViewById(R.id.save_button);
         inStockTextView = view.findViewById(R.id.textInputEditTextStock);
     }
