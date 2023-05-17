@@ -1,4 +1,4 @@
-package com.dis.readit.dtos.output;
+package com.dis.readit.dtos;
 
 import lombok.Data;
 

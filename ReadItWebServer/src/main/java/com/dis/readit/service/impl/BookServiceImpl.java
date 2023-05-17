@@ -1,31 +1,26 @@
 package com.dis.readit.service.impl;
 
-import com.dis.readit.dtos.input.books.ImageLinks;
-import com.dis.readit.dtos.input.books.InputBookModel;
-import com.dis.readit.dtos.input.books.VolumeInfo;
-import com.dis.readit.dtos.output.PageDto;
-import com.dis.readit.dtos.output.book.BookDto;
-import com.dis.readit.dtos.output.book.BookListDto;
-import com.dis.readit.dtos.output.book.CategoryDto;
+import com.dis.readit.dtos.PageDto;
+import com.dis.readit.dtos.book.BookDto;
+import com.dis.readit.dtos.book.BookListDto;
+import com.dis.readit.dtos.book.CategoryDto;
 import com.dis.readit.exception.BookAlreadyExistsException;
 import com.dis.readit.exception.EntityNotFound;
 import com.dis.readit.mapper.BookMapper;
 import com.dis.readit.mapper.CategoriesMapper;
 import com.dis.readit.mapper.PageMapper;
 import com.dis.readit.model.book.Book;
-import com.dis.readit.model.book.BookCategory;
-import com.dis.readit.model.book.BookThumbnail;
 import com.dis.readit.model.book.Category;
 import com.dis.readit.repository.BookRepository;
 import com.dis.readit.repository.CategoryRepository;
 import com.dis.readit.service.BookService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
+import javax.transaction.Transactional;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,14 +38,11 @@ public class BookServiceImpl implements BookService {
 	private final BookMapper bookMapper;
 	private final CategoriesMapper categoriesMapper;
 
-	private final ObjectMapper objectMapper;
-
-	public BookServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository, BookMapper mapper, CategoriesMapper categoriesMapper, ObjectMapper objectMapper) {
+	public BookServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository, BookMapper mapper, CategoriesMapper categoriesMapper) {
 		this.bookRepository = bookRepository;
 		this.categoryRepository = categoryRepository;
 		this.bookMapper = mapper;
 		this.categoriesMapper = categoriesMapper;
-		this.objectMapper = objectMapper;
 	}
 
 	@Override
@@ -64,18 +56,26 @@ public class BookServiceImpl implements BookService {
 			throw new BookAlreadyExistsException("A book with the same ISBN already exists.");
 		}
 
+		Book savedBook = saveBookDetails(request, book);
+
+		return createBookDto(savedBook);
+	}
+
+	@Transactional Book saveBookDetails(BookDto request, Book book) {
 		List<Category> existentCategories = saveCategories(request.getCategories());
 
 		for (Category category : existentCategories) {
 			book.addCategory(category);
 		}
 
-		Book savedBook = bookRepository.save(book);
-
-		return createBookDto(savedBook);
+		return bookRepository.save(book);
 	}
 
 	private List<Category> saveCategories(List<CategoryDto> categoriesFromRequest) {
+
+		if (categoriesFromRequest == null) {
+			return new ArrayList<>();
+		}
 
 		List<Category> inputCategories = categoriesFromRequest.stream().map(category -> new Category(category.getCategoryName()))
 				.collect(Collectors.toList());

@@ -127,11 +127,23 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
         VolumeInfo volumeInfo = outputBookModel.getItem().getVolumeInfo();
 
         book.setTitle(volumeInfo.getTitle());
-        book.setAuthor(String.join(", ", volumeInfo.getAuthors()));
+
+        if (volumeInfo.getAuthors() != null && volumeInfo.getAuthors().isEmpty()) {
+            book.setAuthor(String.join(", ", volumeInfo.getAuthors()));
+        } else {
+            book.setAuthor("");
+        }
+
         book.setPublisher(volumeInfo.getPublisher());
         book.setPublishedDate(volumeInfo.getPublishedDate());
         book.setDescription(volumeInfo.getDescription());
-        book.setIsbn(volumeInfo.getIndustryIdentifiers().get(0).getIdentifier());
+
+        if (volumeInfo.getIndustryIdentifiers() != null && !volumeInfo.getIndustryIdentifiers().isEmpty()) {
+            book.setIsbn(volumeInfo.getIndustryIdentifiers().get(0).getIdentifier());
+        } else {
+            book.setIsbn(volumeInfo.getTitle());
+        }
+
         book.setPageCount(volumeInfo.getPageCount());
         book.setAverageRating(volumeInfo.getAverageRating());
         book.setRatingsCount(volumeInfo.getRatingsCount());

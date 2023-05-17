@@ -1,4 +1,4 @@
-package com.dis.readit.dtos.input.users;
+package com.dis.readit.dtos.users;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

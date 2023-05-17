@@ -1,6 +1,6 @@
 package com.dis.readit.controller;
 
-import com.dis.readit.dtos.input.users.UserCreateDto;
+import com.dis.readit.dtos.users.UserCreateDto;
 import com.dis.readit.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +23,5 @@ public class UserController {
 
 		return ResponseEntity.ok(service.addUser(userDto));
 	}
-
-	// TODO gop 04.04.2023: find user by email
 
 }

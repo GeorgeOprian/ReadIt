@@ -1,6 +1,6 @@
 package com.dis.readit.service.impl;
 
-import com.dis.readit.dtos.input.users.UserCreateDto;
+import com.dis.readit.dtos.users.UserCreateDto;
 import com.dis.readit.mapper.UserMapper;
 import com.dis.readit.model.user.DataBaseUser;
 import com.dis.readit.repository.UserRepository;
@@ -29,7 +29,13 @@ public class UserServiceImpl implements UserService {
 			return mapper.mapToDto(foundUser.get());
 		}
 
-		DataBaseUser savedDataBaseUser = repository.save(mapper.mapToModel(userDto));
+		DataBaseUser userToSave = mapper.mapToModel(userDto);
+
+		if (userToSave.getEmail().equals("readitapp.adm@gmail.com")) {
+			userToSave.setAdmin(true);
+		}
+
+		DataBaseUser savedDataBaseUser = repository.save(userToSave);
 
 		return mapper.mapToDto(savedDataBaseUser);
 	}

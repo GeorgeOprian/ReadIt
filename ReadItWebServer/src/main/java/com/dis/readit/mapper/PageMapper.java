@@ -1,6 +1,6 @@
 package com.dis.readit.mapper;
 
-import com.dis.readit.dtos.output.PageDto;
+import com.dis.readit.dtos.PageDto;
 import org.springframework.data.domain.Page;
 
 import java.io.Serializable;

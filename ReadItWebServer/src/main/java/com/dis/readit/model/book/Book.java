@@ -63,7 +63,7 @@ public class Book {
 	@OneToMany(
 			mappedBy = "book",
 			cascade = CascadeType.ALL,
-			fetch = FetchType.EAGER,
+			fetch = FetchType.LAZY,
 			orphanRemoval = true
 	)
 	private List<BookCategory> bookCategories = new ArrayList<>();

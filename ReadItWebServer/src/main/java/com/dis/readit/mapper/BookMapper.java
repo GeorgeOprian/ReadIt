@@ -1,7 +1,7 @@
 package com.dis.readit.mapper;
 
-import com.dis.readit.dtos.output.book.BookDto;
-import com.dis.readit.dtos.output.book.BookListDto;
+import com.dis.readit.dtos.book.BookDto;
+import com.dis.readit.dtos.book.BookListDto;
 import com.dis.readit.model.book.Book;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

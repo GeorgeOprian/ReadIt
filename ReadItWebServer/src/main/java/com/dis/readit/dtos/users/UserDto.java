@@ -1,6 +1,6 @@
-package com.dis.readit.dtos.output.user;
+package com.dis.readit.dtos.users;
 
-import com.dis.readit.dtos.input.users.UserCreateDto;
+import com.dis.readit.dtos.users.UserCreateDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

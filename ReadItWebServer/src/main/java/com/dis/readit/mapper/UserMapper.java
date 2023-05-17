@@ -1,7 +1,7 @@
 package com.dis.readit.mapper;
 
-import com.dis.readit.dtos.input.users.UserCreateDto;
-import com.dis.readit.dtos.output.user.UserDto;
+import com.dis.readit.dtos.users.UserCreateDto;
+import com.dis.readit.dtos.users.UserDto;
 import com.dis.readit.model.user.DataBaseUser;
 import org.mapstruct.Mapper;
 

@@ -1,4 +1,4 @@
-package com.dis.readit.dtos.output.book;
+package com.dis.readit.dtos.book;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
