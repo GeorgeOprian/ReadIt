@@ -21,6 +21,7 @@ import com.example.readitapp.fragments.AdministrationFragment;
 import com.example.readitapp.fragments.BooksFragment;
 import com.example.readitapp.fragments.HomeFragment;
 import com.example.readitapp.fragments.ProfileFragment;
+import com.example.readitapp.fragments.SubscriptionFragment;
 import com.example.readitapp.utils.FirebaseConstants;
 import com.example.readitapp.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -111,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent signIn = new Intent(MainActivity.this, SignInActivity.class);
                 startActivity(signIn);
                 finish();
+                break;
+            case R.id.nav_subscription:
+                selectedFragment = new SubscriptionFragment();
+                drawerLayout.closeDrawer(GravityCompat.START);
                 break;
         }
 

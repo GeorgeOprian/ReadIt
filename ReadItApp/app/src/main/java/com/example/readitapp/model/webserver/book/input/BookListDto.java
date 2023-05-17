@@ -16,7 +16,7 @@ public class BookListDto implements Serializable {
     @Expose
     private String title;
 
-    @SerializedName( "author")
+    @SerializedName("author")
     @Expose
     private String author;
 
@@ -24,7 +24,7 @@ public class BookListDto implements Serializable {
     @Expose
     private Double averageRating;
 
-    @SerializedName( "ratingsCount")
+    @SerializedName("ratingsCount")
     @Expose
     private Integer ratingsCount;
 

@@ -46,10 +46,8 @@ public class BookFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if(bundle != null) {
-            if (bundle.getSerializable(Utils.BOOK) != null) {
-                bookDto = (BookDto) bundle.getSerializable(Utils.BOOK);
-                fillBookCardView(bookDto);
-            }
+            bookDto = (BookDto) bundle.getSerializable(Utils.BOOK);
+            fillBookCardView();
         }
 
         if (bundle.getSerializable(Utils.UPDATE) != null) {
@@ -91,7 +89,7 @@ public class BookFragment extends Fragment {
         });
     }
 
-    private void fillBookCardView(BookDto bookDto) {
+    private void fillBookCardView() {
         Picasso.get().load(bookDto.getThumbnail().getSmallThumbnail()).into(poster);
         title.setText(bookDto.getTitle());
         if (bookDto.getAuthor() != null && !bookDto.getAuthor().isEmpty()) {
