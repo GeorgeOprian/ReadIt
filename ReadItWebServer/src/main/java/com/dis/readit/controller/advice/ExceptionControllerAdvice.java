@@ -3,6 +3,7 @@ package com.dis.readit.controller.advice;
 import com.dis.readit.exception.BookAlreadyExistsException;
 import com.dis.readit.exception.EntityNotFound;
 import com.dis.readit.exception.ErrorResponse;
+import com.dis.readit.exception.ExpiredSubscription;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,17 @@ public class ExceptionControllerAdvice {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 				.body(ErrorResponse.builder()
 						.code(HttpStatus.NOT_FOUND.value())
+						.message(e.getMessage())
+						.build());
+	}
+
+
+	@ExceptionHandler(ExpiredSubscription.class)
+	public ResponseEntity<ErrorResponse> handleExpiredSubscription(Exception e) {
+		log.debug("Expired subscription ");
+		return ResponseEntity.status(HttpStatus.FORBIDDEN)
+				.body(ErrorResponse.builder()
+						.code(HttpStatus.FORBIDDEN.value())
 						.message(e.getMessage())
 						.build());
 	}
