@@ -73,32 +73,11 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayoutNickname"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textInputLayoutEmail"
-                android:hint="Nickname"
-                android:padding="10dp"
-                app:endIconMode="clear_text"
-                app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditTextNickname"
-                    android:layout_width="match_parent"
-                    android:layout_height="59dp"
-                    android:fontFamily="serif"
-                    android:text=" "
-                    android:textColor="@color/black" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutAddress"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textInputLayoutNickname"
+                android:layout_below="@+id/textInputLayoutEmail"
                 android:hint="Address"
                 android:padding="10dp"
                 app:endIconMode="clear_text"
