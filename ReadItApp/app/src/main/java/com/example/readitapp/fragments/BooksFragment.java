@@ -22,9 +22,9 @@ import com.example.readitapp.R;
 import com.example.readitapp.adapters.BooksListAdapter;
 import com.example.readitapp.adapters.OnBookListClickListener;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
-import com.example.readitapp.model.webserver.book.input.BookDto;
-import com.example.readitapp.model.webserver.book.input.BookListDto;
-import com.example.readitapp.model.webserver.book.input.PageDto;
+import com.example.readitapp.model.webserver.book.response.BookDto;
+import com.example.readitapp.model.webserver.book.response.BookListDto;
+import com.example.readitapp.model.webserver.book.response.PageDto;
 import com.example.readitapp.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 

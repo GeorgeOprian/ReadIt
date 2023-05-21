@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.readitapp.R;
-import com.example.readitapp.model.webserver.book.input.BookListDto;
+import com.example.readitapp.model.webserver.book.response.BookListDto;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

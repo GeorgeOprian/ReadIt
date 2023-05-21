@@ -72,12 +72,30 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Spinner
+                android:id="@+id/judet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:layout_below="@+id/textInputLayoutEmail"
+                android:padding="10dp"
+                android:spinnerMode="dropdown"/>
+
+            <Spinner
+                android:id="@+id/localitate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:layout_below="@+id/judet"
+                android:padding="10dp"
+                android:spinnerMode="dropdown"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutAddress"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textInputLayoutEmail"
+                android:layout_below="@+id/localitate"
                 android:hint="Address"
                 android:padding="10dp"
                 app:endIconMode="clear_text"
@@ -92,6 +110,14 @@
                     android:textColor="@color/black" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/save_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textInputLayoutAddress"
+                android:layout_centerInParent="true"
+                android:text="@string/save" />
 
         </RelativeLayout>
 

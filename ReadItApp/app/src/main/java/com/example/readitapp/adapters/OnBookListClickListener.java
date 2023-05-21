@@ -1,7 +1,6 @@
 package com.example.readitapp.adapters;
 
-import com.example.readitapp.model.webserver.book.input.BookDto;
-import com.example.readitapp.model.webserver.book.input.BookListDto;
+import com.example.readitapp.model.webserver.book.response.BookListDto;
 
 public interface OnBookListClickListener {
 

@@ -1,4 +1,4 @@
-package com.example.readitapp.model.webserver.book.input;
+package com.example.readitapp.model.webserver.book.response;
 
 import java.io.Serializable;
 import java.util.List;
