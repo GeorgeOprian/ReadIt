@@ -1,0 +1,87 @@
+version: "3.7"
+
+services:
+
+  # api-gateway:
+    # container_name: api-gateway
+    # image: alexbnicolae/api-gateway
+    # build:
+    #   context: .
+    # ports:
+    #   - "8080:8080"
+    # links:
+    #   - email-service-app
+    #   - post-service-app
+    # networks:
+    #   - public
+    #   - infrastucture
+  
+  # post-service-app: #This is the name of our Nextjs application.
+  #   container_name: post-service-app
+  #   image: alexbnicolae/post-service-app
+  #   networks:
+  #     - public
+  #     - infrastucture
+  #   ports: #This is used to map the container’s ports to the host machine.
+  #     - "127.0.0.1:3000:3000"
+
+  postgres:
+    container_name: email-service-postgres
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - email-service-postgres-data:/data/postgres
+      - ./sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+    networks:
+      - infrastucture
+    env_file:
+      - env/EmailServicePostgres.env
+
+  rabbitmq:
+    hostname: 'email-service-rabbitmq'
+    container_name: email-service-rabbitmq
+    image: rabbitmq:3.9.11-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - type: bind
+        source: ./rabbitmq-enabled-plugins
+        target: /etc/rabbitmq/enabled_plugins
+      - type: bind
+        source: ./rabbitmq.config
+        target: /etc/rabbitmq/rabbitmq.config
+      - type: bind
+        source: ./rabbitmq-defs.json
+        target: /etc/rabbitmq/rabbitmq-defs.json
+
+  email-service-app:
+    # container_name: email-service-app
+    image: georgeoprian/email-service-app
+    ports:
+      - "127.0.0.1:8081:8080"
+    networks:
+      - public
+      - infrastucture
+    env_file:
+      - env/EmailServiceApp.env
+
+networks:
+  infrastucture:
+    name: infrastucture
+    driver: bridge
+  public:
+    name: public
+    driver: bridge
+
+volumes:
+  email-service-postgres-data:
+    name: email-service-postgres-data
+  email-service-rabbitmq-data:
+    name: email-service-rabbitmq-data
+  mongodb-data:
+    name: mondodb-data
+  
+
