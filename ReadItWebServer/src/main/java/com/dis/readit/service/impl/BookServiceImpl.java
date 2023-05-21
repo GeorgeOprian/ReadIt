@@ -4,7 +4,7 @@ import com.dis.readit.dtos.PageDto;
 import com.dis.readit.dtos.book.BookDto;
 import com.dis.readit.dtos.book.BookListDto;
 import com.dis.readit.dtos.book.CategoryDto;
-import com.dis.readit.exception.BookAlreadyExistsException;
+import com.dis.readit.exception.EntityAlreadyExistsException;
 import com.dis.readit.exception.EntityNotFound;
 import com.dis.readit.mapper.BookMapper;
 import com.dis.readit.mapper.CategoriesMapper;
@@ -53,7 +53,7 @@ public class BookServiceImpl implements BookService {
 		Optional<Book> bookOptional = bookRepository.findByIsbn(book.getIsbn());
 
 		if (bookOptional.isPresent()) {
-			throw new BookAlreadyExistsException("A book with the same ISBN already exists.");
+			throw new EntityAlreadyExistsException("A book with the same ISBN already exists.");
 		}
 
 		Book savedBook = saveBookDetails(request, book);

@@ -1,9 +1,6 @@
 package com.dis.readit.controller.advice;
 
-import com.dis.readit.exception.BookAlreadyExistsException;
-import com.dis.readit.exception.EntityNotFound;
-import com.dis.readit.exception.ErrorResponse;
-import com.dis.readit.exception.ExpiredSubscription;
+import com.dis.readit.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 
-	@ExceptionHandler(BookAlreadyExistsException.class)
+	@ExceptionHandler(EntityAlreadyExistsException.class)
 	public ResponseEntity<ErrorResponse> handleDupicateObject(Exception e) {
 		log.debug("Duplicate object... ");
 		return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -40,6 +37,17 @@ public class ExceptionControllerAdvice {
 	@ExceptionHandler(ExpiredSubscription.class)
 	public ResponseEntity<ErrorResponse> handleExpiredSubscription(Exception e) {
 		log.debug("Expired subscription ");
+		return ResponseEntity.status(HttpStatus.FORBIDDEN)
+				.body(ErrorResponse.builder()
+						.code(HttpStatus.FORBIDDEN.value())
+						.message(e.getMessage())
+						.build());
+	}
+
+
+	@ExceptionHandler(BookAlreadyRented.class)
+	public ResponseEntity<ErrorResponse> handleAlreadyRentedBook(Exception e) {
+		log.debug("Book already rented ");
 		return ResponseEntity.status(HttpStatus.FORBIDDEN)
 				.body(ErrorResponse.builder()
 						.code(HttpStatus.FORBIDDEN.value())

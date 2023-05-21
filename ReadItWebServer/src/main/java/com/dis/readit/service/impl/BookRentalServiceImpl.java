@@ -2,9 +2,11 @@ package com.dis.readit.service.impl;
 
 import com.dis.readit.dtos.book.BookRentRequestDto;
 import com.dis.readit.dtos.book.BookRentResponseDto;
+import com.dis.readit.exception.BookAlreadyRented;
 import com.dis.readit.exception.EntityNotFound;
 import com.dis.readit.mapper.BookMapper;
 import com.dis.readit.model.book.Book;
+import com.dis.readit.model.book.BookRental;
 import com.dis.readit.model.user.DataBaseUser;
 import com.dis.readit.repository.BookRepository;
 import com.dis.readit.repository.UserRepository;
@@ -47,6 +49,15 @@ public class BookRentalServiceImpl implements BookRentalService {
 		}
 
 		DataBaseUser user = userOptional.get();
+
+		Optional<BookRental> alreadyRentedBook = user.getBookRentals().stream()
+				.filter(rentedBook -> !rentedBook.isReturned()
+						&& rentedBook.getBook().getBookId().equals(book.getBookId()))
+				.findFirst();
+
+		if (alreadyRentedBook.isPresent()) {
+			throw new BookAlreadyRented("This book was already rented by the same user");
+		}
 
 		user.addRental(book, dto.getReturnDate());
 

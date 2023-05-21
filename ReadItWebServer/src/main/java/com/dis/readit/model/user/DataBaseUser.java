@@ -46,6 +46,8 @@ public class DataBaseUser {
 	private List<Subscription> subscriptions = new ArrayList<>();
 
 
+	public static final String ADMIN_USER_EMAIL = "readitapp.adm@gmail.com";
+
 	public void addRental(Book book, LocalDate returnDate) {
 		BookRental bookRental = new BookRental(book, this, returnDate);
 		bookRentals.add(bookRental);

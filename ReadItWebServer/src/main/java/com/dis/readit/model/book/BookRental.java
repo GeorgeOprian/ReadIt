@@ -32,6 +32,13 @@ public class BookRental {
 	@Column(name = "return_date")
 	private LocalDate returnDate;
 
+	@Column(name = "returned")
+	private boolean returned;
+
+	public boolean isReturned() {
+		return returned;
+	}
+
 	public BookRental(Book book, DataBaseUser user, LocalDate returnDate) {
 		this.book = book;
 		this.user = user;
