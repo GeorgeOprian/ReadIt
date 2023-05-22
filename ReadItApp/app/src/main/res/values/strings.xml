@@ -21,6 +21,4 @@
     <string name="my_books">My books</string>
     <string name="rating">Rating</string>
     <string name="rent">Rent</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

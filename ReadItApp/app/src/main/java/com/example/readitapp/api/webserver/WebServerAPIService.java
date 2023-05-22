@@ -1,5 +1,6 @@
 package com.example.readitapp.api.webserver;
 
+import com.example.readitapp.model.webserver.SubscriptionDto;
 import com.example.readitapp.model.webserver.book.request.BookRentRequestDto;
 import com.example.readitapp.model.webserver.book.response.BookRentResponseDto;
 import com.example.readitapp.model.webserver.book.response.BookDto;
@@ -42,4 +43,7 @@ public interface WebServerAPIService {
 
     @POST("/bookrental/rent")
     Call<BookRentResponseDto> createSubscription(@Body BookRentRequestDto dto);
+
+    @GET("/subscriptions/checkavailability")
+    Call<SubscriptionDto> getAvailability(@Query("email") String email);
 }
