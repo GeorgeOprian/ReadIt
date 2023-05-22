@@ -18,12 +18,12 @@ public class BookListDto implements Serializable {
 	@JsonProperty("title")
 	private String title;
 
-	@JsonProperty( "author")
+	@JsonProperty("author")
 	private String author;
 
-	@JsonProperty( "averageRating")
+	@JsonProperty("averageRating")
 	private Double averageRating;
-	@JsonProperty( "ratingsCount")
+	@JsonProperty("ratingsCount")
 	private Integer ratingsCount;
 
 	@JsonProperty("thumbnail")

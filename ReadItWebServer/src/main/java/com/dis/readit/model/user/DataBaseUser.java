@@ -1,5 +1,7 @@
 package com.dis.readit.model.user;
 
+import com.dis.readit.model.address.Adresa;
+import com.dis.readit.model.address.Localitate;
 import com.dis.readit.model.book.Book;
 import com.dis.readit.model.book.BookRental;
 import com.dis.readit.model.subscription.Subscription;
@@ -15,6 +17,7 @@ import java.util.List;
 @Entity(name = "User")
 @Table(name = "read_it_user")
 public class DataBaseUser {
+	public static final String ADMIN_USER_EMAIL = "readitapp.adm@gmail.com";
 
 	@Id
 	@Column(name = "user_id")
@@ -46,7 +49,10 @@ public class DataBaseUser {
 	private List<Subscription> subscriptions = new ArrayList<>();
 
 
-	public static final String ADMIN_USER_EMAIL = "readitapp.adm@gmail.com";
+	@OneToOne
+	@JoinColumn(name = "id_adresa", foreignKey = @ForeignKey(name = "FK_USER_ADDRESS"))
+	private Adresa adresa;
+
 
 	public void addRental(Book book, LocalDate returnDate) {
 		BookRental bookRental = new BookRental(book, this, returnDate);

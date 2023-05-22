@@ -1,5 +1,6 @@
 package com.dis.readit.dtos.users;
 
+import com.dis.readit.dtos.address.AddressDto;
 import com.dis.readit.dtos.users.UserCreateDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -12,5 +13,8 @@ public class UserDto extends UserCreateDto {
 
 	@JsonProperty("userId")
 	private Integer userId;
+
+	@JsonProperty("address")
+	private AddressDto addressDto;
 
 }

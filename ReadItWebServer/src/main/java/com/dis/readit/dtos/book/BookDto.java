@@ -6,26 +6,26 @@ import lombok.Data;
 @Data
 public class BookDto extends BookListDto {
 
-	@JsonProperty( "publisher")
+	@JsonProperty("publisher")
 	private String publisher;
 
-	@JsonProperty( "publishedDate")
+	@JsonProperty("publishedDate")
 	private String publishedDate;
-	@JsonProperty( "description")
+	@JsonProperty("description")
 	private String description;
 
-	@JsonProperty( "isbn")
+	@JsonProperty("isbn")
 	private String isbn; //industryIdentifiers[0]
-	@JsonProperty( "pageCount")
+	@JsonProperty("pageCount")
 	private Integer pageCount;
 
-	@JsonProperty( "maturityRating")
+	@JsonProperty("maturityRating")
 	private String maturityRating;
 
-	@JsonProperty( "language")
+	@JsonProperty("language")
 	private String language;
 
-	@JsonProperty( "inStock")
+	@JsonProperty("inStock")
 	private Integer inStock;
 
 }
