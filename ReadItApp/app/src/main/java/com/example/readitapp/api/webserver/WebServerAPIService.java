@@ -46,4 +46,7 @@ public interface WebServerAPIService {
 
     @GET("/subscriptions/checkavailability")
     Call<SubscriptionDto> getAvailability(@Query("email") String email);
+
+    @POST("/subscriptions/add")
+    Call<SubscriptionDto> createSubscription(@Body SubscriptionDto subscriptionDto);
 }

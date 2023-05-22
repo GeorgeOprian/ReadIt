@@ -47,6 +47,14 @@
                 android:layout_below="@+id/status"
                 android:textSize="20sp" />
 
+            <Button
+                android:id="@+id/googlePayButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/status_value"
+                android:layout_centerInParent="true"
+                android:text="Pay" />
+
         </RelativeLayout>
 
     </ScrollView>
