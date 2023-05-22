@@ -1,10 +1,11 @@
 package com.example.readitapp.api.webserver;
 
-import com.example.readitapp.model.webserver.book.input.BookDto;
-import com.example.readitapp.model.webserver.book.input.BookListDto;
-import com.example.readitapp.model.webserver.book.output.OutputBookModel;
-import com.example.readitapp.model.webserver.book.input.PageDto;
-import com.example.readitapp.model.webserver.user.input.UserCreateDto;
+import com.example.readitapp.model.webserver.SubscriptionDto;
+import com.example.readitapp.model.webserver.book.request.BookRentRequestDto;
+import com.example.readitapp.model.webserver.book.response.BookRentResponseDto;
+import com.example.readitapp.model.webserver.book.response.BookDto;
+import com.example.readitapp.model.webserver.book.response.BookListDto;
+import com.example.readitapp.model.webserver.book.response.PageDto;
 import com.example.readitapp.model.webserver.user.output.UserDto;
 
 import java.util.Map;
@@ -15,7 +16,6 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -40,4 +40,13 @@ public interface WebServerAPIService {
 
     @PATCH("/books/updatebook/{bookId}")
     Call<BookDto> updateBook(@Path("bookId") Integer bookId, @Body Map<String, Object> book);
+
+    @POST("/bookrental/rent")
+    Call<BookRentResponseDto> createSubscription(@Body BookRentRequestDto dto);
+
+    @GET("/subscriptions/checkavailability")
+    Call<SubscriptionDto> getAvailability(@Query("email") String email);
+
+    @POST("/subscriptions/add")
+    Call<SubscriptionDto> createSubscription(@Body SubscriptionDto subscriptionDto);
 }

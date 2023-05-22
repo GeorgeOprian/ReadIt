@@ -21,14 +21,13 @@ import com.example.readitapp.model.googlebooks.ImageLinks;
 import com.example.readitapp.model.googlebooks.Item;
 import com.example.readitapp.model.googlebooks.VolumeInfo;
 import com.example.readitapp.model.googlebooks.VolumesResponse;
-import com.example.readitapp.model.webserver.book.input.BookDto;
-import com.example.readitapp.model.webserver.book.input.CategoryDto;
-import com.example.readitapp.model.webserver.book.input.ThumbnailDto;
-import com.example.readitapp.model.webserver.book.output.OutputBookModel;
+import com.example.readitapp.model.webserver.book.response.BookDto;
+import com.example.readitapp.model.webserver.book.response.CategoryDto;
+import com.example.readitapp.model.webserver.book.response.ThumbnailDto;
+import com.example.readitapp.model.webserver.book.request.OutputBookModel;
 import com.example.readitapp.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

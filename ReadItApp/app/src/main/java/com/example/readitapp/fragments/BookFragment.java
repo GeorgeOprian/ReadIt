@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.readitapp.R;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
-import com.example.readitapp.model.webserver.book.input.BookDto;
+import com.example.readitapp.model.webserver.book.response.BookDto;
 import com.example.readitapp.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
