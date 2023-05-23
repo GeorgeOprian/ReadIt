@@ -15,6 +15,7 @@ import com.dis.readit.service.UserLoaderService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -67,7 +68,11 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 		saveRental(book, user);
 
-		return new BookRentResponseDto(dto.getReturnDate(), bookMapper.mapToDto(book));
+		Optional<BookRental> bookRentedOpt = user.getBookRentals().stream().filter(bookRental -> Objects.equals(bookRental.getBook().getBookId(), book.getBookId())).findFirst();
+
+		int rentedBookId = bookRentedOpt.isPresent() ? bookRentedOpt.get().getRentId(): 0;
+
+		return new BookRentResponseDto(rentedBookId, dto.getReturnDate(), bookMapper.mapToDto(book));
 	}
 
 	@Transactional void saveRental(Book book, DataBaseUser user) {

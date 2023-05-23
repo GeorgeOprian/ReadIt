@@ -12,6 +12,9 @@ import java.time.LocalDate;
 @AllArgsConstructor @NoArgsConstructor
 public class BookRentResponseDto implements Serializable {
 
+	@JsonProperty("rentId")
+	private Integer rentId;
+
 	@JsonProperty("returnDate")
 	private LocalDate returnDate;
 

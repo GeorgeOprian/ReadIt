@@ -22,10 +22,10 @@ public class RentingController {
 		return ResponseEntity.ok(service.rentBook(dto));
 	}
 
-
 	// TODO gop 04.04.2023: return a book
 
 	// TODO gop 23.05.2023: get user rentals
-
+//	@GetMapping("/getall")
+//	public ResponseEntity<List>
 
 }
