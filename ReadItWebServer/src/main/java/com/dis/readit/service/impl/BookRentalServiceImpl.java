@@ -11,6 +11,7 @@ import com.dis.readit.model.user.DataBaseUser;
 import com.dis.readit.repository.BookRepository;
 import com.dis.readit.repository.UserRepository;
 import com.dis.readit.service.BookRentalService;
+import com.dis.readit.service.UserLoaderService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,10 +26,13 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 	private final BookMapper bookMapper;
 
-	public BookRentalServiceImpl(BookRepository bookRepository, UserRepository userRepository, BookMapper bookMapper) {
+	private final UserLoaderService userLoaderService;
+
+	public BookRentalServiceImpl(BookRepository bookRepository, UserRepository userRepository, BookMapper bookMapper, UserLoaderService userLoaderService) {
 		this.bookRepository = bookRepository;
 		this.userRepository = userRepository;
 		this.bookMapper = bookMapper;
+		this.userLoaderService = userLoaderService;
 	}
 
 	@Override
@@ -38,9 +42,7 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 		bookOpt.orElseThrow(() -> new EntityNotFound("Book with id " + dto.getBookId() + " was not found"));
 
-		Optional<DataBaseUser> userOptional = userRepository.findUserByEmail(dto.getUserEmail());
 
-		userOptional.orElseThrow(() -> new EntityNotFound("User with email " + dto.getUserEmail() + " was not found"));
 
 		Book book = bookOpt.get();
 
@@ -48,7 +50,7 @@ public class BookRentalServiceImpl implements BookRentalService {
 			throw new EntityNotFound("There are no volumes available in stock for this book. Sorry to inform you.");
 		}
 
-		DataBaseUser user = userOptional.get();
+		DataBaseUser user = userLoaderService.getUserByEmail(dto.getUserEmail());
 
 		Optional<BookRental> alreadyRentedBook = user.getBookRentals().stream()
 				.filter(rentedBook -> !rentedBook.isReturned()

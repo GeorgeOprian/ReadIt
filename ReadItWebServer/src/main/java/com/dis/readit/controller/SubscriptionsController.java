@@ -23,4 +23,6 @@ public class SubscriptionsController {
 		return ResponseEntity.ok(service.checkAvailability(email));
 	}
 
+	// TODO gop 23.05.2023: get current subscription
+
 }

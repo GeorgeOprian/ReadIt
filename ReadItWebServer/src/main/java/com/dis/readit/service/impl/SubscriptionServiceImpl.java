@@ -1,15 +1,14 @@
 package com.dis.readit.service.impl;
 
 import com.dis.readit.dtos.SubscriptionDto;
-import com.dis.readit.exception.EntityNotFound;
 import com.dis.readit.exception.ExpiredSubscription;
 import com.dis.readit.model.subscription.Subscription;
 import com.dis.readit.model.user.DataBaseUser;
 import com.dis.readit.rabbitmq.RabbitMQMessageProducer;
 import com.dis.readit.rabbitmq.requests.EmailRequest;
 import com.dis.readit.repository.SubscriptionRepository;
-import com.dis.readit.repository.UserRepository;
 import com.dis.readit.service.SubscriptionService;
+import com.dis.readit.service.UserLoaderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +18,10 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
-
-	private final UserRepository userRepository;
 
 	private final SubscriptionRepository subscriptionRepository;
 
@@ -33,17 +29,20 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	private final ObjectMapper objectMapper;
 
-	public SubscriptionServiceImpl(UserRepository userRepository, SubscriptionRepository subscriptionRepository, RabbitMQMessageProducer messageProducer, ObjectMapper objectMapper) {
-		this.userRepository = userRepository;
+	private final UserLoaderService userLoaderService;
+
+	public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, RabbitMQMessageProducer messageProducer, ObjectMapper objectMapper,
+			UserLoaderService userLoaderService) {
 		this.subscriptionRepository = subscriptionRepository;
 		this.messageProducer = messageProducer;
 		this.objectMapper = objectMapper;
+		this.userLoaderService = userLoaderService;
 	}
 
 	@Override
 	public SubscriptionDto createSubscription(SubscriptionDto dto) {
 
-		DataBaseUser user =  getUserFromDb(dto.getUserEmail());
+		DataBaseUser user =  userLoaderService.getUserByEmail(dto.getUserEmail());
 
 		Subscription bo = new Subscription();
 		bo.setStartDate(dto.getStartDate());
@@ -60,8 +59,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	}
 
 	private void sendEmailToUser(DataBaseUser recipient, String subject, String emailBody) {
-
-		DataBaseUser adminUser = getUserFromDb(DataBaseUser.ADMIN_USER_EMAIL);
+		DataBaseUser adminUser =  userLoaderService.getUserByEmail(DataBaseUser.ADMIN_USER_EMAIL);
 
 		EmailRequest emailRequest = EmailRequest.createEmailForUser(adminUser.getUserId(), Arrays.asList(recipient.getUserId()), subject, emailBody);
 		try {
@@ -70,13 +68,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 			log.error(e.getMessage());
 
 		}
-	}
-
-	private DataBaseUser getUserFromDb(String email) {
-		Optional<DataBaseUser> userOptional = userRepository.findUserByEmail(email);
-
-		userOptional.orElseThrow(() -> new EntityNotFound("User with email " + email + " was not found"));
-		return userOptional.get ();
 	}
 
 	private static SubscriptionDto createSubscriptionDto(DataBaseUser user, Subscription savedSubscription) {
@@ -91,8 +82,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	@Override
 	public SubscriptionDto checkAvailability(String email) {
-
-		DataBaseUser user = getUserFromDb(email);
+		DataBaseUser user =  userLoaderService.getUserByEmail(email);
 
 		LocalDate today = LocalDate.now();
 

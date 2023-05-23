@@ -1,20 +1,18 @@
 package com.dis.readit.controller;
 
 import com.dis.readit.dtos.users.UserCreateDto;
-import com.dis.readit.service.UserService;
+import com.dis.readit.dtos.users.UserDto;
+import com.dis.readit.service.UserPersistenceService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-	private final UserService service;
+	private final UserPersistenceService service;
 
-	public UserController(UserService service) {
+	public UserController(UserPersistenceService service) {
 		this.service = service;
 	}
 
@@ -22,6 +20,11 @@ public class UserController {
 	public ResponseEntity<UserCreateDto> addUser(@RequestBody UserCreateDto userDto) {
 
 		return ResponseEntity.ok(service.addUser(userDto));
+	}
+
+	@GetMapping("/details")
+	public ResponseEntity<UserDto> getUserDetails(@RequestParam(name = "email") String email) {
+		return ResponseEntity.ok(service.getUserDetails(email));
 	}
 
 }

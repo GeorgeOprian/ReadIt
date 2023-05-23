@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class AddressFullDto extends AddressDto {
+public class AddressFullDto {
+	@JsonProperty("adresa")
+	private AddressDto address;
 
 	@JsonProperty("localitate")
-	private String localitate;
+	private LocalitateDto localitate;
 
 	@JsonProperty("judet")
-	private String judet;
+	private JudetDto judet;
 
 }

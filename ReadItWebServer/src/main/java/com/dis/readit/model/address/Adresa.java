@@ -12,7 +12,6 @@ public class Adresa {
 
 	@Id
 	@Column(name = "id_adresa")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ADRESA_SEQ")
 	private Integer idAdresa;
 
 	@Column(name = "strada")
