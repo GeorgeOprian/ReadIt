@@ -72,23 +72,75 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/judet"
+            <TextView
+                android:id="@+id/judet_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/btn_dropdown"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginRight="5dp"
+                android:autoSizeMaxTextSize="24dp"
+                android:autoSizeMinTextSize="16dp"
+                android:autoSizeTextType="uniform"
+                android:text="Judet"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_below="@+id/textInputLayoutEmail"
-                android:padding="10dp"
-                android:spinnerMode="dropdown"/>
+                app:layout_constraintVertical_bias="0.114" />
 
-            <Spinner
-                android:id="@+id/localitate"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/judet"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:drawable/btn_dropdown"
-                android:layout_below="@+id/judet"
+                android:layout_marginRight="5dp"
                 android:padding="10dp"
-                android:spinnerMode="dropdown"/>
+                android:layout_below="@+id/judet_text"
+                android:hint="">
+
+                <AutoCompleteTextView
+                    android:id="@+id/judete_auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/localitate_text"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginRight="5dp"
+                android:autoSizeMaxTextSize="24dp"
+                android:autoSizeMinTextSize="16dp"
+                android:autoSizeTextType="uniform"
+                android:text="Localitate"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_below="@+id/judet"
+                app:layout_constraintVertical_bias="0.114" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/localitate"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:padding="10dp"
+                android:layout_below="@+id/localitate_text"
+                android:hint="">
+
+                <AutoCompleteTextView
+                    android:id="@+id/localitate_auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutAddress"
@@ -111,12 +163,95 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutNr"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textInputLayoutAddress"
+                android:hint="Nr"
+                android:padding="10dp"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextNr"
+                    android:layout_width="match_parent"
+                    android:layout_height="59dp"
+                    android:fontFamily="serif"
+                    android:inputType="number"
+                    android:text=" "
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutBloc"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textInputLayoutNr"
+                android:hint="Bloc"
+                android:padding="10dp"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextBloc"
+                    android:layout_width="match_parent"
+                    android:layout_height="59dp"
+                    android:fontFamily="serif"
+                    android:text=" "
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutScara"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textInputLayoutBloc"
+                android:hint="Scara"
+                android:padding="10dp"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextScara"
+                    android:layout_width="match_parent"
+                    android:layout_height="59dp"
+                    android:fontFamily="serif"
+                    android:text=" "
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutAp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textInputLayoutScara"
+                android:hint="Ap"
+                android:padding="10dp"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextAp"
+                    android:layout_width="match_parent"
+                    android:layout_height="59dp"
+                    android:fontFamily="serif"
+                    android:inputType="number"
+                    android:text=" "
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <Button
                 android:id="@+id/save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textInputLayoutAddress"
+                android:layout_below="@+id/textInputLayoutAp"
                 android:layout_centerInParent="true"
+                android:layout_marginBottom="70dp"
                 android:text="@string/save" />
 
         </RelativeLayout>

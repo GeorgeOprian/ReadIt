@@ -1,6 +1,9 @@
 package com.example.readitapp.api.webserver;
 
+import com.example.readitapp.model.webserver.LocalitateDto;
+import com.example.readitapp.model.webserver.JudetDto;
 import com.example.readitapp.model.webserver.SubscriptionDto;
+import com.example.readitapp.model.webserver.UserAddressInputDto;
 import com.example.readitapp.model.webserver.book.request.BookRentRequestDto;
 import com.example.readitapp.model.webserver.book.response.BookRentResponseDto;
 import com.example.readitapp.model.webserver.book.response.BookDto;
@@ -8,6 +11,7 @@ import com.example.readitapp.model.webserver.book.response.BookListDto;
 import com.example.readitapp.model.webserver.book.response.PageDto;
 import com.example.readitapp.model.webserver.user.output.UserDto;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -44,9 +48,21 @@ public interface WebServerAPIService {
     @POST("/bookrental/rent")
     Call<BookRentResponseDto> createSubscription(@Body BookRentRequestDto dto);
 
-    @GET("/subscriptions/checkavailability")
+    @GET("/subscriptions/currentsubscription")
     Call<SubscriptionDto> getAvailability(@Query("email") String email);
 
     @POST("/subscriptions/add")
     Call<SubscriptionDto> createSubscription(@Body SubscriptionDto subscriptionDto);
+
+    @GET("/addresses/judete")
+    Call<List<JudetDto>> getJudete();
+
+    @GET("/addresses/localitati")
+    Call<List<LocalitateDto>> getLocalitati();
+
+    @POST("/addresses/address")
+    Call<UserDto> addAddress(@Body UserAddressInputDto userAddressInputDto);
+
+    @GET("/users/details")
+    Call<UserDto> getUserDetails(@Query("email") String email);
 }
