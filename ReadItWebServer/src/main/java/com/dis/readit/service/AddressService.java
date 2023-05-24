@@ -14,4 +14,6 @@ public interface AddressService {
 	List<LocalitateDto> getLocalitati();
 
 	UserDto addAddress(UserAddressInputDto userAddress);
+
+	UserDto replaceAddress(UserAddressInputDto userAddres);
 }

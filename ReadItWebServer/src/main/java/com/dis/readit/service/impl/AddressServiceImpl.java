@@ -102,4 +102,24 @@ public class AddressServiceImpl implements AddressService {
 		localitateOptional.orElseThrow(() -> new EntityNotFound("City with id" + idLocalitate  + " was not found"));
 		return localitateOptional.get ();
 	}
+
+
+
+
+	@Override
+	@Transactional
+	public UserDto replaceAddress(UserAddressInputDto userAddress) {
+
+		DataBaseUser user = userLoaderService.getUserByEmail(userAddress.getUserEmail());
+
+		Adresa initialAddress = user.getAdresa();
+
+		Adresa addressToSave = createAddressFromDto(userAddress);
+
+		DataBaseUser userToReturn = saveAddressAndUser(addressToSave, user);
+
+		addressRepository.delete(initialAddress);
+
+		return userLoaderService.mapUserToDto(userToReturn);
+	}
 }

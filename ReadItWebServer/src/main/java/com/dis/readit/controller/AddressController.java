@@ -1,5 +1,6 @@
 package com.dis.readit.controller;
 
+import com.dis.readit.dtos.address.AddressFullDto;
 import com.dis.readit.dtos.address.JudetDto;
 import com.dis.readit.dtos.address.LocalitateDto;
 import com.dis.readit.dtos.address.UserAddressInputDto;
@@ -32,6 +33,13 @@ public class AddressController {
 	public ResponseEntity<UserDto> addAddress(@RequestBody UserAddressInputDto userAddress) {
 		return ResponseEntity.ok(service.addAddress(userAddress));
 	}
+
+	@PutMapping("/address")
+	public ResponseEntity<UserDto> replaceAddress(@RequestBody UserAddressInputDto userAddress) {
+		return ResponseEntity.ok(service.replaceAddress(userAddress));
+	}
+
+
 
 	// TODO gop 22.05.2023: add put endpoint
 
