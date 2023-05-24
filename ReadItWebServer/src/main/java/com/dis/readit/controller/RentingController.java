@@ -1,14 +1,14 @@
 package com.dis.readit.controller;
 
+import com.dis.readit.dtos.book.BookDto;
 import com.dis.readit.dtos.book.BookRentRequestDto;
 import com.dis.readit.dtos.book.BookRentResponseDto;
 import com.dis.readit.service.BookRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/bookrental")
@@ -16,16 +16,24 @@ public class RentingController {
 	@Autowired
 	private BookRentalService service;
 
-
 	@PostMapping("/rent")
 	public ResponseEntity<BookRentResponseDto> createSubscription(@RequestBody BookRentRequestDto dto) {
 		return ResponseEntity.ok(service.rentBook(dto));
 	}
 
-	// TODO gop 04.04.2023: return a book
+	@PostMapping("/return")
+	public ResponseEntity<BookDto> returnABook(@RequestParam(name = "rentId") Integer rentId) {
+		return ResponseEntity.ok(service.returnBook(rentId));
+	}
 
-	// TODO gop 23.05.2023: get user rentals
-//	@GetMapping("/getall")
-//	public ResponseEntity<List>
+	@GetMapping("/notreturnedbooks")
+	public ResponseEntity<List<BookRentResponseDto>> loadNotReturnedBooks(@RequestParam(name = "email") String email) {
+		return ResponseEntity.ok(service.loadRentedBooks(email, false));
+	}
+
+	@GetMapping("/returnedbooks")
+	public ResponseEntity<List<BookRentResponseDto>> loadReturnedBooks(@RequestParam(name = "email") String email) {
+		return ResponseEntity.ok(service.loadRentedBooks(email, true));
+	}
 
 }

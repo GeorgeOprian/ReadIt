@@ -54,4 +54,14 @@ public class ExceptionControllerAdvice {
 						.message(e.getMessage())
 						.build());
 	}
+
+	@ExceptionHandler(BookAlreadyReturned.class)
+	public ResponseEntity<ErrorResponse> handleAlreadyReturnedBook(Exception e) {
+		log.debug("Book already returned ");
+		return ResponseEntity.status(HttpStatus.FORBIDDEN)
+				.body(ErrorResponse.builder()
+						.code(HttpStatus.FORBIDDEN.value())
+						.message(e.getMessage())
+						.build());
+	}
 }

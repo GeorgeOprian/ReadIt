@@ -18,6 +18,9 @@ public class BookRentResponseDto implements Serializable {
 	@JsonProperty("returnDate")
 	private LocalDate returnDate;
 
+	@JsonProperty("returned")
+	private Boolean returned;
+
 	@JsonProperty("rentedBook")
 	private BookDto book;
 
