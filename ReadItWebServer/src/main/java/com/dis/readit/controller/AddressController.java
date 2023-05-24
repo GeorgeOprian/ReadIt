@@ -39,9 +39,4 @@ public class AddressController {
 		return ResponseEntity.ok(service.replaceAddress(userAddress));
 	}
 
-
-
-	// TODO gop 22.05.2023: add put endpoint
-
-
 }
