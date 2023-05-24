@@ -18,11 +18,9 @@ public class SubscriptionsController {
 		return ResponseEntity.ok(service.createSubscription(dto));
 	}
 
-	@GetMapping("/checkavailability")
+	@GetMapping("/currentsubscription")
 	public ResponseEntity<SubscriptionDto> getAvailability(@RequestParam(name = "email") String email) {
 		return ResponseEntity.ok(service.checkAvailability(email));
 	}
-
-	// TODO gop 23.05.2023: get current subscription
 
 }
