@@ -50,30 +50,31 @@ public class UserLoaderServiceImpl implements UserLoaderService {
 	public static AddressFullDto createAddressFullDto(Adresa adresa) {
 
 		AddressDto adresaDto = new AddressDto();
-		adresaDto.setIdAdresa(adresa.getIdAdresa());
-		adresaDto.setStrada(adresa.getStrada());
-		adresaDto.setNumar(adresa.getNumar());
-		adresaDto.setBloc(adresa.getBloc());
-		adresaDto.setScara(adresa.getScara());
-		adresaDto.setNumarApartament(adresa.getNumarApartament());
-
-		AddressFullDto fullDto = new AddressFullDto();
-		fullDto.setAddress(adresaDto);
-
-		Localitate localitate = adresa.getLocalitate();
-		Judet judet = localitate.getJudet();
-
 		LocalitateDto localitateDto = new LocalitateDto();
-		localitateDto.setIdLocalitate(localitate.getIdLocalitate());
-		localitateDto.setNume(localitate.getNume());
-		localitateDto.setIdJudet(judet.getIdJudet());
-
-		fullDto.setLocalitate(localitateDto);
-
+		AddressFullDto fullDto = new AddressFullDto();
 		JudetDto judetDto = new JudetDto();
-		judetDto.setIdJudet(judet.getIdJudet());
-		judetDto.setNume(judet.getNume());
 
+		if (adresa != null) {
+			adresaDto.setIdAdresa(adresa.getIdAdresa());
+			adresaDto.setStrada(adresa.getStrada());
+			adresaDto.setNumar(adresa.getNumar());
+			adresaDto.setBloc(adresa.getBloc());
+			adresaDto.setScara(adresa.getScara());
+			adresaDto.setNumarApartament(adresa.getNumarApartament());
+
+			Localitate localitate = adresa.getLocalitate();
+			Judet judet = localitate.getJudet();
+
+			localitateDto.setIdLocalitate(localitate.getIdLocalitate());
+			localitateDto.setNume(localitate.getNume());
+			localitateDto.setIdJudet(judet.getIdJudet());
+
+			judetDto.setIdJudet(judet.getIdJudet());
+			judetDto.setNume(judet.getNume());
+		}
+
+		fullDto.setAddress(adresaDto);
+		fullDto.setLocalitate(localitateDto);
 		fullDto.setJudet(judetDto);
 
 		return fullDto;

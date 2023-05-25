@@ -13,7 +13,9 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.readitapp.R;
+import com.example.readitapp.activities.MainActivity;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
+import com.example.readitapp.model.webserver.AddressFullDto;
 import com.example.readitapp.model.webserver.JudetDto;
 import com.example.readitapp.model.webserver.LocalitateDto;
 import com.example.readitapp.model.webserver.UserAddressInputDto;
@@ -48,6 +50,7 @@ public class ProfileFragment extends Fragment {
     private TextInputEditText ap;
     private Button save;
     private ArrayAdapter<LocalitateDto> adapterLocalitati;
+    private ArrayAdapter<JudetDto> adapterJudete;
     private LocalitateDto selectedValue;
 
     @Override
@@ -56,6 +59,8 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         initView();
+        getJudete();
+        getLocalitati();
         fillControls();
 
         save.setOnClickListener(view -> addAddress());
@@ -81,14 +86,24 @@ public class ProfileFragment extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         nume.setText(user.getDisplayName());
         email.setText(user.getEmail());
-        fillJudete();
-        fillLocalitati();
         ((AutoCompleteTextView)localitateLayout.getEditText()).setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 selectedValue = adapterLocalitati.getItem(position);
             }
         });
+        AddressFullDto addressDto = Utils.currentUser.getAddressDto();
+        if (addressDto != null && addressDto.getAddress() != null) {
+            strada.setText(addressDto.getAddress().getStrada());
+            if(addressDto.getAddress().getNumar() != null) {
+                nr.setText(addressDto.getAddress().getNumar().toString());
+            }
+            bloc.setText(addressDto.getAddress().getBloc());
+            scara.setText(addressDto.getAddress().getScara());
+            if (addressDto.getAddress().getNumarApartament() != null) {
+                ap.setText(addressDto.getAddress().getNumarApartament().toString());
+            }
+        }
     }
 
     private void getJudete() {
@@ -98,9 +113,28 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<List<JudetDto>> call, retrofit2.Response<List<JudetDto>> response) {
                 if (response.isSuccessful()) {
+                    judeteList.clear();
                     List<JudetDto> lista = response.body();
                     for (JudetDto judetDto : lista) {
                         judeteList.add(judetDto);
+                    }
+                    fillJudete();
+                    if(Utils.currentUser.getAddressDto() != null) {
+                        if(Utils.currentUser.getAddressDto().getJudet().getIdJudet() != null) {
+                            // Check if the index is within the bounds of the adapter's data
+                            int index = Utils.currentUser.getAddressDto().getJudet().getIdJudet().intValue() - 1;
+                            if (index >= 0 && index < adapterJudete.getCount()) {
+                                // Retrieve the item from the adapter using the index
+                                JudetDto item = adapterJudete.getItem(index);
+                                if (item != null) {
+                                    // Get the position of the item in the adapter
+                                    int position = adapterJudete.getPosition(item);
+                                    String selectedItem = adapterJudete.getItem(position).getNume();
+                                    // Set the selection programmatically
+                                    judete.setText(selectedItem, false);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -113,11 +147,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void fillJudete() {
-        getJudete();
-        ArrayAdapter<JudetDto> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, judeteList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        judete.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        adapterJudete = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, judeteList);
+        adapterJudete.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        judete.setAdapter(adapterJudete);
+        adapterJudete.notifyDataSetChanged();
     }
 
     private void getLocalitati() {
@@ -127,22 +160,40 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<List<LocalitateDto>> call, retrofit2.Response<List<LocalitateDto>> response) {
                 if (response.isSuccessful()) {
+                    localitatiList.clear();
                     List<LocalitateDto> lista = response.body();
                     for (LocalitateDto localitateDto : lista) {
                         localitatiList.add(localitateDto);
+                    }
+                    fillLocalitati();
+                    // Check if the index is within the bounds of the adapter's data
+                    if(Utils.currentUser.getAddressDto() != null) {
+                        if (Utils.currentUser.getAddressDto().getLocalitate().getIdLocalitate() != null) {
+                            int index = Utils.currentUser.getAddressDto().getLocalitate().getIdLocalitate().intValue() - 1;
+                            if (index >= 0 && index < adapterLocalitati.getCount()) {
+                                // Retrieve the item from the adapter using the index
+                                LocalitateDto item = adapterLocalitati.getItem(index);
+                                if (item != null) {
+                                    // Get the position of the item in the adapter
+                                    int position = adapterLocalitati.getPosition(item);
+                                    String selectedItem = adapterLocalitati.getItem(position).getNume();
+                                    // Set the selection programmatically
+                                    localitate.setText(selectedItem, false);
+                                }
+                            }
+                        }
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<List<LocalitateDto>> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void fillLocalitati() {
-        getLocalitati();
         adapterLocalitati = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, localitatiList);
         adapterLocalitati.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         localitate.setAdapter(adapterLocalitati);
@@ -168,6 +219,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<UserDto> call, retrofit2.Response<UserDto> response) {
                 if (response.isSuccessful()) {
+                    Utils.currentUser.setAddressDto(response.body().getAddressDto());
                     Utils.hideKeyboard(ProfileFragment.this);
                     Toast.makeText(getContext(), "Saved", Toast.LENGTH_LONG).show();
                 }

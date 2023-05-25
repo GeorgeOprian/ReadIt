@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.readitapp.R;
+import com.example.readitapp.activities.MainActivity;
 import com.example.readitapp.api.googlebooks.GoogleBooksAPIBuilder;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.googlebooks.VolumesResponse;
@@ -71,7 +72,7 @@ public class BookDetailsFragment extends Fragment {
             return;
         }
 
-        if (false) { //validare pe adresa
+        if (Utils.currentUser.getAddressDto() == null) {
             Toast.makeText(getContext(), "Fill the address", Toast.LENGTH_LONG).show();
             return;
         }

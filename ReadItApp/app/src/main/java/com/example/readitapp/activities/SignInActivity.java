@@ -11,6 +11,7 @@ import com.example.readitapp.R;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.webserver.user.output.UserDto;
 import com.example.readitapp.utils.FirebaseConstants;
+import com.example.readitapp.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -97,6 +98,7 @@ public class SignInActivity extends AppCompatActivity {
                         Log.d("SignInActivity", "signInWithCredential:success");
 
                         addUserToServer();
+                        Utils.getUserDetails();
 
                         Intent intentMain = new Intent(SignInActivity.this, MainActivity.class);
                         startActivity(intentMain);

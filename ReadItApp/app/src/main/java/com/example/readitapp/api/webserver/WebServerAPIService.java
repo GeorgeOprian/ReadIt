@@ -65,4 +65,10 @@ public interface WebServerAPIService {
 
     @GET("/users/details")
     Call<UserDto> getUserDetails(@Query("email") String email);
+
+    @POST("/bookrental/return")
+    Call<BookDto> returnBook(@Query("rentId") Integer rentId);
+
+    @GET("/bookrental/notreturnedbooks")
+    Call<List<BookRentResponseDto>> loadNotReturnedBooks(@Query("email") String email);
 }

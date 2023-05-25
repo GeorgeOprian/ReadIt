@@ -13,6 +13,14 @@ public class BookRentResponseDto {
     @Expose
     private BookDto book;
 
+    @SerializedName("rentId")
+    @Expose
+    private Integer rentId;
+
+    @SerializedName("returned")
+    @Expose
+    private Boolean returned;
+
     public String getReturnDate() {
         return returnDate;
     }

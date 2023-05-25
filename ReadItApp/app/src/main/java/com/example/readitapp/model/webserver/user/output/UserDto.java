@@ -22,4 +22,12 @@ public class UserDto extends UserCreateDto {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
+
+    public AddressFullDto getAddressDto() {
+        return addressDto;
+    }
+
+    public void setAddressDto(AddressFullDto addressDto) {
+        this.addressDto = addressDto;
+    }
 }
