@@ -2,34 +2,41 @@ package com.example.readitapp.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.readitapp.R;
+import com.example.readitapp.adapters.MyBooksAdapter;
+import com.example.readitapp.adapters.OnMyBooksCLickListener;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
-import com.example.readitapp.model.webserver.book.response.BookListDto;
+import com.example.readitapp.model.webserver.book.response.BookDto;
 import com.example.readitapp.model.webserver.book.response.BookRentResponseDto;
-import com.example.readitapp.model.webserver.book.response.PageDto;
+import com.example.readitapp.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.readitapp.api.webserver.WebServerAPIService.DEFAULT_PAGE_SIZE;
-
-public class MyBooksFragment extends Fragment {
+public class MyBooksFragment extends Fragment implements OnMyBooksCLickListener {
 
     private View view;
     private RecyclerView recyclerViewReading;
+    private MyBooksAdapter myBooksAdapter;
+    private List<BookRentResponseDto> books = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,7 +44,6 @@ public class MyBooksFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_my_books, container, false);
 
         initView();
-        loadReadingBooks();
 
         return view;
     }
@@ -45,6 +51,14 @@ public class MyBooksFragment extends Fragment {
     private void initView() {
         recyclerViewReading = view.findViewById(R.id.container);
         recyclerViewReading.setLayoutManager(new LinearLayoutManager(getContext()));
+        initAdapter();
+        loadReadingBooks();
+    }
+
+    private void initAdapter() {
+        myBooksAdapter = new MyBooksAdapter(books, this);
+        recyclerViewReading.setAdapter(myBooksAdapter);
+        registerForContextMenu(recyclerViewReading);
     }
 
     private void loadReadingBooks() {
@@ -54,12 +68,58 @@ public class MyBooksFragment extends Fragment {
             @Override
             public void onResponse(Call<List<BookRentResponseDto>> call, Response<List<BookRentResponseDto>> response) {
                 if (response.isSuccessful()) {
-
+                    myBooksAdapter.submitList(response.body());
                 }
             }
 
             @Override
             public void onFailure(Call<List<BookRentResponseDto>> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public void onBookClick(BookRentResponseDto item) {
+
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v,
+                                    @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        if(currentUser.equals(Utils.USER_ADMIN)) {
+            super.onCreateContextMenu(menu, v, menuInfo);
+            getActivity().getMenuInflater().inflate(R.menu.menu_my_books, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.returnn:
+                returnBook(item.getOrder());
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void returnBook(int bookId) {
+        Call<BookDto> call = WebServerAPIBuilder.getInstance().returnBook(books.get(bookId).getRentId());
+
+        call.enqueue(new Callback<BookDto>() {
+            @Override
+            public void onResponse(Call<BookDto> call, Response<BookDto> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Book returned", Toast.LENGTH_LONG).show();
+                    books.remove(bookId);
+                    myBooksAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookDto> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

@@ -36,4 +36,12 @@ public class BookRentResponseDto {
     public void setBook(BookDto book) {
         this.book = book;
     }
+
+    public Integer getRentId() {
+        return rentId;
+    }
+
+    public void setRentId(Integer rentId) {
+        this.rentId = rentId;
+    }
 }
