@@ -19,10 +19,12 @@ public class MyBooksAdapter extends RecyclerView.Adapter<MyBooksAdapter.BooksVie
 
     private final List<BookRentResponseDto> mItemList;
     public static OnMyBooksCLickListener bookClickListener;
+    private boolean isClickable;
 
-    public MyBooksAdapter(List<BookRentResponseDto> mItemList, OnMyBooksCLickListener listener) {
+    public MyBooksAdapter(List<BookRentResponseDto> mItemList, OnMyBooksCLickListener listener, boolean isClickable) {
         this.mItemList = mItemList;
         bookClickListener = listener;
+        this.isClickable = isClickable;
     }
 
     @NonNull
@@ -36,7 +38,7 @@ public class MyBooksAdapter extends RecyclerView.Adapter<MyBooksAdapter.BooksVie
     @Override
     public void onBindViewHolder(@NonNull BooksViewHolder holder, int position) {
         holder.bind(mItemList.get(position));
-        holder.itemView.setLongClickable(true);
+        holder.itemView.setLongClickable(isClickable);
     }
 
     @Override

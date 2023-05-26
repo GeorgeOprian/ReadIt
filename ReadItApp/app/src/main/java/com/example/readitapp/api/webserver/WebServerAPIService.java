@@ -71,4 +71,7 @@ public interface WebServerAPIService {
 
     @GET("/bookrental/notreturnedbooks")
     Call<List<BookRentResponseDto>> loadNotReturnedBooks(@Query("email") String email);
+
+    @GET("/bookrental/returnedbooks")
+    Call<List<BookRentResponseDto>> loadReturnedBooks(@Query("email") String email);
 }

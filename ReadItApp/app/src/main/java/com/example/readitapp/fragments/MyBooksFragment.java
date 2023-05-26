@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,6 @@ import com.example.readitapp.adapters.OnMyBooksCLickListener;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.webserver.book.response.BookDto;
 import com.example.readitapp.model.webserver.book.response.BookRentResponseDto;
-import com.example.readitapp.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -35,8 +35,11 @@ public class MyBooksFragment extends Fragment implements OnMyBooksCLickListener 
 
     private View view;
     private RecyclerView recyclerViewReading;
+    private RecyclerView recyclerViewHistory;
     private MyBooksAdapter myBooksAdapter;
+    private MyBooksAdapter myBooksHistoryAdapter;
     private List<BookRentResponseDto> books = new ArrayList<>();
+    private List<BookRentResponseDto> booksHistory = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,14 +52,42 @@ public class MyBooksFragment extends Fragment implements OnMyBooksCLickListener 
     }
 
     private void initView() {
-        recyclerViewReading = view.findViewById(R.id.container);
-        recyclerViewReading.setLayoutManager(new LinearLayoutManager(getContext()));
         initAdapter();
         loadReadingBooks();
+        initAdapterHistory();
+        loadHistoryBooks();
+    }
+
+    private void loadHistoryBooks() {
+        Call<List<BookRentResponseDto>> call = WebServerAPIBuilder.getInstance().loadReturnedBooks(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
+        call.enqueue(new Callback<List<BookRentResponseDto>>() {
+            @Override
+            public void onResponse(Call<List<BookRentResponseDto>> call, Response<List<BookRentResponseDto>> response) {
+                if (response.isSuccessful()) {
+                    myBooksHistoryAdapter.submitList(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<BookRentResponseDto>> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void initAdapterHistory() {
+        recyclerViewHistory = view.findViewById(R.id.container_history);
+        recyclerViewHistory.setLayoutManager(new LinearLayoutManager(getContext()));
+        myBooksHistoryAdapter = new MyBooksAdapter(booksHistory, this, false);
+        recyclerViewHistory.setAdapter(myBooksHistoryAdapter);
+        registerForContextMenu(recyclerViewHistory);
     }
 
     private void initAdapter() {
-        myBooksAdapter = new MyBooksAdapter(books, this);
+        recyclerViewReading = view.findViewById(R.id.container);
+        recyclerViewReading.setLayoutManager(new LinearLayoutManager(getContext()));
+        myBooksAdapter = new MyBooksAdapter(books, this, true);
         recyclerViewReading.setAdapter(myBooksAdapter);
         registerForContextMenu(recyclerViewReading);
     }
@@ -87,11 +118,8 @@ public class MyBooksFragment extends Fragment implements OnMyBooksCLickListener 
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v,
                                     @Nullable ContextMenu.ContextMenuInfo menuInfo) {
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        if(currentUser.equals(Utils.USER_ADMIN)) {
-            super.onCreateContextMenu(menu, v, menuInfo);
-            getActivity().getMenuInflater().inflate(R.menu.menu_my_books, menu);
-        }
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.menu_my_books, menu);
     }
 
     @Override
