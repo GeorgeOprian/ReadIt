@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCaller;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -42,7 +43,7 @@ import java.util.Optional;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class SubscriptionFragment extends Fragment {
+public class SubscriptionFragment extends Fragment implements ActivityResultCaller {
 
     private View view;
     private TextView statusValue;
