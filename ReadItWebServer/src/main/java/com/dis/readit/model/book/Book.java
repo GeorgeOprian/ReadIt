@@ -68,6 +68,16 @@ public class Book {
 	)
 	private List<BookCategory> bookCategories = new ArrayList<>();
 
+
+	@OneToMany(
+			mappedBy = "book",
+			cascade = CascadeType.REMOVE,
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
+	)
+	private List<BookReview> reviews = new ArrayList<>();
+
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
@@ -87,6 +97,11 @@ public class Book {
 		BookCategory bookCategory = new BookCategory(this, category);
 		bookCategories.add(bookCategory);
 		category.getBookCategories().add(bookCategory);
+	}
+
+	public void addReview(BookReview review) {
+		BookReview bookReview = new BookReview(this, review.getUser(), review.getNbrStars(), review.getContent());
+		reviews.add(bookReview);
 	}
 
 }
