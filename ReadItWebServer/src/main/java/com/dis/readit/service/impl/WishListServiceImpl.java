@@ -16,6 +16,7 @@ import com.dis.readit.service.UserLoaderService;
 import com.dis.readit.service.WishListService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -69,13 +70,17 @@ public class WishListServiceImpl implements WishListService {
 
 		Collection<WishList> wishList = wishListRepository.getWishListForUser(userByEmail.getUserId());
 
+		return mapWishListResponse(wishList);
+	}
+
+	private List<BookListDto> mapWishListResponse(Collection<WishList> wishList) {
 		return wishList.stream()
 				.map(wishList1 -> bookMapper.mapToListDto(wishList1.getBook()))
 				.collect(Collectors.toList());
 	}
 
 	@Override
-	public void delete(BookUserRequestDto dto) {
+	public List<BookListDto> deleteBook(BookUserRequestDto dto) {
 		DataBaseUser user = userLoaderService.getUserByEmail(dto.getUserEmail());
 
 		Optional<Book> bookOpt = bookRepository.findById(dto.getBookId());
@@ -86,8 +91,14 @@ public class WishListServiceImpl implements WishListService {
 
 		Optional<WishList> wishListBookOptional = wishListRepository.getBookFromWishList(user.getUserId(), book.getBookId());
 
-		wishListBookOptional.orElseThrow(() -> new EntityNotFound("Book with id " + dto.getBookId() + " was not found"));
+		if (wishListBookOptional.isEmpty()) {
+			return new ArrayList<>();
+		}
 
 		wishListRepository.delete(wishListBookOptional.get());
+
+		return mapWishListResponse(user.getWishListBooks());
+
+
 	}
 }

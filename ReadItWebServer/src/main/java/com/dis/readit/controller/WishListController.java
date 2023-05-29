@@ -30,12 +30,9 @@ public class WishListController {
 		return ResponseEntity.ok(service.getWishList(email));
 	}
 
-	@DeleteMapping("/delete")
-	public ResponseEntity deleteBook(@RequestBody BookUserRequestDto requestDto ) {
-
-		service.delete(requestDto);
-
-		return ResponseEntity.noContent().build();
+	@DeleteMapping("/deletebook")
+	public ResponseEntity<List<BookListDto>> deleteBook(@RequestBody BookUserRequestDto requestDto ) {
+		return ResponseEntity.ok(service.deleteBook(requestDto));
 	}
 
 }

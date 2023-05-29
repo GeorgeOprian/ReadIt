@@ -9,7 +9,7 @@ import java.util.List;
 public interface WishListService {
 	BookDto addBookToWishList(BookUserRequestDto requestDto);
 
-	void delete(BookUserRequestDto requestDto);
+	List<BookListDto> deleteBook(BookUserRequestDto requestDto);
 
 	List<BookListDto> getWishList(String email);
 }
