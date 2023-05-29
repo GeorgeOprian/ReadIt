@@ -27,4 +27,9 @@ public class UserController {
 		return ResponseEntity.ok(service.getUserDetails(email));
 	}
 
+	@PostMapping("/newBooksPosted")
+	public ResponseEntity<Void> newBooksPosted(@RequestParam(name = "adminEmail") String adminEmail) {
+		return ResponseEntity.ok(service.sendEmailToAllUsers(adminEmail));
+	}
+
 }

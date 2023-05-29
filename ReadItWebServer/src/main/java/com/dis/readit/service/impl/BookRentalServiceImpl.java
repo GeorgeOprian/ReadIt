@@ -10,18 +10,18 @@ import com.dis.readit.mapper.BookMapper;
 import com.dis.readit.model.book.Book;
 import com.dis.readit.model.book.BookRental;
 import com.dis.readit.model.user.DataBaseUser;
+import com.dis.readit.rabbitmq.RabbitMQMessageProducer;
+import com.dis.readit.rabbitmq.requests.EmailRequest;
 import com.dis.readit.repository.BookRentalRepository;
 import com.dis.readit.repository.BookRepository;
 import com.dis.readit.repository.UserRepository;
 import com.dis.readit.service.BookRentalService;
+import com.dis.readit.service.RabbitMQService;
 import com.dis.readit.service.UserLoaderService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,12 +37,16 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 	private final BookRentalRepository rentalRepository;
 
-	public BookRentalServiceImpl(BookRepository bookRepository, UserRepository userRepository, BookMapper bookMapper, UserLoaderService userLoaderService, BookRentalRepository rentalRepository) {
+	private final RabbitMQService rabbitMQService;
+
+	public BookRentalServiceImpl(BookRepository bookRepository, UserRepository userRepository, BookMapper bookMapper, UserLoaderService userLoaderService, BookRentalRepository rentalRepository,
+			RabbitMQService rabbitMQService) {
 		this.bookRepository = bookRepository;
 		this.userRepository = userRepository;
 		this.bookMapper = bookMapper;
 		this.userLoaderService = userLoaderService;
 		this.rentalRepository = rentalRepository;
+		this.rabbitMQService = rabbitMQService;
 	}
 
 	@Override
@@ -75,6 +79,14 @@ public class BookRentalServiceImpl implements BookRentalService {
 		book.setInStock(book.getInStock() - 1);
 
 		saveRental(book, user);
+
+		DataBaseUser adminUser =  userLoaderService.getUserByEmail(DataBaseUser.ADMIN_USER_EMAIL);
+		String subject = "New ReadIt Rental";
+		String emailBody = "Hi " + user.getUserName() + ",\n\nYour newly rented book is on the way. You will be contacted by the courier soon to let you know more details about the package.";
+
+		EmailRequest emailRequest = EmailRequest.createEmailForUser(adminUser.getUserId(), Arrays.asList(user.getUserId()), subject, emailBody);
+
+		rabbitMQService.sendMessageToEmailService(RabbitMQMessageProducer.EMAIL_ROUTING_KEY, emailRequest);
 
 		Optional<BookRental> bookRentedOpt = user.getBookRentals().stream().filter(bookRental -> Objects.equals(bookRental.getBook().getBookId(), book.getBookId())).findFirst();
 
@@ -123,6 +135,14 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 		Book updatedBook = saveReturnedBook(bookRental, rentedBook);
 
+		DataBaseUser adminUser =  userLoaderService.getUserByEmail(DataBaseUser.ADMIN_USER_EMAIL);
+		String subject = "ReadIt Book Return";
+		String emailBody = "Hi " + bookRental.getUser().getUserName() + ",\n\nYour newly rented book is on the way. It you will be contacted by the courier soon to let you know more details about he package.";
+
+		EmailRequest emailRequest = EmailRequest.createEmailForUser(adminUser.getUserId(), Arrays.asList(bookRental.getUser().getUserId()), subject, emailBody);
+
+		rabbitMQService.sendMessageToEmailService(RabbitMQMessageProducer.EMAIL_ROUTING_KEY, emailRequest);
+
 		return bookMapper.mapToDto(updatedBook);
 	}
 
@@ -132,6 +152,5 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 		return bookRepository.save(rentedBook);
 	}
-
 
 }

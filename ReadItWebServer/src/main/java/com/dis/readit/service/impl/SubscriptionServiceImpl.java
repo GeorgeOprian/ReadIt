@@ -7,10 +7,9 @@ import com.dis.readit.model.user.DataBaseUser;
 import com.dis.readit.rabbitmq.RabbitMQMessageProducer;
 import com.dis.readit.rabbitmq.requests.EmailRequest;
 import com.dis.readit.repository.SubscriptionRepository;
+import com.dis.readit.service.RabbitMQService;
 import com.dis.readit.service.SubscriptionService;
 import com.dis.readit.service.UserLoaderService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -25,17 +24,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	private final SubscriptionRepository subscriptionRepository;
 
-	private final RabbitMQMessageProducer messageProducer;
-
-	private final ObjectMapper objectMapper;
+	private final RabbitMQService rabbitMQService;
 
 	private final UserLoaderService userLoaderService;
 
-	public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, RabbitMQMessageProducer messageProducer, ObjectMapper objectMapper,
-			UserLoaderService userLoaderService) {
+	public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, RabbitMQService rabbitMQService, UserLoaderService userLoaderService) {
 		this.subscriptionRepository = subscriptionRepository;
-		this.messageProducer = messageProducer;
-		this.objectMapper = objectMapper;
+		this.rabbitMQService = rabbitMQService;
 		this.userLoaderService = userLoaderService;
 	}
 
@@ -51,23 +46,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 		Subscription savedSubscription = subscriptionRepository.save(bo);
 
-		String subject = "Abonament ReadIt";
-		String emailBody = "Buna " + user.getUserName() + "\n\n Am auzit ca ti-ai facut abonament la ReadIt, cea mai misto platforma de inchiriat carti.";
-		emailBody += "\n\nVrei sa ne cunoastem mai bine?";
-		sendEmailToUser(user, subject, emailBody);
-		return createSubscriptionDto(user, savedSubscription);
-	}
-
-	private void sendEmailToUser(DataBaseUser recipient, String subject, String emailBody) {
 		DataBaseUser adminUser =  userLoaderService.getUserByEmail(DataBaseUser.ADMIN_USER_EMAIL);
 
-		EmailRequest emailRequest = EmailRequest.createEmailForUser(adminUser.getUserId(), Arrays.asList(recipient.getUserId()), subject, emailBody);
-		try {
-			messageProducer.sendMessage(RabbitMQMessageProducer.EMAIL_ROUTING_KEY, objectMapper.writeValueAsString(emailRequest));
-		} catch (JsonProcessingException e) {
-			log.error(e.getMessage());
+		String subject = "New ReadIt Subscription";
+		String emailBody = "Hi " + user.getUserName() + ",\n\nA new Subscription was added for you, check out the app to see more details.";
 
-		}
+		EmailRequest emailRequest = EmailRequest.createEmailForUser(adminUser.getUserId(), Arrays.asList(user.getUserId()), subject, emailBody);
+
+		rabbitMQService.sendMessageToEmailService(RabbitMQMessageProducer.EMAIL_ROUTING_KEY, emailRequest);
+
+		return createSubscriptionDto(user, savedSubscription);
 	}
 
 	private static SubscriptionDto createSubscriptionDto(DataBaseUser user, Subscription savedSubscription) {

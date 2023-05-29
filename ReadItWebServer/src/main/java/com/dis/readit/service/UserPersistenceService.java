@@ -7,4 +7,6 @@ public interface UserPersistenceService {
 	UserCreateDto addUser(UserCreateDto userDto);
 
 	UserDto getUserDetails(String email);
+
+	Void sendEmailToAllUsers(String adminEmail);
 }
