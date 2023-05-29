@@ -64,4 +64,15 @@ public class ExceptionControllerAdvice {
 						.message(e.getMessage())
 						.build());
 	}
+
+	@ExceptionHandler(BookAlreadyInWishList.class)
+	public ResponseEntity<ErrorResponse> handleAlreadyInWishList(Exception e) {
+		log.debug("Book already in wish list.");
+		return ResponseEntity.status(HttpStatus.FORBIDDEN)
+				.body(ErrorResponse.builder()
+						.code(HttpStatus.FORBIDDEN.value())
+						.message(e.getMessage())
+						.build());
+	}
+
 }

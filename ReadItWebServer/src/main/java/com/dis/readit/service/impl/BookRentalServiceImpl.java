@@ -56,7 +56,6 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 		bookOpt.orElseThrow(() -> new EntityNotFound("Book with id " + dto.getBookId() + " was not found"));
 
-
 		Book book = bookOpt.get();
 
 		if (book.getInStock() == 0) {
@@ -80,13 +79,7 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 		saveRental(book, user);
 
-		DataBaseUser adminUser =  userLoaderService.getUserByEmail(DataBaseUser.ADMIN_USER_EMAIL);
-		String subject = "New ReadIt Rental";
-		String emailBody = "Hi " + user.getUserName() + ",\n\nYour newly rented book is on the way. You will be contacted by the courier soon to let you know more details about the package.";
-
-		EmailRequest emailRequest = EmailRequest.createEmailForUser(adminUser.getUserId(), Arrays.asList(user.getUserId()), subject, emailBody);
-
-		rabbitMQService.sendMessageToEmailService(RabbitMQMessageProducer.EMAIL_ROUTING_KEY, emailRequest);
+		sendEmailToUser(user);
 
 		Optional<BookRental> bookRentedOpt = user.getBookRentals().stream().filter(bookRental -> Objects.equals(bookRental.getBook().getBookId(), book.getBookId())).findFirst();
 
@@ -94,6 +87,16 @@ public class BookRentalServiceImpl implements BookRentalService {
 		boolean rented = bookRentedOpt.isPresent() ? bookRentedOpt.get().isReturned(): false;
 
 		return new BookRentResponseDto(rentedBookId, dto.getReturnDate(), rented, bookMapper.mapToDto(book));
+	}
+
+	private void sendEmailToUser(DataBaseUser user) {
+		DataBaseUser adminUser =  userLoaderService.getUserByEmail(DataBaseUser.ADMIN_USER_EMAIL);
+		String subject = "New ReadIt Rental";
+		String emailBody = "Hi " + user.getUserName() + ",\n\nYour newly rented book is on the way. You will be contacted by the courier soon to let you know more details about the package.";
+
+		EmailRequest emailRequest = EmailRequest.createEmailForUser(adminUser.getUserId(), Arrays.asList(user.getUserId()), subject, emailBody);
+
+		rabbitMQService.sendMessageToEmailService(RabbitMQMessageProducer.EMAIL_ROUTING_KEY, emailRequest);
 	}
 
 	@Transactional

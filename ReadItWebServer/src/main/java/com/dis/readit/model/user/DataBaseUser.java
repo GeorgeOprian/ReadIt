@@ -48,15 +48,27 @@ public class DataBaseUser {
 	)
 	private List<Subscription> subscriptions = new ArrayList<>();
 
-
 	@OneToOne
 	@JoinColumn(name = "id_adresa", foreignKey = @ForeignKey(name = "FK_USER_ADDRESS"))
 	private Adresa adresa;
+
+	@OneToMany(
+			mappedBy = "user",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
+	)
+	private List<WishList> wishListBooks = new ArrayList<>();
 
 
 	public void addRental(Book book, LocalDate returnDate) {
 		BookRental bookRental = new BookRental(book, this, returnDate);
 		bookRentals.add(bookRental);
+	}
+
+	public void addToWishList(Book book) {
+		WishList wishList = new WishList(book, this);
+		wishListBooks.add(wishList);
 	}
 
 }

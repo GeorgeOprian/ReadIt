@@ -4,19 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
-public class BookRentRequestDto implements Serializable {
-
-	@NotNull
-	@JsonProperty("bookId")
-	private Integer bookId;
-
-	@NotNull
-	@JsonProperty("userEmail")
-	private String userEmail;
+public class BookRentRequestDto extends BookUserRequestDto {
 
 	@NotNull
 	@JsonProperty("returnDate")
