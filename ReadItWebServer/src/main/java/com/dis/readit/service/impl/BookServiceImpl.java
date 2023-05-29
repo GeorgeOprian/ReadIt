@@ -172,6 +172,8 @@ public class BookServiceImpl implements BookService {
 
 		bookOpt.orElseThrow(() -> new EntityNotFound("Book with id " + bookId + " was not found"));
 
+		// TODO: 29-May-23 delete from rent wishlist and reviews 
+		
 		bookRepository.deleteById(bookId);
 
 	}

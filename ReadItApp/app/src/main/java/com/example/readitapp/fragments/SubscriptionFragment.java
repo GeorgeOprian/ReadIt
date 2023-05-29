@@ -299,6 +299,7 @@ public class SubscriptionFragment extends Fragment implements ActivityResultCall
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             // value passed in AutoResolveHelper
             case LOAD_PAYMENT_DATA_REQUEST_CODE:

@@ -24,4 +24,5 @@
     <string name="googlepay_status_unavailable">Unfortunately, Google Pay is not available on this device.</string>
     <string name="payments_show_name">Successfully received payment data for %s!</string>
     <string name="returnn">Return</string>
+    <string name="wishlist">Wishlist</string>
 </resources>

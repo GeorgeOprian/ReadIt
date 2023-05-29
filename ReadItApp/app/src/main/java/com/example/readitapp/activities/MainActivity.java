@@ -25,6 +25,7 @@ import com.example.readitapp.fragments.HomeFragment;
 import com.example.readitapp.fragments.MyBooksFragment;
 import com.example.readitapp.fragments.ProfileFragment;
 import com.example.readitapp.fragments.SubscriptionFragment;
+import com.example.readitapp.fragments.WishlistFragment;
 import com.example.readitapp.model.webserver.JudetDto;
 import com.example.readitapp.model.webserver.user.output.UserDto;
 import com.example.readitapp.utils.FirebaseConstants;
@@ -49,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;
     private GoogleSignInClient mGoogleSignInClient;
-//    public static UserDto currentUser = new UserDto();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_my_books:
                 selectedFragment = new MyBooksFragment();
+                drawerLayout.closeDrawer(GravityCompat.START);
+                break;
+            case R.id.nav_wishlist:
+                selectedFragment = new WishlistFragment();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
         }
