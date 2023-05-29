@@ -9,6 +9,7 @@ import com.example.readitapp.model.webserver.book.response.BookRentResponseDto;
 import com.example.readitapp.model.webserver.book.response.BookDto;
 import com.example.readitapp.model.webserver.book.response.BookListDto;
 import com.example.readitapp.model.webserver.book.response.PageDto;
+import com.example.readitapp.model.webserver.user.input.UserCreateDto;
 import com.example.readitapp.model.webserver.user.output.UserDto;
 
 import java.util.List;
@@ -28,8 +29,8 @@ public interface WebServerAPIService {
     @POST("/books/addBook")
     Call<BookDto> addBook(@Body BookDto body);
 
-    @POST("/users/google-signin")
-    Call<UserDto> addUser(@Body String idToken);
+    @POST("/users/addUser")
+    Call<UserDto> addUser(@Body UserCreateDto userCreateDto);
 
     int DEFAULT_PAGE_SIZE = 4;
 

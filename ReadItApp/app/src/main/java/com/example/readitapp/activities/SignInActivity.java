@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.readitapp.R;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
+import com.example.readitapp.model.webserver.user.input.UserCreateDto;
 import com.example.readitapp.model.webserver.user.output.UserDto;
 import com.example.readitapp.utils.FirebaseConstants;
 import com.example.readitapp.utils.Utils;
@@ -113,8 +114,9 @@ public class SignInActivity extends AppCompatActivity {
     private void addUserToServer() {
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String idToken = currentUser.getIdToken(false).getResult().getToken();
-        Call<UserDto> call = WebServerAPIBuilder.getInstance().addUser(idToken);
+
+        UserCreateDto user = new UserCreateDto(currentUser.getEmail(), currentUser.getDisplayName());
+        Call<UserDto> call = WebServerAPIBuilder.getInstance().addUser(user);
 
         call.enqueue(new Callback<UserDto>() {
             @Override
