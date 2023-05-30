@@ -51,8 +51,9 @@ public class BookDetailsFragment extends Fragment {
     private TextView category;
     private TextView description;
     private Button rentButton;
-    private BookDto bookDto;
     private CheckBox wishlist;
+
+    private BookDto bookDto;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -181,6 +182,12 @@ public class BookDetailsFragment extends Fragment {
 
         description.setText(bookDto.getDescription());
         category.setText(bookDto.getCategories().stream().map(CategoryDto::getCategoryName).collect(Collectors.joining(",")));
+
+        if (bookDto.getInUserWishList() != null) {
+            wishlist.setChecked(bookDto.getInUserWishList());
+        } else {
+            wishlist.setChecked(false);
+        }
     }
 
     private void initView() {

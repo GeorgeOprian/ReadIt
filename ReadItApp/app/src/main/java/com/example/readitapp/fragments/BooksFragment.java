@@ -155,7 +155,8 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
 
     @Override
     public void onBookClick(BookListDto book) {
-        Call<BookDto> call = WebServerAPIBuilder.getInstance().getBookById(book.getBookId());
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Call<BookDto> call = WebServerAPIBuilder.getInstance().getBookById(book.getBookId(), email);
 
         call.enqueue(new Callback<BookDto>() {
             @Override
@@ -209,7 +210,9 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
 
     private void updateBook(int bookId) {
         final BookDto[] bookDto = new BookDto[1];
-        Call<BookDto> call = WebServerAPIBuilder.getInstance().getBookById(books.get(bookId).getBookId());
+
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Call<BookDto> call = WebServerAPIBuilder.getInstance().getBookById(books.get(bookId).getBookId(), email);
         call.enqueue(new Callback<BookDto>() {
             @Override
             public void onResponse(Call<BookDto> call, Response<BookDto> response) {

@@ -39,7 +39,7 @@ public interface WebServerAPIService {
     Call<PageDto<BookListDto>> getBookById(@Query("pageNumber") Integer pageNumber, @Query("pageSize") Integer pageSize, @Query("sortBy") String sortBy);
 
     @GET("/books")
-    Call<BookDto> getBookById(@Query("bookId") Integer bookId);
+    Call<BookDto> getBookById(@Query("bookId") Integer bookId, @Query("email") String email);
 
     @DELETE("/books/delete")
     Call<Void> deleteBook(@Query("bookId") Integer bookId);

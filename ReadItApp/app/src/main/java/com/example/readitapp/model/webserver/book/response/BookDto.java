@@ -39,6 +39,10 @@ public class BookDto extends BookListDto implements Serializable {
     @Expose
     private Integer inStock;
 
+    @SerializedName( "inUserWishList")
+    @Expose
+    private Boolean inUserWishList;
+
     public String getPublisher() {
         return publisher;
     }
@@ -101,5 +105,13 @@ public class BookDto extends BookListDto implements Serializable {
 
     public void setInStock(Integer inStock) {
         this.inStock = inStock;
+    }
+
+    public Boolean getInUserWishList() {
+        return inUserWishList;
+    }
+
+    public void setInUserWishList(Boolean inUserWishList) {
+        this.inUserWishList = inUserWishList;
     }
 }
