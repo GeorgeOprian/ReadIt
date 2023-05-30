@@ -80,6 +80,9 @@ public interface WebServerAPIService {
     @POST("/wishlist/addbook")
     Call<BookDto> addBookToWishList(@Body BookUserRequestDto bookUserRequestDto);
 
+    @GET("/wishlist")
+    Call<List<BookListDto>> getWishList(@Query("email") String email);
+
     @DELETE("/wishlist/deletebook")
     Call<List<BookListDto>> removeBookFromWishList(@Query("bookId") Integer bookId, @Query("email") String email);
 }
