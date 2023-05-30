@@ -5,6 +5,7 @@ import com.example.readitapp.model.webserver.JudetDto;
 import com.example.readitapp.model.webserver.SubscriptionDto;
 import com.example.readitapp.model.webserver.UserAddressInputDto;
 import com.example.readitapp.model.webserver.book.request.BookRentRequestDto;
+import com.example.readitapp.model.webserver.book.request.BookUserRequestDto;
 import com.example.readitapp.model.webserver.book.response.BookRentResponseDto;
 import com.example.readitapp.model.webserver.book.response.BookDto;
 import com.example.readitapp.model.webserver.book.response.BookListDto;
@@ -75,4 +76,10 @@ public interface WebServerAPIService {
 
     @GET("/bookrental/returnedbooks")
     Call<List<BookRentResponseDto>> loadReturnedBooks(@Query("email") String email);
+
+    @POST("/wishlist/addbook")
+    Call<BookDto> addBookToWishList(@Body BookUserRequestDto bookUserRequestDto);
+
+    @DELETE("/wishlist/deletebook")
+    Call<List<BookListDto>> removeBookFromWishList(@Query("bookId") Integer bookId, @Query("email") String email);
 }

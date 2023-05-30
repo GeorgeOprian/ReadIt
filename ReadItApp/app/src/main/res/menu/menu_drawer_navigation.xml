@@ -22,6 +22,11 @@
             android:title="@string/my_books" />
 
         <item
+            android:id="@+id/nav_wishlist"
+            android:icon="@drawable/ic_baseline_favorite_24"
+            android:title="@string/wishlist" />
+
+        <item
             android:id="@+id/nav_signOut"
             android:icon="@drawable/ic_baseline_log_out_new_24"
             android:title="@string/sign_out" />

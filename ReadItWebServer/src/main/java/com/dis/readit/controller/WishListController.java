@@ -31,7 +31,10 @@ public class WishListController {
 	}
 
 	@DeleteMapping("/deletebook")
-	public ResponseEntity<List<BookListDto>> deleteBook(@RequestBody BookUserRequestDto requestDto ) {
+	public ResponseEntity<List<BookListDto>> deleteBook(@RequestParam(name = "bookId") Integer bookId, @RequestParam(name = "email") String email) {
+		BookUserRequestDto requestDto = new BookUserRequestDto();
+		requestDto.setBookId(bookId);
+		requestDto.setUserEmail(email);
 		return ResponseEntity.ok(service.deleteBook(requestDto));
 	}
 

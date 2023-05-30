@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +20,9 @@ import com.example.readitapp.api.googlebooks.GoogleBooksAPIBuilder;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.googlebooks.VolumesResponse;
 import com.example.readitapp.model.webserver.book.request.BookRentRequestDto;
+import com.example.readitapp.model.webserver.book.request.BookUserRequestDto;
 import com.example.readitapp.model.webserver.book.response.BookDto;
+import com.example.readitapp.model.webserver.book.response.BookListDto;
 import com.example.readitapp.model.webserver.book.response.BookRentResponseDto;
 import com.example.readitapp.model.webserver.book.response.CategoryDto;
 import com.example.readitapp.utils.Utils;
@@ -31,6 +35,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
@@ -47,6 +52,7 @@ public class BookDetailsFragment extends Fragment {
     private TextView description;
     private Button rentButton;
     private BookDto bookDto;
+    private CheckBox wishlist;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,8 +67,54 @@ public class BookDetailsFragment extends Fragment {
         }
 
         rentButton.setOnClickListener(view -> rentBook());
+        wishlist.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                addBookToWishlist();
+            } else {
+                removeBookFromWishlist();
+            }
+        });
 
         return view;
+    }
+
+    private void removeBookFromWishlist() {
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Integer bookId = bookDto.getBookId();
+        Call<List<BookListDto>> call = WebServerAPIBuilder.getInstance().removeBookFromWishList(bookId, email);
+        call.enqueue(new Callback<List<BookListDto>>() {
+            @Override
+            public void onResponse(Call<List<BookListDto>> call, retrofit2.Response<List<BookListDto>> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Book removed to wishlist", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<BookListDto>> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void addBookToWishlist() {
+        BookUserRequestDto bookUserRequestDto = new BookUserRequestDto();
+        bookUserRequestDto.setUserEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        bookUserRequestDto.setBookId(bookDto.getBookId());
+        Call<BookDto> call = WebServerAPIBuilder.getInstance().addBookToWishList(bookUserRequestDto);
+        call.enqueue(new Callback<BookDto>() {
+            @Override
+            public void onResponse(Call<BookDto> call, retrofit2.Response<BookDto> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Book added to wishlist", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookDto> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void rentBook() {
@@ -139,5 +191,6 @@ public class BookDetailsFragment extends Fragment {
         category = view.findViewById(R.id.category_value);
         description = view.findViewById(R.id.description_value);
         rentButton = view.findViewById(R.id.rent_button);
+        wishlist = view.findViewById(R.id.wishlist);
     }
 }
