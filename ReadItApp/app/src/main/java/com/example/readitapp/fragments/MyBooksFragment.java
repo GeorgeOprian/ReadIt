@@ -50,7 +50,7 @@ public class MyBooksFragment extends Fragment implements OnMyBooksCLickListener 
     }
 
     private void initView() {
-        initAdapter();
+        initReadingAdapter();
         loadReadingBooks();
         initAdapterHistory();
         loadHistoryBooks();
@@ -82,7 +82,7 @@ public class MyBooksFragment extends Fragment implements OnMyBooksCLickListener 
         registerForContextMenu(recyclerViewHistory);
     }
 
-    private void initAdapter() {
+    private void initReadingAdapter() {
         recyclerViewReading = view.findViewById(R.id.container);
         recyclerViewReading.setLayoutManager(new LinearLayoutManager(getContext()));
         myBooksAdapter = new MyBooksAdapter(books, this, true);
