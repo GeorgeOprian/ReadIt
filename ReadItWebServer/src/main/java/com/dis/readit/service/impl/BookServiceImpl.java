@@ -18,9 +18,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.ReflectionUtils;
 
-import javax.transaction.Transactional;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +65,8 @@ public class BookServiceImpl implements BookService {
 		return createBookDto(savedBook);
 	}
 
-	@Transactional Book saveBookDetails(BookDto request, Book book) {
+	@Transactional
+	public Book saveBookDetails(BookDto request, Book book) {
 		List<Category> existentCategories = saveCategories(request.getCategories());
 
 		for (Category category : existentCategories) {
@@ -98,7 +103,7 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public PageDto<BookListDto> loadListBooks(Integer pageNumber, Integer pageSize, String sortBy) {
-		PageRequest pageRequest=  PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sortBy);
+		PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sortBy);
 
 		Page<Book> pagedBooks = bookRepository.findAll(pageRequest);
 
@@ -111,6 +116,8 @@ public class BookServiceImpl implements BookService {
 		Optional<Book> bookOpt = bookRepository.findById(bookId);
 
 		bookOpt.orElseThrow(() -> new EntityNotFound("Book with id " + bookId + " was not found"));
+
+		//		bookRepository.isInUserWishList();
 
 		return createBookDto(bookOpt.get());
 	}
@@ -172,8 +179,13 @@ public class BookServiceImpl implements BookService {
 
 		bookOpt.orElseThrow(() -> new EntityNotFound("Book with id " + bookId + " was not found"));
 
-		// TODO: 29-May-23 delete from rent wishlist and reviews 
-		
+		deleteBookFromDb(bookId);
+	}
+
+	@Transactional
+	public void deleteBookFromDb(Integer bookId) {
+		bookRepository.deleteBookFromWishlist(bookId);
+		bookRepository.deleteBookFromRental(bookId);
 		bookRepository.deleteById(bookId);
 
 	}
