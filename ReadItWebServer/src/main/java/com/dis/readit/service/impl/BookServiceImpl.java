@@ -11,20 +11,19 @@ import com.dis.readit.mapper.CategoriesMapper;
 import com.dis.readit.mapper.PageMapper;
 import com.dis.readit.model.book.Book;
 import com.dis.readit.model.book.Category;
+import com.dis.readit.model.user.DataBaseUser;
+import com.dis.readit.model.user.WishList;
 import com.dis.readit.repository.BookRepository;
 import com.dis.readit.repository.CategoryRepository;
 import com.dis.readit.service.BookService;
+import com.dis.readit.service.UserLoaderService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.ReflectionUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +41,14 @@ public class BookServiceImpl implements BookService {
 	private final BookMapper bookMapper;
 	private final CategoriesMapper categoriesMapper;
 
-	public BookServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository, BookMapper mapper, CategoriesMapper categoriesMapper) {
+	private final UserLoaderService userLoaderService;
+
+	public BookServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository, BookMapper mapper, CategoriesMapper categoriesMapper, UserLoaderService userLoaderService) {
 		this.bookRepository = bookRepository;
 		this.categoryRepository = categoryRepository;
 		this.bookMapper = mapper;
 		this.categoriesMapper = categoriesMapper;
+		this.userLoaderService = userLoaderService;
 	}
 
 	@Override
@@ -112,14 +114,21 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public BookDto findBookById(Integer bookId) {
+	public BookDto findBookById(String email, Integer bookId) {
 		Optional<Book> bookOpt = bookRepository.findById(bookId);
 
 		bookOpt.orElseThrow(() -> new EntityNotFound("Book with id " + bookId + " was not found"));
 
-		//		bookRepository.isInUserWishList();
+		DataBaseUser user = userLoaderService.getUserByEmail(email);
 
-		return createBookDto(bookOpt.get());
+
+		BookDto bookDto = createBookDto(bookOpt.get());
+
+		Optional<WishList> inUserWishList = bookRepository.isInUserWishList(user.getUserId(), bookId);
+
+		bookDto.setInUserWishList(inUserWishList.isPresent());
+
+		return bookDto;
 	}
 
 	private BookDto createBookDto(Book book) {

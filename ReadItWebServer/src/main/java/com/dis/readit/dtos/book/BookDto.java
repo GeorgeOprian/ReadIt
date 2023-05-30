@@ -28,4 +28,7 @@ public class BookDto extends BookListDto {
 	@JsonProperty("inStock")
 	private Integer inStock;
 
+	@JsonProperty("inUserWishList")
+	private Boolean inUserWishList;
+
 }

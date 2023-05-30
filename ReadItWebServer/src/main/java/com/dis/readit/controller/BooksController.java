@@ -32,8 +32,8 @@ public class BooksController {
 	}
 
 	@GetMapping
-	public ResponseEntity<BookDto> getById(@RequestParam(name = "bookId", defaultValue = "1") Integer bookId) {
-		return ResponseEntity.ok(service.findBookById(bookId));
+	public ResponseEntity<BookDto> getById(@RequestParam(name = "bookId", defaultValue = "1") Integer bookId, @RequestParam(name = "email") String email) {
+		return ResponseEntity.ok(service.findBookById(email, bookId));
 	}
 	@PatchMapping(path = "/updatebook/{bookId}")
 	public ResponseEntity<BookDto> updateBook(@PathVariable(name = "bookId") Integer bookId, @RequestBody Map<String, Object> body) {

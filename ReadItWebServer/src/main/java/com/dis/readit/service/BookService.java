@@ -12,7 +12,7 @@ public interface BookService {
 
 	PageDto<BookListDto> loadListBooks(Integer pageNumber, Integer pageSize, String sort);
 
-	BookDto findBookById(Integer bookId);
+	BookDto findBookById(String email, Integer bookId);
 
 	BookDto updateBook(Integer bookId, Map<String, Object> body);
 
