@@ -37,4 +37,8 @@ public class LocalitateDto {
     public void setNume(String nume) {
         this.nume = nume;
     }
+
+    public Integer getIdJudet() {
+        return idJudet;
+    }
 }

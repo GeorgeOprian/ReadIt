@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.readitapp.R;
-import com.example.readitapp.activities.MainActivity;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.webserver.AddressFullDto;
 import com.example.readitapp.model.webserver.JudetDto;
@@ -26,9 +25,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,10 +41,8 @@ public class ProfileFragment extends Fragment {
     private TextInputEditText nume;
     private TextInputEditText email;
     private AutoCompleteTextView judete;
-    private List<JudetDto> judeteList = new ArrayList<>();
     private AutoCompleteTextView localitate;
     private TextInputLayout localitateLayout;
-    private List<LocalitateDto> localitatiList = new ArrayList<>();
     private TextInputEditText strada;
     private TextInputEditText nr;
     private TextInputEditText bloc;
@@ -52,6 +52,9 @@ public class ProfileFragment extends Fragment {
     private ArrayAdapter<LocalitateDto> adapterLocalitati;
     private ArrayAdapter<JudetDto> adapterJudete;
     private LocalitateDto selectedValue;
+
+    private List<JudetDto> judeteList = new ArrayList<>();
+    private Map<Integer, List<LocalitateDto>> mapLocalitati = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +75,12 @@ public class ProfileFragment extends Fragment {
         nume = view.findViewById(R.id.textInputEditTextNume);
         email = view.findViewById(R.id.textInputEditTextEmail);
         judete = view.findViewById(R.id.judete_auto);
+
+        judete.setOnItemClickListener((adapterView, view, i, l) -> {
+            JudetDto judetDto = judeteList.get(i);
+            fillLocalitati(mapLocalitati.get(judetDto.getIdJudet()));
+        });
+
         localitate = view.findViewById(R.id.localitate_auto);
         strada = view.findViewById(R.id.textInputEditTextAddress);
         nr = view.findViewById(R.id.textInputEditTextNr);
@@ -160,12 +169,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<List<LocalitateDto>> call, retrofit2.Response<List<LocalitateDto>> response) {
                 if (response.isSuccessful()) {
-                    localitatiList.clear();
-                    List<LocalitateDto> lista = response.body();
-                    for (LocalitateDto localitateDto : lista) {
-                        localitatiList.add(localitateDto);
-                    }
-                    fillLocalitati();
+
+                    mapLocalitati = createMapLocalitati(response.body());
+
+                    fillLocalitati(mapLocalitati.get(0));
+
                     // Check if the index is within the bounds of the adapter's data
                     if(Utils.currentUser.getAddressDto() != null) {
                         if (Utils.currentUser.getAddressDto().getLocalitate().getIdLocalitate() != null) {
@@ -193,7 +201,21 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void fillLocalitati() {
+    private Map<Integer, List<LocalitateDto>> createMapLocalitati(List<LocalitateDto> localitati) {
+
+        Map<Integer, List<LocalitateDto>> map = localitati.stream().collect(Collectors.groupingBy(
+                LocalitateDto::getIdJudet,
+                LinkedHashMap::new,
+                Collectors.toList()
+                ));
+
+        map.put(0, localitati);
+
+        return map;
+
+    }
+
+    private void fillLocalitati(List<LocalitateDto> localitatiList) {
         adapterLocalitati = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, localitatiList);
         adapterLocalitati.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         localitate.setAdapter(adapterLocalitati);

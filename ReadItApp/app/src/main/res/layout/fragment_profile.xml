@@ -148,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/localitate"
-                android:hint="Address"
+                android:hint="Strada"
                 android:padding="10dp"
                 app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
@@ -169,7 +169,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textInputLayoutAddress"
-                android:hint="Nr"
+                android:hint="Numar"
                 android:padding="10dp"
                 app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
@@ -230,7 +230,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textInputLayoutScara"
-                android:hint="Ap"
+                android:hint="Apartament"
                 android:padding="10dp"
                 app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
