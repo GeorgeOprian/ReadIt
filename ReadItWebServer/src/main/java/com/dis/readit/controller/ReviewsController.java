@@ -25,7 +25,7 @@ public class ReviewsController {
 
 
 	@GetMapping
-	private ResponseEntity<List<BookReviewDto>> getWishList(@RequestParam(name = "bookId") Integer bookId) {
+	private ResponseEntity<List<BookReviewDto>> getReviews(@RequestParam(name = "bookId") Integer bookId) {
 		return ResponseEntity.ok(service.getBookReviews(bookId));
 	}
 
