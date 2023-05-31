@@ -50,7 +50,7 @@ public class MyBooksAdapter extends RecyclerView.Adapter<MyBooksAdapter.BooksVie
     }
 
     public void submitList(List<BookRentResponseDto> books) {
-        this.mItemList.removeIf(bookListDto -> bookListDto == null);
+        this.mItemList.clear();
         this.mItemList.addAll(books);
         notifyDataSetChanged();
     }

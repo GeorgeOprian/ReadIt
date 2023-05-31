@@ -132,20 +132,20 @@ public class MyBooksFragment extends Fragment implements OnMyBooksCLickListener 
     }
 
     private void returnBook(int bookId) {
-        Call<BookDto> call = WebServerAPIBuilder.getInstance().returnBook(books.get(bookId).getRentId());
+        Call<List<BookRentResponseDto>> call = WebServerAPIBuilder.getInstance().returnBook(books.get(bookId).getRentId());
 
-        call.enqueue(new Callback<BookDto>() {
+        call.enqueue(new Callback<List<BookRentResponseDto>>() {
             @Override
-            public void onResponse(Call<BookDto> call, Response<BookDto> response) {
+            public void onResponse(Call<List<BookRentResponseDto>> call, Response<List<BookRentResponseDto>> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Book returned", Toast.LENGTH_LONG).show();
                     books.remove(bookId);
-                    myBooksAdapter.notifyDataSetChanged();
+                    myBooksHistoryAdapter.submitList(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<BookDto> call, Throwable t) {
+            public void onFailure(Call<List<BookRentResponseDto>> call, Throwable t) {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
