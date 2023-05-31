@@ -1,6 +1,5 @@
 package com.dis.readit.controller;
 
-import com.dis.readit.dtos.book.BookDto;
 import com.dis.readit.dtos.book.BookRentRequestDto;
 import com.dis.readit.dtos.book.BookRentResponseDto;
 import com.dis.readit.service.BookRentalService;
@@ -22,7 +21,7 @@ public class RentingController {
 	}
 
 	@PostMapping("/return")
-	public ResponseEntity<BookDto> returnABook(@RequestParam(name = "rentId") Integer rentId) {
+	public ResponseEntity<List<BookRentResponseDto>> returnABook(@RequestParam(name = "rentId") Integer rentId) {
 		return ResponseEntity.ok(service.returnBook(rentId));
 	}
 

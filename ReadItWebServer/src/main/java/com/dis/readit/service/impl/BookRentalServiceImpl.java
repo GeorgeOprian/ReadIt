@@ -1,6 +1,5 @@
 package com.dis.readit.service.impl;
 
-import com.dis.readit.dtos.book.BookDto;
 import com.dis.readit.dtos.book.BookRentRequestDto;
 import com.dis.readit.dtos.book.BookRentResponseDto;
 import com.dis.readit.exception.BookAlreadyRented;
@@ -119,7 +118,7 @@ public class BookRentalServiceImpl implements BookRentalService {
 	}
 
 	@Override
-	public BookDto returnBook(Integer rentId) {
+	public List<BookRentResponseDto> returnBook(Integer rentId) {
 		Optional<BookRental> rentalOptional = rentalRepository.findById(rentId);
 
 		rentalOptional.orElseThrow(() -> new EntityNotFound("There is no book rental with id " + rentId));
@@ -136,7 +135,7 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 		bookRental.setReturned(true);
 
-		Book updatedBook = saveReturnedBook(bookRental, rentedBook);
+		saveReturnedBook(bookRental, rentedBook);
 
 		DataBaseUser adminUser =  userLoaderService.getUserByEmail(DataBaseUser.ADMIN_USER_EMAIL);
 		String subject = "ReadIt Book Return";
@@ -146,7 +145,11 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 		rabbitMQService.sendMessageToEmailService(RabbitMQMessageProducer.EMAIL_ROUTING_KEY, emailRequest);
 
-		return bookMapper.mapToDto(updatedBook);
+		Collection<BookRental> returnedBooks = rentalRepository.findByUserIdReturned(bookRental.getUser().getUserId(), true);
+
+		return returnedBooks.stream()
+				.map(b -> new BookRentResponseDto(b.getRentId(), b.getReturnDate(), b.isReturned(), bookMapper.mapToDto(b.getBook())))
+				.collect(Collectors.toList());
 	}
 
 	@Transactional

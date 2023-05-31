@@ -1,6 +1,5 @@
 package com.dis.readit.service;
 
-import com.dis.readit.dtos.book.BookDto;
 import com.dis.readit.dtos.book.BookRentRequestDto;
 import com.dis.readit.dtos.book.BookRentResponseDto;
 
@@ -11,5 +10,5 @@ public interface BookRentalService {
 
 	List<BookRentResponseDto> loadRentedBooks(String email, boolean returned);
 
-	BookDto returnBook(Integer rentId);
+	List<BookRentResponseDto> returnBook(Integer rentId);
 }
