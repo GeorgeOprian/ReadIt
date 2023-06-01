@@ -40,4 +40,21 @@ public class AddressFullDto {
     public void setJudet(JudetDto judet) {
         this.judet = judet;
     }
+
+    public boolean isEmpty() {
+        if (address != null) {
+            if(address.getStrada() != null) {
+                return false;
+            }
+        } else if (localitate != null) {
+            if (localitate.getNume() != null) {
+                return false;
+            }
+        } else if (judet != null) {
+            if(judet.getNume() != null) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

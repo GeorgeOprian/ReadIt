@@ -38,8 +38,7 @@ import retrofit2.Callback;
 public class SubscriptionFragment extends Fragment implements ActivityResultCaller  {
 
     private View view;
-    private TextView statusValue;
-    private SubscriptionDto subscriptionDto;
+    public static TextView statusValue;
     // A client for interacting with the Google Pay API.
     private PaymentsClient paymentsClient;
     public static Button googlePayButton;

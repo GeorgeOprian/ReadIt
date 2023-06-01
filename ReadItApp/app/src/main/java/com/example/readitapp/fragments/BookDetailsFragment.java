@@ -19,6 +19,7 @@ import com.example.readitapp.activities.MainActivity;
 import com.example.readitapp.api.googlebooks.GoogleBooksAPIBuilder;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.googlebooks.VolumesResponse;
+import com.example.readitapp.model.webserver.SubscriptionDto;
 import com.example.readitapp.model.webserver.book.request.BookRentRequestDto;
 import com.example.readitapp.model.webserver.book.request.BookUserRequestDto;
 import com.example.readitapp.model.webserver.book.response.BookDto;
@@ -54,6 +55,7 @@ public class BookDetailsFragment extends Fragment {
     private CheckBox wishlist;
 
     private BookDto bookDto;
+    private boolean hasSubscription;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,6 +63,7 @@ public class BookDetailsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_book_details, container, false);
 
         initView();
+        getSubscription();
         Bundle bundle = getArguments();
         if(bundle != null) {
             bookDto = (BookDto) bundle.getSerializable(Utils.BOOK);
@@ -125,7 +128,12 @@ public class BookDetailsFragment extends Fragment {
             return;
         }
 
-        if (Utils.currentUser.getAddressDto() == null) {
+        if (!hasSubscription) {
+            Toast.makeText(getContext(), "No subscription", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (Utils.currentUser.getAddressDto().isEmpty()) {
             Toast.makeText(getContext(), "Fill the address", Toast.LENGTH_LONG).show();
             return;
         }
@@ -199,5 +207,26 @@ public class BookDetailsFragment extends Fragment {
         description = view.findViewById(R.id.description_value);
         rentButton = view.findViewById(R.id.rent_button);
         wishlist = view.findViewById(R.id.wishlist);
+    }
+
+    private void getSubscription() {
+        Call<SubscriptionDto> call = WebServerAPIBuilder.getInstance().getAvailability(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
+        call.enqueue(new Callback<SubscriptionDto>() {
+            @Override
+            public void onResponse(Call<SubscriptionDto> call, retrofit2.Response<SubscriptionDto> response) {
+                if (response.isSuccessful()) {
+                    hasSubscription = true;
+                } else if (response.code() == 403) {
+                    hasSubscription = false;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubscriptionDto> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                hasSubscription = false;
+            }
+        });
     }
 }

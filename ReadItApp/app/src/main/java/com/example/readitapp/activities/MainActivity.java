@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.readitapp.R;
+import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.fragments.AdministrationFragment;
 import com.example.readitapp.fragments.BooksFragment;
 import com.example.readitapp.fragments.HomeFragment;
@@ -26,6 +27,7 @@ import com.example.readitapp.fragments.MyBooksTabbedFragment;
 import com.example.readitapp.fragments.ProfileFragment;
 import com.example.readitapp.fragments.SubscriptionFragment;
 import com.example.readitapp.fragments.WishlistFragment;
+import com.example.readitapp.model.webserver.SubscriptionDto;
 import com.example.readitapp.utils.FirebaseConstants;
 import com.example.readitapp.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -41,10 +43,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 import static com.example.readitapp.fragments.SubscriptionFragment.LOAD_PAYMENT_DATA_REQUEST_CODE;
 import static com.example.readitapp.fragments.SubscriptionFragment.googlePayButton;
+import static com.example.readitapp.fragments.SubscriptionFragment.statusValue;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -196,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
                     case Activity.RESULT_OK:
                         PaymentData paymentData = PaymentData.getFromIntent(data);
                         handlePaymentSuccess(paymentData);
+                        addSubscription();
                         break;
 
                     case Activity.RESULT_CANCELED:
@@ -244,5 +252,29 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleError(int statusCode) {
         Log.e("loadPaymentData failed", String.format("Error code: %d", statusCode));
+    }
+
+    private void addSubscription() {
+        SubscriptionDto subscriptionDto = new SubscriptionDto();
+        subscriptionDto.setUserEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = LocalDate.now().plusMonths(1);
+        subscriptionDto.setStartDate(startDate.toString());
+        subscriptionDto.setEndDate(endDate.toString());
+        Call<SubscriptionDto> call = WebServerAPIBuilder.getInstance().createSubscription(subscriptionDto);
+
+        call.enqueue(new Callback<SubscriptionDto>() {
+            @Override
+            public void onResponse(Call<SubscriptionDto> call, retrofit2.Response<SubscriptionDto> response) {
+                if (response.isSuccessful()) {
+                    statusValue.setText("Valid");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubscriptionDto> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
