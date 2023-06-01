@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDate;
-
 public class BookRentRequestDto extends BookUserRequestDto {
 
     @NotNull
