@@ -112,7 +112,7 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
 
         bundle.putSerializable(Utils.BOOK, book);
         bundle.putSerializable(Utils.INSERT, 1);
-        Fragment selectedFragment = new BookFragment();
+        Fragment selectedFragment = new AdminBookDetailsFragment();
         selectedFragment.setArguments(bundle);
         getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, selectedFragment)

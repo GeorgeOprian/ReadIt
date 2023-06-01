@@ -26,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BookFragment extends Fragment {
+public class AdminBookDetailsFragment extends Fragment {
 
     private View view;
     private BookDto bookDto;
@@ -71,7 +71,7 @@ public class BookFragment extends Fragment {
         Map<String, Object> map = new HashMap<>();
         map.put("inStock", inStockValue);
         Call<BookDto> call = WebServerAPIBuilder.getInstance().updateBook(bookDto.getBookId(), map);
-        Utils.hideKeyboard(BookFragment.this);
+        Utils.hideKeyboard(AdminBookDetailsFragment.this);
 
         call.enqueue(new Callback<BookDto>() {
             @Override
@@ -119,7 +119,7 @@ public class BookFragment extends Fragment {
 
     private void insertBook() {
         Call<BookDto> call = WebServerAPIBuilder.getInstance().addBook(bookDto);
-        Utils.hideKeyboard(BookFragment.this);
+        Utils.hideKeyboard(AdminBookDetailsFragment.this);
 
         call.enqueue(new Callback<BookDto>() {
             @Override

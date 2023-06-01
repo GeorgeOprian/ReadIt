@@ -11,12 +11,12 @@ import java.util.List;
 
 // Since this is an object collection, use a FragmentStatePagerAdapter, not a
 // FragmentPagerAdapter.
-public class MyBooksPagerAdapter extends FragmentPagerAdapter {
+public class PagerAdapter extends FragmentPagerAdapter {
 
     private final List<Fragment> fragmentList = new ArrayList<>();
     private final List<String> fragmentTitlesList = new ArrayList<>();
 
-    public MyBooksPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+    public PagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
     }
 

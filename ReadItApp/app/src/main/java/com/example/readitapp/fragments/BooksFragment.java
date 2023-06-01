@@ -168,7 +168,7 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
                     bookDto[0] = response.body();
                     bundle.putSerializable(Utils.BOOK, bookDto[0]);
 
-                    Fragment selectedFragment = new BookDetailsFragment();
+                    Fragment selectedFragment = new BookDetailsTabbedFragment();
                     selectedFragment.setArguments(bundle);
                     getFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container, selectedFragment)
@@ -221,7 +221,7 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(Utils.BOOK, bookDto[0]);
                     bundle.putSerializable(Utils.UPDATE, 0);
-                    Fragment selectedFragment = new BookFragment();
+                    Fragment selectedFragment = new AdminBookDetailsFragment();
                     selectedFragment.setArguments(bundle);
                     getFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container, selectedFragment)
