@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PaymentConstants {
-
     /**
      * Changing this to ENVIRONMENT_PRODUCTION will make the API return chargeable card information.
      * Please refer to the documentation to read about the required steps needed to enable

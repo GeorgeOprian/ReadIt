@@ -1,11 +1,14 @@
 package com.example.readitapp.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,18 +25,26 @@ import com.example.readitapp.fragments.HomeFragment;
 import com.example.readitapp.fragments.MyBooksTabbedFragment;
 import com.example.readitapp.fragments.ProfileFragment;
 import com.example.readitapp.fragments.SubscriptionFragment;
-import com.example.readitapp.fragments.SubscriptionFragment2;
 import com.example.readitapp.fragments.WishlistFragment;
 import com.example.readitapp.utils.FirebaseConstants;
 import com.example.readitapp.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.wallet.AutoResolveHelper;
+import com.google.android.gms.wallet.PaymentData;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.example.readitapp.fragments.SubscriptionFragment.LOAD_PAYMENT_DATA_REQUEST_CODE;
+import static com.example.readitapp.fragments.SubscriptionFragment.googlePayButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -172,5 +183,66 @@ public class MainActivity extends AppCompatActivity {
 
         name.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         Glide.with(this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into(circleImageView);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            // value passed in AutoResolveHelper
+            case LOAD_PAYMENT_DATA_REQUEST_CODE:
+                switch (resultCode) {
+
+                    case Activity.RESULT_OK:
+                        PaymentData paymentData = PaymentData.getFromIntent(data);
+                        handlePaymentSuccess(paymentData);
+                        break;
+
+                    case Activity.RESULT_CANCELED:
+                        // The user cancelled the payment attempt
+                        break;
+
+                    case AutoResolveHelper.RESULT_ERROR:
+                        Status status = AutoResolveHelper.getStatusFromIntent(data);
+                        handleError(status.getStatusCode());
+                        break;
+                }
+
+                // Re-enables the Google Pay payment button.
+                googlePayButton.setClickable(true);
+        }
+    }
+
+    private void handlePaymentSuccess(PaymentData paymentData) {
+
+        // Token will be null if PaymentDataRequest was not constructed using fromJson(String).
+        final String paymentInfo = paymentData.toJson();
+        if (paymentInfo == null) {
+            return;
+        }
+
+        try {
+            JSONObject paymentMethodData = new JSONObject(paymentInfo).getJSONObject("paymentMethodData");
+            // If the gateway is set to "example", no payment information is returned - instead, the
+            // token will only consist of "examplePaymentMethodToken".
+
+            final JSONObject tokenizationData = paymentMethodData.getJSONObject("tokenizationData");
+            final String token = tokenizationData.getString("token");
+            final JSONObject info = paymentMethodData.getJSONObject("info");
+            final String billingName = info.getJSONObject("billingAddress").getString("name");
+            Toast.makeText(
+                    this, getString(R.string.payments_show_name, billingName),
+                    Toast.LENGTH_LONG).show();
+
+            // Logging token string.
+            Log.d("Google Pay token: ", token);
+
+        } catch (JSONException e) {
+            throw new RuntimeException("The selected garment cannot be parsed from the list of elements");
+        }
+    }
+
+    private void handleError(int statusCode) {
+        Log.e("loadPaymentData failed", String.format("Error code: %d", statusCode));
     }
 }
