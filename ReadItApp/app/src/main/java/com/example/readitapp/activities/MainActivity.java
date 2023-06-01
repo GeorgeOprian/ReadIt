@@ -1,5 +1,12 @@
 package com.example.readitapp.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -7,27 +14,15 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-
 import com.bumptech.glide.Glide;
 import com.example.readitapp.R;
-import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.fragments.AdministrationFragment;
 import com.example.readitapp.fragments.BooksFragment;
 import com.example.readitapp.fragments.HomeFragment;
-import com.example.readitapp.fragments.MyBooksFragment;
+import com.example.readitapp.fragments.MyBooksTabbedFragment;
 import com.example.readitapp.fragments.ProfileFragment;
 import com.example.readitapp.fragments.SubscriptionFragment;
 import com.example.readitapp.fragments.WishlistFragment;
-import com.example.readitapp.model.webserver.JudetDto;
-import com.example.readitapp.model.webserver.user.output.UserDto;
 import com.example.readitapp.utils.FirebaseConstants;
 import com.example.readitapp.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -37,11 +32,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -129,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_my_books:
-                selectedFragment = new MyBooksFragment();
+                selectedFragment = new MyBooksTabbedFragment();
                 drawerLayout.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_wishlist:

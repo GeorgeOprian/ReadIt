@@ -1,12 +1,6 @@
 package com.example.readitapp.fragments;
 
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,11 +8,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.example.readitapp.R;
 import com.example.readitapp.adapters.MyBooksAdapter;
 import com.example.readitapp.adapters.OnMyBooksCLickListener;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
-import com.example.readitapp.model.webserver.book.response.BookDto;
 import com.example.readitapp.model.webserver.book.response.BookRentResponseDto;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -29,20 +29,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyBooksFragment extends Fragment implements OnMyBooksCLickListener {
+public class CurrentlyReadingFragment extends Fragment implements OnMyBooksCLickListener  {
 
     private View view;
-    private RecyclerView recyclerViewReading;
-    private RecyclerView recyclerViewHistory;
     private MyBooksAdapter myBooksAdapter;
-    private MyBooksAdapter myBooksHistoryAdapter;
+    private RecyclerView recyclerViewReading;
     private List<BookRentResponseDto> books = new ArrayList<>();
-    private List<BookRentResponseDto> booksHistory = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_my_books, container, false);
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_currently_reading, container, false);
 
         initView();
 
@@ -52,34 +50,6 @@ public class MyBooksFragment extends Fragment implements OnMyBooksCLickListener 
     private void initView() {
         initReadingAdapter();
         loadReadingBooks();
-        initAdapterHistory();
-        loadHistoryBooks();
-    }
-
-    private void loadHistoryBooks() {
-        Call<List<BookRentResponseDto>> call = WebServerAPIBuilder.getInstance().loadReturnedBooks(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-
-        call.enqueue(new Callback<List<BookRentResponseDto>>() {
-            @Override
-            public void onResponse(Call<List<BookRentResponseDto>> call, Response<List<BookRentResponseDto>> response) {
-                if (response.isSuccessful()) {
-                    myBooksHistoryAdapter.submitList(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<BookRentResponseDto>> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    private void initAdapterHistory() {
-        recyclerViewHistory = view.findViewById(R.id.container_history);
-        recyclerViewHistory.setLayoutManager(new LinearLayoutManager(getContext()));
-        myBooksHistoryAdapter = new MyBooksAdapter(booksHistory, this, false);
-        recyclerViewHistory.setAdapter(myBooksHistoryAdapter);
-        registerForContextMenu(recyclerViewHistory);
     }
 
     private void initReadingAdapter() {
@@ -97,6 +67,9 @@ public class MyBooksFragment extends Fragment implements OnMyBooksCLickListener 
             @Override
             public void onResponse(Call<List<BookRentResponseDto>> call, Response<List<BookRentResponseDto>> response) {
                 if (response.isSuccessful()) {
+                    if (response.body().isEmpty()) {
+                        Toast.makeText(getContext(), "You are not reading any books currently.", Toast.LENGTH_LONG).show();
+                    }
                     myBooksAdapter.submitList(response.body());
                 }
             }
@@ -106,6 +79,12 @@ public class MyBooksFragment extends Fragment implements OnMyBooksCLickListener 
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadReadingBooks();
     }
 
     @Override
@@ -140,7 +119,7 @@ public class MyBooksFragment extends Fragment implements OnMyBooksCLickListener 
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Book returned", Toast.LENGTH_LONG).show();
                     books.remove(bookId);
-                    myBooksHistoryAdapter.submitList(response.body());
+                    myBooksAdapter.notifyDataSetChanged();
                 }
             }
 
