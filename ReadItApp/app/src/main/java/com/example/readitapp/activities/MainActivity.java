@@ -22,6 +22,7 @@ import com.example.readitapp.fragments.HomeFragment;
 import com.example.readitapp.fragments.MyBooksTabbedFragment;
 import com.example.readitapp.fragments.ProfileFragment;
 import com.example.readitapp.fragments.SubscriptionFragment;
+import com.example.readitapp.fragments.SubscriptionFragment2;
 import com.example.readitapp.fragments.WishlistFragment;
 import com.example.readitapp.utils.FirebaseConstants;
 import com.example.readitapp.utils.Utils;

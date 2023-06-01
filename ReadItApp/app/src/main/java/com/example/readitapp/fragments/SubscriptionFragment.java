@@ -1,8 +1,10 @@
 package com.example.readitapp.fragments;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultCaller;
@@ -20,8 +22,11 @@ import com.example.readitapp.R;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.webserver.SubscriptionDto;
 import com.example.readitapp.utils.PaymentConstants;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.wallet.AutoResolveHelper;
 import com.google.android.gms.wallet.IsReadyToPayRequest;
@@ -43,7 +48,7 @@ import java.util.Optional;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class SubscriptionFragment extends Fragment implements ActivityResultCaller {
+public class SubscriptionFragment extends Fragment implements ActivityResultCaller  {
 
     private View view;
     private TextView statusValue;
@@ -292,7 +297,7 @@ public class SubscriptionFragment extends Fragment implements ActivityResultCall
         if (request != null) {
             AutoResolveHelper.resolveTask(
                     paymentsClient.loadPaymentData(request),
-                    getActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
+                    requireActivity(), LOAD_PAYMENT_DATA_REQUEST_CODE);
         }
 
     }
@@ -357,4 +362,5 @@ public class SubscriptionFragment extends Fragment implements ActivityResultCall
     private void handleError(int statusCode) {
         Log.e("loadPaymentData failed", String.format("Error code: %d", statusCode));
     }
+
 }
