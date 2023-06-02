@@ -13,8 +13,8 @@ import java.util.List;
 // FragmentPagerAdapter.
 public class PagerAdapter extends FragmentPagerAdapter {
 
-    private final List<Fragment> fragmentList = new ArrayList<>();
-    private final List<String> fragmentTitlesList = new ArrayList<>();
+    private List<Fragment> fragmentList;
+    private List<String> fragmentTitlesList;
 
     public PagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
@@ -39,5 +39,10 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return fragmentTitlesList.get(position);
+    }
+
+    public void initAdapter() {
+        fragmentList = new ArrayList<>();
+        fragmentTitlesList = new ArrayList<>();
     }
 }

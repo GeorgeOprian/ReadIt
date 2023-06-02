@@ -29,18 +29,27 @@ public class MyBooksTabbedFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_my_books_tab_container, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_books_tab_container, container, false);
+
+        initView(view);
+
+        return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
+    private void initView(View view) {
         tableLayout = view.findViewById(R.id.tab_layout);
 
         viewPager = view.findViewById(R.id.view_pager);
         tableLayout.setupWithViewPager(viewPager);
 
-        pagerAdapter = new PagerAdapter(getParentFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        pagerAdapter = new PagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+
+        initAdapter();
+    }
+
+    private void initAdapter() {
+
+        pagerAdapter.initAdapter();
         pagerAdapter.addFragment(new CurrentlyReadingFragment(), "Reading");
         pagerAdapter.addFragment(new ReadingHistoryFragment(), "History");
 
