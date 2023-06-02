@@ -73,7 +73,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
         public void bind(BookReviewDto review) {
 
             userName.setText(review.getUser().getUserName());
-//            nbrStars.setText(review.getNbrStars());
+            nbrStars.setText(review.getNbrStars().toString());
             date.setText(review.getReviewDate());
             content.setText(review.getContent());
 
