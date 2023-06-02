@@ -39,7 +39,6 @@ import retrofit2.Response;
 public class BookDetailsFragment extends Fragment {
 
     private View view;
-    private CoordinatorLayout coordinatorLayout;
     private ImageView poster;
     private TextView title;
     private TextView authors;
