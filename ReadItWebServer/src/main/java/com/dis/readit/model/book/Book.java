@@ -100,7 +100,7 @@ public class Book {
 	}
 
 	public void addReview(BookReview review) {
-		BookReview bookReview = new BookReview(this, review.getUser(), review.getNbrStars(), review.getContent());
+		BookReview bookReview = new BookReview(this, review.getUser(), review.getNbrStars(), review.getContent(), review.getReviewDate());
 		reviews.add(bookReview);
 	}
 

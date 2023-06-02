@@ -62,8 +62,10 @@ public class BookReviewServiceImpl implements BookReviewService {
 		BookReviewDto dto = new BookReviewDto();
 
 		dto.setUser(userMapper.mapToDto(review.getUser()));
+		dto.setBookId(review.getBook().getBookId());
 		dto.setNbrStars(review.getNbrStars());
 		dto.setContent(review.getContent());
+		dto.setReviewDate(review.getReviewDate());
 
 		return dto;
 	}
@@ -75,6 +77,8 @@ public class BookReviewServiceImpl implements BookReviewService {
 		review.setUser(user);
 		review.setNbrStars(dto.getNbrStars());
 		review.setContent(dto.getContent());
+		review.setReviewDate(dto.getReviewDate());
+
 		return review;
 	}
 

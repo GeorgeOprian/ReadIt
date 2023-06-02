@@ -3,6 +3,8 @@ package com.dis.readit.dtos.book;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class BookReviewCreateDto extends BookUserRequestDto {
 
@@ -11,5 +13,8 @@ public class BookReviewCreateDto extends BookUserRequestDto {
 
 	@JsonProperty("content")
 	private String content;
+
+	@JsonProperty("reviewDate")
+	private LocalDate reviewDate;
 
 }

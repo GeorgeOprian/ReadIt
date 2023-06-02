@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity(name = "BookReview")
 @Table(name = "book_review")
@@ -34,10 +35,14 @@ public class BookReview {
 	@Column(name = "content", columnDefinition = "text")
 	private String content;
 
-	public BookReview(Book book, DataBaseUser user, Integer nbrStars, String content) {
+	@Column(name = "review_date")
+	private LocalDate reviewDate;
+
+	public BookReview(Book book, DataBaseUser user, Integer nbrStars, String content, LocalDate reviewDate) {
 		this.book = book;
 		this.user = user;
 		this.nbrStars = nbrStars;
 		this.content = content;
+		this.reviewDate = reviewDate;
 	}
 }
