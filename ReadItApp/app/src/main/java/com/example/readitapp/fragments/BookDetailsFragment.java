@@ -1,24 +1,20 @@
 package com.example.readitapp.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.Fragment;
+
 import com.example.readitapp.R;
-import com.example.readitapp.activities.MainActivity;
-import com.example.readitapp.api.googlebooks.GoogleBooksAPIBuilder;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
-import com.example.readitapp.model.googlebooks.VolumesResponse;
 import com.example.readitapp.model.webserver.SubscriptionDto;
 import com.example.readitapp.model.webserver.book.request.BookRentRequestDto;
 import com.example.readitapp.model.webserver.book.request.BookUserRequestDto;
@@ -33,18 +29,17 @@ import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BookDetailsFragment extends Fragment {
 
     private View view;
+    private CoordinatorLayout coordinatorLayout;
     private ImageView poster;
     private TextView title;
     private TextView authors;
@@ -57,6 +52,7 @@ public class BookDetailsFragment extends Fragment {
     private BookDto bookDto;
     private boolean hasSubscription;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,11 +60,7 @@ public class BookDetailsFragment extends Fragment {
 
         initView();
         getSubscription();
-        Bundle bundle = getArguments();
-        if(bundle != null) {
-            bookDto = (BookDto) bundle.getSerializable(Utils.BOOK);
-            fillBookView();
-        }
+        addBookDetails();
 
         rentButton.setOnClickListener(view -> rentBook());
         wishlist.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -80,6 +72,30 @@ public class BookDetailsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void addBookDetails() {
+        Bundle bundle = getArguments();
+
+        Integer bookId = (Integer) bundle.get(Utils.BOOK_ID);
+
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Call<BookDto> call = WebServerAPIBuilder.getInstance().getBookById(bookId, email);
+
+        call.enqueue(new Callback<BookDto>() {
+            @Override
+            public void onResponse(Call<BookDto> call, Response<BookDto> response) {
+                if (response.isSuccessful()) {
+                    bookDto = response.body();
+                    fillBookView();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookDto> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void removeBookFromWishlist() {
@@ -144,17 +160,17 @@ public class BookDetailsFragment extends Fragment {
             @Override
             public void onResponse(Call<BookRentResponseDto> call, retrofit2.Response<BookRentResponseDto> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Book rented", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Book rented", Toast.LENGTH_LONG).show();
                 } else if (response.code() == 404) {
-                    Toast.makeText(getContext(), "There are no volumes available in stock for this book. Sorry to inform you.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "There are no volumes available in stock for this book. Sorry to inform you.", Toast.LENGTH_LONG).show();
                 } else if (response.code() == 403) {
-                    Toast.makeText(getContext(), "You have already rented this book", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "You have already rented this book", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<BookRentResponseDto> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

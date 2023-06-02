@@ -28,25 +28,38 @@ public class BookDetailsTabbedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_book_details_tabbed, container, false);
+        View view = inflater.inflate(R.layout.fragment_book_details_tabbed, container, false);
+
+        initView(view);
+
+        return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
+    private void initView(View view) {
         tableLayout = view.findViewById(R.id.tab_layout);
 
         viewPager = view.findViewById(R.id.view_pager);
         tableLayout.setupWithViewPager(viewPager);
 
-        pagerAdapter = new PagerAdapter(getParentFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        pagerAdapter = new PagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
+        initAdapter();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initAdapter();
+    }
+
+    private void initAdapter() {
         BookDetailsFragment bookDetailsFragment = new BookDetailsFragment();
         bookDetailsFragment.setArguments(getArguments());
 
         ReviewsFragment reviewsFragment = new ReviewsFragment();
         reviewsFragment.setArguments(getArguments());
 
+        pagerAdapter.initAdapter();
         pagerAdapter.addFragment(bookDetailsFragment, "Details");
         pagerAdapter.addFragment(reviewsFragment, "Reviews");
 

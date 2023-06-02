@@ -155,33 +155,17 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
 
     @Override
     public void onBookClick(BookListDto book) {
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        Call<BookDto> call = WebServerAPIBuilder.getInstance().getBookById(book.getBookId(), email);
 
-        call.enqueue(new Callback<BookDto>() {
-            @Override
-            public void onResponse(Call<BookDto> call, Response<BookDto> response) {
-                if (response.isSuccessful()) {
-                    Bundle bundle = new Bundle();
-                    BookDto[] bookDto = new BookDto[1];
+        Bundle bundle = new Bundle();
 
-                    bookDto[0] = response.body();
-                    bundle.putSerializable(Utils.BOOK, bookDto[0]);
+        bundle.putSerializable(Utils.BOOK_ID, book.getBookId());
 
-                    Fragment selectedFragment = new BookDetailsTabbedFragment();
-                    selectedFragment.setArguments(bundle);
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, selectedFragment)
-                            .addToBackStack("tag")
-                            .commit();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BookDto> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+        Fragment selectedFragment = new BookDetailsTabbedFragment();
+        selectedFragment.setArguments(bundle);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, selectedFragment)
+                .addToBackStack("tag")
+                .commit();
     }
 
     @Override
@@ -219,7 +203,7 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
                 if (response.isSuccessful()) {
                     bookDto[0] = response.body();
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(Utils.BOOK, bookDto[0]);
+                    bundle.putSerializable(Utils.BOOK_ID, bookDto[0]);
                     bundle.putSerializable(Utils.UPDATE, 0);
                     Fragment selectedFragment = new AdminBookDetailsFragment();
                     selectedFragment.setArguments(bundle);
