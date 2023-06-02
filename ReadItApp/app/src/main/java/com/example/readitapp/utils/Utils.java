@@ -18,7 +18,7 @@ import retrofit2.Callback;
 public class Utils {
 
     public static final String USER_ADMIN = "readitapp.adm@gmail.com";
-    public static final String BOOK = "book";
+    public static final String BOOK_ID = "bookId";
     public static final String INSERT = "insert";
     public static final String UPDATE = "update";
     public static UserDto currentUser = new UserDto();

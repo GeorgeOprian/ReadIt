@@ -46,7 +46,7 @@ public class AdminBookDetailsFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if(bundle != null) {
-            bookDto = (BookDto) bundle.getSerializable(Utils.BOOK);
+            bookDto = (BookDto) bundle.getSerializable(Utils.BOOK_ID);
             fillBookCardView();
         }
 
