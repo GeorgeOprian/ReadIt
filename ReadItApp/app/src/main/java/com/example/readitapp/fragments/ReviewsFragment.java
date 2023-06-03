@@ -43,10 +43,17 @@ public class ReviewsFragment extends Fragment implements OnReviewClickListener {
         view = inflater.inflate(R.layout.fragment_reviews, container, false);
 
         initView();
-        addReview.setOnClickListener(v -> getParentFragment().getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new AddReviewFragment()).addToBackStack("tag")
-                .commit());
+
+        addReview.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Utils.BOOK_ID, bookId);
+            Fragment selectedFragment = new AddReviewFragment();
+            selectedFragment.setArguments(bundle);
+            getParentFragment().getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, selectedFragment).addToBackStack("tag")
+                    .commit();
+        });
 
         return view;
     }

@@ -9,9 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import com.example.readitapp.R;
+import com.example.readitapp.api.webserver.WebServerAPIBuilder;
+import com.example.readitapp.model.webserver.book.request.BookUserRequestDto;
+import com.example.readitapp.model.webserver.book.response.BookDto;
+import com.example.readitapp.model.webserver.review.BookReviewCreateDto;
+import com.example.readitapp.model.webserver.review.BookReviewDto;
+import com.example.readitapp.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.time.LocalDate;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class AddReviewFragment extends Fragment {
 
@@ -27,12 +40,7 @@ public class AddReviewFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_add_review, container, false);
 
         initView();
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        send.setOnClickListener(v -> addReview());
 
         return view;
     }
@@ -41,5 +49,31 @@ public class AddReviewFragment extends Fragment {
         ratingBar = view.findViewById(R.id.rating_bar);
         content = view.findViewById(R.id.textInputEditTextLike);
         send = view.findViewById(R.id.sendbtn);
+    }
+
+    private void addReview() {
+        BookReviewCreateDto bookReviewCreateDto = new BookReviewCreateDto();
+        bookReviewCreateDto.setNbrStars((int) ratingBar.getRating());
+        bookReviewCreateDto.setContent(content.getText().toString());
+        bookReviewCreateDto.setReviewDate(LocalDate.now().toString());
+        bookReviewCreateDto.setUserEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        Bundle bundle = getArguments();
+        Integer bookId = (Integer) bundle.get(Utils.BOOK_ID);
+        bookReviewCreateDto.setBookId(bookId);
+
+        Call<BookReviewDto> call = WebServerAPIBuilder.getInstance().addReview(bookReviewCreateDto);
+        call.enqueue(new Callback<BookReviewDto>() {
+            @Override
+            public void onResponse(Call<BookReviewDto> call, retrofit2.Response<BookReviewDto> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Review added", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookReviewDto> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
