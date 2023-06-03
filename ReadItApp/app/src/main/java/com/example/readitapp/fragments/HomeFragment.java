@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 import com.example.readitapp.R;
@@ -22,6 +25,25 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        ImageView books = view.findViewById(R.id.books);
+        ImageView boy = view.findViewById(R.id.boy);
+        ImageView girl = view.findViewById(R.id.girl);
+
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        books.setAnimation(animation);
+        boy.setAnimation(animation);
+        girl.setAnimation(animation);
+
+        books.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new BooksFragment()).addToBackStack("tag")
+                        .commit();
+            }
+        });
 
         return view;
     }
