@@ -53,7 +53,7 @@ public class AddReviewFragment extends Fragment {
 
     private void addReview() {
         BookReviewCreateDto bookReviewCreateDto = new BookReviewCreateDto();
-        bookReviewCreateDto.setNbrStars((int) ratingBar.getRating());
+        bookReviewCreateDto.setNbrStars((double) ratingBar.getRating());
         bookReviewCreateDto.setContent(content.getText().toString());
         bookReviewCreateDto.setReviewDate(LocalDate.now().toString());
         bookReviewCreateDto.setUserEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());

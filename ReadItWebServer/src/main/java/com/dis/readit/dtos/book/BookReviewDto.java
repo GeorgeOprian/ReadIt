@@ -17,7 +17,7 @@ public class BookReviewDto implements Serializable {
 	private Integer bookId;
 
 	@JsonProperty("nbrStars")
-	private Integer nbrStars;
+	private Double nbrStars;
 
 	@JsonProperty("content")
 	private String content;

@@ -8,7 +8,7 @@ public class BookReviewCreateDto extends BookUserRequestDto {
 
     @SerializedName("nbrStars")
     @Expose
-    private Integer nbrStars;
+    private Double nbrStars;
 
     @SerializedName("content")
     @Expose
@@ -18,11 +18,11 @@ public class BookReviewCreateDto extends BookUserRequestDto {
     @Expose
     private String reviewDate;
 
-    public Integer getNbrStars() {
+    public Double getNbrStars() {
         return nbrStars;
     }
 
-    public void setNbrStars(Integer nbrStars) {
+    public void setNbrStars(Double nbrStars) {
         this.nbrStars = nbrStars;
     }
 
