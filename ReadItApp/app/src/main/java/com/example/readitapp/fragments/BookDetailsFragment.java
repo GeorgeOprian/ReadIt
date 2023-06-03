@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.readitapp.R;
@@ -51,7 +50,6 @@ public class BookDetailsFragment extends Fragment {
     private BookDto bookDto;
     private boolean hasSubscription;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,8 +62,11 @@ public class BookDetailsFragment extends Fragment {
         rentButton.setOnClickListener(view -> rentBook());
         wishlist.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                addBookToWishlist();
+                if (!bookDto.getInUserWishList()) {
+                    addBookToWishlist();
+                }
             } else {
+                bookDto.setInUserWishList(false);
                 removeBookFromWishlist();
             }
         });

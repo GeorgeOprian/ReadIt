@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.readitapp.R;
+import com.example.readitapp.activities.MainActivity;
 import com.example.readitapp.adapters.BooksListAdapter;
 import com.example.readitapp.adapters.OnBookListClickListener;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
@@ -162,9 +163,10 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
 
         Fragment selectedFragment = new BookDetailsTabbedFragment();
         selectedFragment.setArguments(bundle);
+        MainActivity.skipFragment = true;
         getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, selectedFragment)
-                .addToBackStack("tag")
+                .addToBackStack("avoid")
                 .commit();
     }
 
