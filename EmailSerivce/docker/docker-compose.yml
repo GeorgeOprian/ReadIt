@@ -1,30 +1,6 @@
 version: "3.7"
 
 services:
-
-  # api-gateway:
-    # container_name: api-gateway
-    # image: alexbnicolae/api-gateway
-    # build:
-    #   context: .
-    # ports:
-    #   - "8080:8080"
-    # links:
-    #   - email-service-app
-    #   - post-service-app
-    # networks:
-    #   - public
-    #   - infrastucture
-  
-  # post-service-app: #This is the name of our Nextjs application.
-  #   container_name: post-service-app
-  #   image: alexbnicolae/post-service-app
-  #   networks:
-  #     - public
-  #     - infrastucture
-  #   ports: #This is used to map the container’s ports to the host machine.
-  #     - "127.0.0.1:3000:3000"
-
   postgres:
     container_name: email-service-postgres
     image: postgres
@@ -58,7 +34,7 @@ services:
         target: /etc/rabbitmq/rabbitmq-defs.json
 
   email-service-app:
-    # container_name: email-service-app
+    container_name: email-service-app
     image: georgeoprian/email-service-app
     ports:
       - "127.0.0.1:8081:8080"
