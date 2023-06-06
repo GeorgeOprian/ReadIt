@@ -28,6 +28,7 @@ import com.example.readitapp.model.webserver.book.request.OutputBookModel;
 import com.example.readitapp.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -155,7 +156,8 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
             book.setThumbnail(new ThumbnailDto(imageLinks.getSmallThumbnail(), imageLinks.getThumbnail()));
         }
 
-        List<CategoryDto> categories = volumeInfo.getCategories().stream().map(CategoryDto::new).collect(Collectors.toList());
+        List<String> categoriesFromResponse = volumeInfo.getCategories() != null? volumeInfo.getCategories(): new ArrayList<>();
+        List<CategoryDto> categories = categoriesFromResponse.stream().map(CategoryDto::new).collect(Collectors.toList());
         book.setCategories(categories);
 
         return book;
