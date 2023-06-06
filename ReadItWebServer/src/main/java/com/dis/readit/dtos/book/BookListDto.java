@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -30,6 +31,6 @@ public class BookListDto implements Serializable {
 	private ThumbnailDto thumbnail;
 
 	@JsonProperty("categories")
-	private List<CategoryDto> categories;
+	private List<CategoryDto> categories = new ArrayList<>();
 
 }
