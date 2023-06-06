@@ -15,6 +15,7 @@ import com.example.readitapp.model.webserver.book.response.BookListDto;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -89,6 +90,7 @@ public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private final TextView title;
         private final TextView authors;
         private final TextView rating;
+        private final TextView category;
         private final View view;
 
         public ItemViewHolder(@NonNull View view) {
@@ -96,7 +98,8 @@ public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             poster = view.findViewById(R.id.poster);
             title = view.findViewById(R.id.title);
             authors = view.findViewById(R.id.author_value);
-            rating = view.findViewById(R.id.category_value);
+            category = view.findViewById(R.id.category_value);
+            rating = null;// view.findViewById(R.id.category_value);
 
             this.view = view;
 
@@ -109,11 +112,20 @@ public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             title.setText(book.getTitle());
             authors.setText(book.getAuthor());
 
-            if (book.getRatingsCount() != null && book.getRatingsCount() != 0) {
-                rating.setText(book.getRatingsCount().toString());
+            List<String> categoriesString = book.getCategories().stream().map(categoryDto -> categoryDto.getCategoryName()).collect(Collectors.toList());
+            String categories = String.join(", ", categoriesString);
+
+            if (categories != null) {
+                category.setText(categories);
             } else {
-                rating.setText("");
+                category.setText("");
             }
+
+//            if (book.getRatingsCount() != null && book.getRatingsCount() != 0) {
+//                rating.setText(book.getRatingsCount().toString());
+//            } else {
+//                rating.setText("");
+//            }
 
             view.setOnClickListener(v -> bookClickListener.onBookClick(book));
         }
