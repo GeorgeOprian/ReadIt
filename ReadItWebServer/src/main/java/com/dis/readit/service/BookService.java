@@ -10,7 +10,7 @@ public interface BookService {
 
 	BookDto insertBook(BookDto request);
 
-	PageDto<BookListDto> loadListBooks(Integer pageNumber, Integer pageSize, String sort);
+	PageDto<BookListDto> loadListBooks(String query, Integer pageNumber, Integer pageSize, String sort);
 
 	BookDto findBookById(String email, Integer bookId);
 

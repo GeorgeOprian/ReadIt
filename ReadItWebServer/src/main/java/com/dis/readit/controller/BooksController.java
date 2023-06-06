@@ -25,17 +25,18 @@ public class BooksController {
 	}
 
 	@GetMapping("/all")
-	public ResponseEntity<PageDto<BookListDto>> getAllBooks(@RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+	public ResponseEntity<PageDto<BookListDto>> getAllBooks(@RequestParam(name = "title", defaultValue = "") String title,
+													@RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
 													@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
 													@RequestParam(name = "sortBy", defaultValue = "title", required = false) String sortBy) {
-		return ResponseEntity.ok(service.loadListBooks(pageNumber, pageSize, sortBy));
+		return ResponseEntity.ok(service.loadListBooks(title, pageNumber, pageSize, sortBy));
 	}
 
 	@GetMapping
 	public ResponseEntity<BookDto> getById(@RequestParam(name = "bookId", defaultValue = "1") Integer bookId, @RequestParam(name = "email") String email) {
 		return ResponseEntity.ok(service.findBookById(email, bookId));
 	}
-	@PatchMapping(path = "/updatebook/{bookId}")
+	@PatchMapping("/updatebook/{bookId}")
 	public ResponseEntity<BookDto> updateBook(@PathVariable(name = "bookId") Integer bookId, @RequestBody Map<String, Object> body) {
 		return ResponseEntity.ok(service.updateBook(bookId, body));
 	}

@@ -104,10 +104,10 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public PageDto<BookListDto> loadListBooks(Integer pageNumber, Integer pageSize, String sortBy) {
-		PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sortBy);
+	public PageDto<BookListDto> loadListBooks(String title, Integer pageNumber, Integer pageSize, String sortBy) {
+		PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.Direction.ASC, sortBy.trim());
 
-		Page<Book> pagedBooks = bookRepository.findAll(pageRequest);
+		Page<Book> pagedBooks = bookRepository.findAllByTitle(title, pageRequest);
 
 		Page<BookListDto> pageBooksDtos = pagedBooks.map(this::createListBookDto);
 		return PageMapper.mapToDto(pageBooksDtos);
