@@ -6,6 +6,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.BooksFragment">
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        app:queryHint="Enter Book Title"
+        app:iconifiedByDefault="false"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/searchview_background"
+        app:queryBackground="@android:color/transparent" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,7 +30,7 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="70dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="80dp"
             app:layout_constraintVertical_bias="1.0" />

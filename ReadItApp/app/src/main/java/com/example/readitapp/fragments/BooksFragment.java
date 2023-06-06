@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,11 +43,14 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
     private RecyclerView recyclerView;
     private View view;
     private BooksListAdapter booksListAdapter;
+    private SearchView searchView;
     private boolean isLoading = false;
     private List<BookListDto> books = new ArrayList<>();
 
     private int page = 0;
     private long totalSize = 0;
+    private long loadedElements = 0;
+    private boolean searchedByTitle = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,9 +65,26 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
     private void initView() {
         recyclerView = view.findViewById(R.id.container);
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext()));
+        searchView = view.findViewById(R.id.search_bar);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+
+                loadBooks(query, 0, 100);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         initAdapter();
-        loadAllBooks(page);
+        loadBooks("", page, DEFAULT_PAGE_SIZE);
         initScrollListener();
     }
 
@@ -93,6 +114,10 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
+                if (searchedByTitle) {
+                    return;
+                }
+
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 
                 if (!isLoading) {
@@ -117,8 +142,8 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
                 booksListAdapter.notifyItemRemoved(position);
             }
 
-            if (books.size() < totalSize) {
-                loadAllBooks(++page);
+            if (loadedElements < totalSize) {
+                loadBooks("", ++page, DEFAULT_PAGE_SIZE);
                 booksListAdapter.notifyDataSetChanged();
             }
             isLoading = false;
@@ -131,18 +156,27 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
         registerForContextMenu(recyclerView);
     }
 
-    private void loadAllBooks(int page) {
-        Call<PageDto<BookListDto>> call = WebServerAPIBuilder.getInstance().getBookById(page, DEFAULT_PAGE_SIZE, "title");
+    private void loadBooks(String title, int pageNumber, int pageSize) {
+        Call<PageDto<BookListDto>> call = WebServerAPIBuilder.getInstance().getBooks(title, pageNumber, pageSize, "title");;
 
         call.enqueue(new Callback<PageDto<BookListDto>>() {
             @Override
             public void onResponse(Call<PageDto<BookListDto>> call, Response<PageDto<BookListDto>> response) {
                 if (response.isSuccessful()) {
                     PageDto<BookListDto> body = response.body();
-                    if(response.body().getTotalSize() != totalSize) {
-                        totalSize = response.body().getTotalSize();
+                    if(body.getTotalSize() != totalSize) {
+                        totalSize = body.getTotalSize();
                     }
-                    booksListAdapter.submitList(body.getContent());
+
+                    boolean isTitleEmpty = title.trim().isEmpty();
+                    if (!isTitleEmpty) { //book was searched by title
+                        booksListAdapter.replaceList(body.getContent());
+                        searchedByTitle = true;
+                    } else {
+                        booksListAdapter.submitList(body.getContent());
+                        searchedByTitle = false;
+                        loadedElements = body.getPageNumber() * DEFAULT_PAGE_SIZE + body.getPageSize();
+                    }
                 }
             }
 

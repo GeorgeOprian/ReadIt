@@ -37,7 +37,7 @@ public interface WebServerAPIService {
     int DEFAULT_PAGE_SIZE = 4;
 
     @GET("/books/all")
-    Call<PageDto<BookListDto>> getBookById(@Query("pageNumber") Integer pageNumber, @Query("pageSize") Integer pageSize, @Query("sortBy") String sortBy);
+    Call<PageDto<BookListDto>> getBooks(@Query("title") String title, @Query("pageNumber") Integer pageNumber, @Query("pageSize") Integer pageSize, @Query("sortBy") String sortBy);
 
     @GET("/books")
     Call<BookDto> getBookById(@Query("bookId") Integer bookId, @Query("email") String email);

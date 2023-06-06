@@ -77,6 +77,12 @@ public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
+    public void replaceList(List<BookListDto> books) {
+        this.mItemList.clear();
+        this.mItemList.addAll(books);
+        notifyDataSetChanged();
+    }
+
     public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView poster;
