@@ -118,6 +118,17 @@ public class AdminBookDetailsFragment extends Fragment {
     }
 
     private void insertBook() {
+
+        String inStock = inStockTextView.getText().toString();
+        int inStockValue;
+        if (inStock != null) {
+            inStockValue = Integer.valueOf(inStock);
+        } else {
+            inStockValue = 0;
+        }
+
+        bookDto.setInStock(inStockValue);
+
         Call<BookDto> call = WebServerAPIBuilder.getInstance().addBook(bookDto);
         Utils.hideKeyboard(AdminBookDetailsFragment.this);
 
