@@ -30,7 +30,7 @@ public class BookReview {
 	private DataBaseUser user;
 
 	@Column(name = "nbr_stars")
-	private Integer nbrStars;
+	private Double nbrStars;
 
 	@Column(name = "content", columnDefinition = "text")
 	private String content;
@@ -38,7 +38,7 @@ public class BookReview {
 	@Column(name = "review_date")
 	private LocalDate reviewDate;
 
-	public BookReview(Book book, DataBaseUser user, Integer nbrStars, String content, LocalDate reviewDate) {
+	public BookReview(Book book, DataBaseUser user, Double nbrStars, String content, LocalDate reviewDate) {
 		this.book = book;
 		this.user = user;
 		this.nbrStars = nbrStars;

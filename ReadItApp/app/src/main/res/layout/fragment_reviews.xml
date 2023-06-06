@@ -11,14 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/addReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="70dp"
+            android:fontFamily="serif"
+            android:text="Add review"
+            android:layout_below="@id/container"
+            android:textColor="@color/black" />
     </RelativeLayout>
 
 </FrameLayout>

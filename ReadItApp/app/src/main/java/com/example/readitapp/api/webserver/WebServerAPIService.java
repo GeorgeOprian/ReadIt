@@ -10,6 +10,7 @@ import com.example.readitapp.model.webserver.book.response.BookRentResponseDto;
 import com.example.readitapp.model.webserver.book.response.BookDto;
 import com.example.readitapp.model.webserver.book.response.BookListDto;
 import com.example.readitapp.model.webserver.book.response.PageDto;
+import com.example.readitapp.model.webserver.review.BookReviewCreateDto;
 import com.example.readitapp.model.webserver.review.BookReviewDto;
 import com.example.readitapp.model.webserver.user.input.UserCreateDto;
 import com.example.readitapp.model.webserver.user.output.UserDto;
@@ -89,4 +90,7 @@ public interface WebServerAPIService {
 
     @GET("/reviews")
     Call<List<BookReviewDto>> loadReviews(@Query("bookId") Integer bookId);
+
+    @POST("/reviews/add")
+    Call<BookReviewDto> addReview(@Body BookReviewCreateDto bookReviewCreateDto);
 }

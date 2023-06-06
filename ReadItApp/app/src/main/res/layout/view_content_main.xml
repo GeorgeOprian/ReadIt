@@ -22,7 +22,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:titleTextColor="#F8F6F7" />
+                app:titleTextColor="#F8F6F7"
+                android:background="#EA0001"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 

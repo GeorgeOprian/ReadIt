@@ -2,7 +2,6 @@ package com.example.readitapp.fragments;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -14,8 +13,6 @@ import android.view.ViewGroup;
 import com.example.readitapp.R;
 import com.example.readitapp.adapters.PagerAdapter;
 import com.google.android.material.tabs.TabLayout;
-
-import javax.annotation.Nullable;
 
 public class BookDetailsTabbedFragment extends Fragment {
 
@@ -50,6 +47,7 @@ public class BookDetailsTabbedFragment extends Fragment {
     public void onResume() {
         super.onResume();
         initAdapter();
+
     }
 
     private void initAdapter() {

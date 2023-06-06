@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class BookReviewCreateDto extends BookUserRequestDto {
 
 	@JsonProperty("nbrStars")
-	private Integer nbrStars;
+	private Double nbrStars;
 
 	@JsonProperty("content")
 	private String content;

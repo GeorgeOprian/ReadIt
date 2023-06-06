@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -31,6 +32,7 @@ public class ReviewsFragment extends Fragment implements OnReviewClickListener {
     private RecyclerView recyclerView;
     private ReviewsAdapter adapter;
     private List<BookReviewDto> reviews = new ArrayList<>();
+    private Button addReview;
 
     private Integer bookId;
 
@@ -42,6 +44,17 @@ public class ReviewsFragment extends Fragment implements OnReviewClickListener {
 
         initView();
 
+        addReview.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(Utils.BOOK_ID, bookId);
+            Fragment selectedFragment = new AddReviewFragment();
+            selectedFragment.setArguments(bundle);
+            getParentFragment().getFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, selectedFragment).addToBackStack("tag")
+                    .commit();
+        });
+
         return view;
     }
 
@@ -52,6 +65,7 @@ public class ReviewsFragment extends Fragment implements OnReviewClickListener {
         bookId = (Integer) bundle.get(Utils.BOOK_ID);
 
         loadReviews();
+        addReview = view.findViewById(R.id.addReview);
     }
 
     private void loadReviews() {

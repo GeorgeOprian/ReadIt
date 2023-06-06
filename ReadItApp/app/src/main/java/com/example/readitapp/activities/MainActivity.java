@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.readitapp.R;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private BottomNavigationView bottomNavigationView;
     private GoogleSignInClient mGoogleSignInClient;
+    public static boolean skipFragment = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +182,14 @@ public class MainActivity extends AppCompatActivity {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (skipFragment) {
+            fragmentManager.popBackStack("avoid", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            skipFragment = false; // Reset the flag
+            return;
+        }
+
         super.onBackPressed();
     }
 
