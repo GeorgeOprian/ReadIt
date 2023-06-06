@@ -127,7 +127,7 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
 
         book.setTitle(volumeInfo.getTitle());
 
-        if (volumeInfo.getAuthors() != null && volumeInfo.getAuthors().isEmpty()) {
+        if (volumeInfo.getAuthors() != null && !volumeInfo.getAuthors().isEmpty()) {
             book.setAuthor(String.join(", ", volumeInfo.getAuthors()));
         } else {
             book.setAuthor("");
