@@ -16,6 +16,18 @@ public class PageDto<T extends Serializable> implements Serializable {
         return content;
     }
 
+    public Long getOffset() {
+        return offset;
+    }
+
+    public Integer getPageNumber() {
+        return pageNumber;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
     public Integer getTotalPages() {
         return totalPages;
     }
