@@ -30,6 +30,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             app:labelVisibilityMode="labeled"
+            android:background="#EA0001"
+            app:itemTextColor="@color/white"
+            app:itemIconTint="@color/white"
             app:menu="@menu/menu_bottom_navigation" />
 
     </RelativeLayout>
