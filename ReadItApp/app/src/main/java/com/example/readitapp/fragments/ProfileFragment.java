@@ -216,7 +216,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void fillLocalitati(List<LocalitateDto> localitatiList) {
-        adapterLocalitati = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, localitatiList);
+        if(localitatiList != null) {
+            adapterLocalitati = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, localitatiList);
+        } else {
+            adapterLocalitati = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
+        }
         adapterLocalitati.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         localitate.setAdapter(adapterLocalitati);
         adapterLocalitati.notifyDataSetChanged();
