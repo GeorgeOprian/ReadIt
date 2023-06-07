@@ -34,4 +34,5 @@
     <string name="flat">Flat</string>
     <string name="stair">Stair</string>
     <string name="category">Category: </string>
+    <string name="stock">Stock</string>
 </resources>

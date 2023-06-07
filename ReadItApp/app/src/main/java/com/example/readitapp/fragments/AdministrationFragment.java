@@ -108,6 +108,9 @@ public class AdministrationFragment extends Fragment implements OnAdminBookClick
 
     @Override
     public void onItemClick(Item item) {
+        title.setText("");
+        author.setText("");
+
         Bundle bundle = new Bundle();
         BookDto book = createBook(new OutputBookModel(item, 0));
 

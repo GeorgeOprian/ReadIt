@@ -40,7 +40,7 @@ public class AdminBookDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_book, container, false);
+        view = inflater.inflate(R.layout.fragment_book_details_adm, container, false);
 
         initView();
 
