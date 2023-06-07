@@ -9,7 +9,7 @@
     <string name="search_books">Search for books</string>
     <string name="title">Title</string>
     <string name="search">Search</string>
-    <string name="author">Author</string>
+    <string name="author">Author: </string>
     <string name="app_name">ReadIt</string>
     <string name="add">Add</string>
     <string name="books">Books</string>
@@ -33,4 +33,5 @@
     <string name="number">Number</string>
     <string name="flat">Flat</string>
     <string name="stair">Stair</string>
+    <string name="category">Category: </string>
 </resources>

@@ -4,7 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background"
     tools:context=".fragments.AdministrationFragment">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,6 +24,7 @@
             android:padding="10dp"
             android:text="@string/search_books"
             android:textAlignment="center"
+            android:textColor="@color/black"
             android:textSize="40sp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -28,6 +35,9 @@
             android:layout_below="@+id/textView"
             android:hint="@string/title"
             android:padding="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -47,6 +57,8 @@
             android:layout_below="@+id/textInputLayoutTitle"
             android:hint="@string/author"
             android:padding="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -68,16 +80,19 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/container"
-            android:layout_width="401dp"
-            android:layout_height="408dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_below="@+id/search_button"
             android:layout_centerInParent="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
+            android:background="@android:color/transparent"
             app:layout_constraintVertical_bias="1.0" />
 
     </RelativeLayout>
+
+    </ScrollView>
 
 </FrameLayout>
