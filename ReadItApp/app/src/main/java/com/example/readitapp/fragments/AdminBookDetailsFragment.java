@@ -38,6 +38,7 @@ public class AdminBookDetailsFragment extends Fragment {
     private TextView title;
     private TextView authors;
     private TextView category;
+    private TextView rating;
     private Button saveButton;
     private TextInputEditText inStockTextView;
 
@@ -107,6 +108,12 @@ public class AdminBookDetailsFragment extends Fragment {
             category.setText("");
         }
 
+        if (bookDto.getAverageRating() != null && bookDto.getAverageRating() != 0) {
+            rating.setText(bookDto.getAverageRating().toString());
+        } else {
+            rating.setText("0");
+        }
+
         if (bookDto.getInStock() != null) {
             inStockTextView.setText(bookDto.getInStock().toString());
         }
@@ -119,6 +126,7 @@ public class AdminBookDetailsFragment extends Fragment {
         category = view.findViewById(R.id.category_value);
         saveButton = view.findViewById(R.id.save_button);
         inStockTextView = view.findViewById(R.id.textInputEditTextStock);
+        rating = view.findViewById(R.id.textViewRatingValue);
     }
 
     private void insertBook() {

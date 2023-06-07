@@ -124,12 +124,52 @@
 
         </androidx.cardview.widget.CardView>
 
+        <TextView
+            android:id="@+id/textViewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:padding="10dp"
+            android:text="@string/rating"
+            android:textColor="@color/black"
+            android:layout_below="@+id/cardView"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textViewRatingValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:padding="10dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/cardView"
+            android:layout_toRightOf="@id/textViewRating"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textViewRatingStar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:fontFamily="serif"
+            android:text=""
+            android:textColor="@color/black"
+            android:layout_marginTop="17dp"
+            android:layout_below="@id/cardView"
+            android:layout_toRightOf="@id/textViewRatingValue"
+            android:background="@drawable/ic_baseline_star_border_24"
+            android:textSize="15sp" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutStock"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cardView"
+            android:layout_below="@+id/textViewRating"
             android:hint="@string/stock"
             android:padding="5dp"
             android:layout_marginLeft="15dp"

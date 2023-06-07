@@ -1,97 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background"
+    android:background="@drawable/background_mirror"
     tools:context=".fragments.AdministrationFragment">
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/textView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="serif"
-            android:padding="10dp"
-            android:text="@string/search_books"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="40sp" />
+            android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutTitle"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView"
-            android:hint="@string/title"
-            android:padding="10dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditTextTitle"
+            <TextView
+                android:id="@+id/textView"
                 android:layout_width="match_parent"
-                android:layout_height="59dp"
+                android:layout_height="wrap_content"
                 android:fontFamily="serif"
-                android:textColor="@color/black" />
+                android:padding="10dp"
+                android:text="@string/search_books"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="40sp" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutAuthor"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textInputLayoutTitle"
-            android:hint="@string/author"
-            android:padding="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEditTextAuthor"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutTitle"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="59dp"
-                android:fontFamily="serif"
-                android:textColor="@color/black" />
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView"
+                android:layout_marginLeft="85dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="15dp"
+                android:hint="@string/title"
+                android:padding="10dp"
+                app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="59dp"
+                    android:fontFamily="serif"
+                    android:textColor="@color/black" />
 
-        <Button
-            android:id="@+id/search_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textInputLayoutAuthor"
-            android:layout_centerInParent="true"
-            android:text="@string/search" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/search_button"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintVertical_bias="1.0" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutAuthor"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textInputLayoutTitle"
+                android:layout_marginLeft="85dp"
+                android:layout_marginRight="15dp"
+                android:hint="@string/author"
+                android:padding="10dp"
+                app:startIconDrawable="@drawable/ic_baseline_drive_file_rename_outline_24">
 
-    </RelativeLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEditTextAuthor"
+                    android:layout_width="match_parent"
+                    android:layout_height="59dp"
+                    android:fontFamily="serif"
+                    android:textColor="@color/black" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/search_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textInputLayoutAuthor"
+                android:layout_marginLeft="185dp"
+                android:text="@string/search" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/search_button"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintVertical_bias="1.0" />
+
+        </RelativeLayout>
 
     </ScrollView>
 
