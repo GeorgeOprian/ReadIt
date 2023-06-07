@@ -8,6 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import com.example.readitapp.R;
@@ -29,11 +30,13 @@ public class HomeFragment extends Fragment {
         ImageView books = view.findViewById(R.id.books);
         ImageView boy = view.findViewById(R.id.boy);
         ImageView girl = view.findViewById(R.id.girl);
+        TextView textView = view.findViewById(R.id.textView);
 
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
         books.setAnimation(animation);
         boy.setAnimation(animation);
         girl.setAnimation(animation);
+        textView.setAnimation(animation);
 
         books.setOnClickListener(new View.OnClickListener() {
             @Override

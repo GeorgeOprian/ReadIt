@@ -51,6 +51,7 @@
                     android:autoSizeTextType="uniform"
                     android:text="@string/title"
                     android:textColor="@color/black"
+                    android:fontFamily="serif"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -62,9 +63,10 @@
                     android:id="@+id/author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="160dp"
+                    android:layout_marginStart="150dp"
                     android:text="@string/author"
                     android:textColor="@color/black"
+                    android:fontFamily="serif"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -82,6 +84,7 @@
                     android:autoSizeMinTextSize="10dp"
                     android:autoSizeTextType="uniform"
                     android:text=""
+                    android:fontFamily="serif"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -94,27 +97,28 @@
                     android:id="@+id/category_lable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="160dp"
-                    android:text="@string/rating"
+                    android:layout_marginStart="150dp"
+                    android:text="@string/category"
                     android:textColor="@color/black"
+                    android:fontFamily="serif"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/poster"
-                    app:layout_constraintTop_toBottomOf="@+id/author_value"
-                    app:layout_constraintVertical_bias="0.421" />
+                    app:layout_constraintTop_toBottomOf="@+id/author_value" />
 
                 <TextView
                     android:id="@+id/category_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
+                    android:fontFamily="serif"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.26"
                     app:layout_constraintStart_toEndOf="@+id/category_lable"
-                    app:layout_constraintTop_toBottomOf="@+id/author_value"
-                    app:layout_constraintVertical_bias="0.357" />
+                    app:layout_constraintTop_toBottomOf="@+id/author_value" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -15,12 +15,16 @@ import android.widget.Toast;
 import com.example.readitapp.R;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.webserver.book.response.BookDto;
+import com.example.readitapp.model.webserver.book.response.CategoryDto;
 import com.example.readitapp.utils.Utils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +37,7 @@ public class AdminBookDetailsFragment extends Fragment {
     private ImageView poster;
     private TextView title;
     private TextView authors;
-    private TextView rating;
+    private TextView category;
     private Button saveButton;
     private TextInputEditText inStockTextView;
 
@@ -97,10 +101,10 @@ public class AdminBookDetailsFragment extends Fragment {
         } else {
             authors.setText("");
         }
-        if (bookDto.getRatingsCount() != null && bookDto.getRatingsCount() != 0) {
-            rating.setText(bookDto.getRatingsCount().toString());
+        if (bookDto.getCategories() != null) {
+            category.setText(bookDto.getCategories().stream().map(CategoryDto::getCategoryName).collect(Collectors.joining(",")));
         } else {
-            rating.setText("");
+            category.setText("");
         }
 
         if (bookDto.getInStock() != null) {
@@ -112,7 +116,7 @@ public class AdminBookDetailsFragment extends Fragment {
         poster = view.findViewById(R.id.poster);
         title = view.findViewById(R.id.title);
         authors = view.findViewById(R.id.author_value);
-        rating = view.findViewById(R.id.category_value);
+        category = view.findViewById(R.id.category_value);
         saveButton = view.findViewById(R.id.save_button);
         inStockTextView = view.findViewById(R.id.textInputEditTextStock);
     }
