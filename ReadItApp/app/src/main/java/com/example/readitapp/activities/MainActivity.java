@@ -30,6 +30,7 @@ import com.example.readitapp.fragments.SubscriptionFragment;
 import com.example.readitapp.fragments.WishlistFragment;
 import com.example.readitapp.model.webserver.SubscriptionDto;
 import com.example.readitapp.utils.FirebaseConstants;
+import com.example.readitapp.utils.FragmentInteractionListener;
 import com.example.readitapp.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -54,7 +55,7 @@ import static com.example.readitapp.fragments.SubscriptionFragment.LOAD_PAYMENT_
 import static com.example.readitapp.fragments.SubscriptionFragment.googlePayButton;
 import static com.example.readitapp.fragments.SubscriptionFragment.statusValue;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentInteractionListener {
 
     private DrawerLayout drawerLayout;
     private NavigationView leftNavigationView;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private GoogleSignInClient mGoogleSignInClient;
     public static boolean skipFragment = false;
+    private int nbrMonths = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -268,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
         SubscriptionDto subscriptionDto = new SubscriptionDto();
         subscriptionDto.setUserEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         LocalDate startDate = LocalDate.now();
-        LocalDate endDate = LocalDate.now().plusMonths(1);
+        LocalDate endDate = LocalDate.now().plusMonths(nbrMonths);
         subscriptionDto.setStartDate(startDate.toString());
         subscriptionDto.setEndDate(endDate.toString());
         Call<SubscriptionDto> call = WebServerAPIBuilder.getInstance().createSubscription(subscriptionDto);
@@ -277,7 +279,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SubscriptionDto> call, retrofit2.Response<SubscriptionDto> response) {
                 if (response.isSuccessful()) {
-                    statusValue.setText("Valid");
+                    statusValue.setText("Valid between " + response.body().getStartDate() + " - " + response.body().getEndDate());
+                    SubscriptionFragment.showButton = false;
+                    SubscriptionFragment.setPaymentControlsAvailable(SubscriptionFragment.showButton);
                 }
             }
 
@@ -286,5 +290,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onFragmentResult(int resultCode, int data) {
+        if (resultCode == Activity.RESULT_OK) {
+            nbrMonths = data;
+        }
     }
 }

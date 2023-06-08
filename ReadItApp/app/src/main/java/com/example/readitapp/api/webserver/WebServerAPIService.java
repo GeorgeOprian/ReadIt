@@ -50,7 +50,7 @@ public interface WebServerAPIService {
     Call<BookDto> updateBook(@Path("bookId") Integer bookId, @Body Map<String, Object> book);
 
     @POST("/bookrental/rent")
-    Call<BookRentResponseDto> createSubscription(@Body BookRentRequestDto dto);
+    Call<BookRentResponseDto> rentBook(@Body BookRentRequestDto dto);
 
     @GET("/subscriptions/currentsubscription")
     Call<SubscriptionDto> getAvailability(@Query("email") String email);

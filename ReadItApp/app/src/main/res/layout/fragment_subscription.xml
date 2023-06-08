@@ -28,33 +28,76 @@
                 android:textSize="40sp" />
 
             <TextView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="serif"
-                android:padding="10dp"
-                android:text="Status:"
-                android:textAlignment="center"
-                android:layout_below="@+id/textView"
-                android:textSize="30sp" />
-
-            <TextView
                 android:id="@+id/status_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="serif"
                 android:padding="10dp"
                 android:text=""
-                android:textAlignment="center"
-                android:layout_below="@+id/status"
+                android:textColor="@color/black"
+                android:layout_below="@+id/textView"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="10dp"
+                android:textSize="20sp" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/status_value"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <RadioButton
+                    android:id="@+id/radioButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:fontFamily="serif"
+                    android:text="1 month"
+                    android:textColor="@color/black" />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="2 months"
+                    android:textColor="@color/black" />
+
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text="3 months"
+                    android:textColor="@color/black" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:padding="10dp"
+                android:text="30 lei"
+                android:textColor="@color/black"
+                android:layout_below="@+id/radioGroup"
+                android:layout_marginLeft="10dp"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
                 android:textSize="20sp" />
 
             <Button
                 android:id="@+id/googlePayButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/status_value"
+                android:layout_below="@+id/amount"
                 android:layout_centerInParent="true"
+                android:visibility="gone"
                 android:text="Pay" />
 
         </RelativeLayout>

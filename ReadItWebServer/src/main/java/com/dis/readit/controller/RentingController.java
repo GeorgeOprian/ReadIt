@@ -16,7 +16,7 @@ public class RentingController {
 	private BookRentalService service;
 
 	@PostMapping("/rent")
-	public ResponseEntity<BookRentResponseDto> createSubscription(@RequestBody BookRentRequestDto dto) {
+	public ResponseEntity<BookRentResponseDto> rentBook(@RequestBody BookRentRequestDto dto) {
 		return ResponseEntity.ok(service.rentBook(dto));
 	}
 

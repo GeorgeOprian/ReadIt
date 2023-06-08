@@ -155,7 +155,7 @@ public class BookDetailsFragment extends Fragment {
         }
 
         BookRentRequestDto bookRentRequestDto = getBookRentRequestDto();
-        Call<BookRentResponseDto> call = WebServerAPIBuilder.getInstance().createSubscription(bookRentRequestDto);
+        Call<BookRentResponseDto> call = WebServerAPIBuilder.getInstance().rentBook(bookRentRequestDto);
         call.enqueue(new Callback<BookRentResponseDto>() {
             @Override
             public void onResponse(Call<BookRentResponseDto> call, retrofit2.Response<BookRentResponseDto> response) {
