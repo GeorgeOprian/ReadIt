@@ -65,6 +65,7 @@ public class AddReviewFragment extends Fragment {
         call.enqueue(new Callback<BookReviewDto>() {
             @Override
             public void onResponse(Call<BookReviewDto> call, retrofit2.Response<BookReviewDto> response) {
+                Utils.hideKeyboard(AddReviewFragment.this);
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Review added", Toast.LENGTH_LONG).show();
                 }

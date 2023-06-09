@@ -17,6 +17,7 @@ import com.example.readitapp.adapters.ReviewsAdapter;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
 import com.example.readitapp.model.webserver.review.BookReviewDto;
 import com.example.readitapp.utils.Utils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class ReviewsFragment extends Fragment implements OnReviewClickListener {
     private RecyclerView recyclerView;
     private ReviewsAdapter adapter;
     private List<BookReviewDto> reviews = new ArrayList<>();
-    private Button addReview;
+    private FloatingActionButton addReview;
 
     private Integer bookId;
 
