@@ -4,11 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background_mirror"
     tools:context=".fragments.WishlistFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:padding="10dp"
+            android:text="@string/wish_list"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="40sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/container"
@@ -16,9 +28,10 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="80dp"
+            android:layout_below="@id/textView"
             app:layout_constraintVertical_bias="1.0" />
 
     </RelativeLayout>

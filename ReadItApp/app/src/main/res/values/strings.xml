@@ -35,4 +35,7 @@
     <string name="stair">Stair</string>
     <string name="category">Category: </string>
     <string name="stock">Stock</string>
+    <string name="wish_list">Wish list</string>
+    <string name="reading">Reading</string>
+    <string name="history">History</string>
 </resources>
