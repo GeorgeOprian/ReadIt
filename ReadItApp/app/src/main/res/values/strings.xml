@@ -38,4 +38,6 @@
     <string name="wish_list">Wish list</string>
     <string name="reading">Reading</string>
     <string name="history">History</string>
+    <string name="description">Description</string>
+    <string name="more">Show more</string>
 </resources>

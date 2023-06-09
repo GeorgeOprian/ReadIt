@@ -89,7 +89,6 @@ public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private final ImageView poster;
         private final TextView title;
         private final TextView authors;
-        private final TextView rating;
         private final TextView category;
         private final View view;
 
@@ -99,7 +98,6 @@ public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             title = view.findViewById(R.id.title);
             authors = view.findViewById(R.id.author_value);
             category = view.findViewById(R.id.category_value);
-            rating = null;// view.findViewById(R.id.category_value);
 
             this.view = view;
 
@@ -120,12 +118,6 @@ public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             } else {
                 category.setText("");
             }
-
-//            if (book.getRatingsCount() != null && book.getRatingsCount() != 0) {
-//                rating.setText(book.getRatingsCount().toString());
-//            } else {
-//                rating.setText("");
-//            }
 
             view.setOnClickListener(v -> bookClickListener.onBookClick(book));
         }
