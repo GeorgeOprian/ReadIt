@@ -1,7 +1,9 @@
 package com.dis.readit.service.impl;
 
+import com.dis.readit.dtos.book.BookDto;
 import com.dis.readit.dtos.book.BookRentRequestDto;
 import com.dis.readit.dtos.book.BookRentResponseDto;
+import com.dis.readit.dtos.book.CategoryDto;
 import com.dis.readit.exception.BookAlreadyRented;
 import com.dis.readit.exception.BookAlreadyReturned;
 import com.dis.readit.exception.EntityNotFound;
@@ -113,7 +115,15 @@ public class BookRentalServiceImpl implements BookRentalService {
 		Collection<BookRental> bookRentals = rentalRepository.findByUserIdReturned(userByEmail.getUserId(), returned);
 
 		return bookRentals.stream()
-				.map(bookRental -> new BookRentResponseDto(bookRental.getRentId(), bookRental.getReturnDate(), bookRental.isReturned(), bookMapper.mapToDto(bookRental.getBook())))
+				.map(bookRental -> {
+					Book book = bookRental.getBook();
+					book.getBookCategories();
+					BookDto bookDto = bookMapper.mapToDto(book);
+
+					bookDto.setCategories(book.getBookCategories().stream().map(categ -> new CategoryDto(categ.getCategory().getCategoryName())).collect(Collectors.toList()));
+
+					return new BookRentResponseDto(bookRental.getRentId(), bookRental.getReturnDate(), bookRental.isReturned(), bookDto);
+				})
 				.collect(Collectors.toList());
 	}
 

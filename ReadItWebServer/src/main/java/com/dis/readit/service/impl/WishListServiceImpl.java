@@ -1,8 +1,6 @@
 package com.dis.readit.service.impl;
 
-import com.dis.readit.dtos.book.BookDto;
-import com.dis.readit.dtos.book.BookListDto;
-import com.dis.readit.dtos.book.BookUserRequestDto;
+import com.dis.readit.dtos.book.*;
 import com.dis.readit.exception.BookAlreadyInWishList;
 import com.dis.readit.exception.EntityNotFound;
 import com.dis.readit.mapper.BookMapper;
@@ -74,9 +72,21 @@ public class WishListServiceImpl implements WishListService {
 	}
 
 	private List<BookListDto> mapWishListResponse(Collection<WishList> wishList) {
+
+
 		return wishList.stream()
-				.map(wishList1 -> bookMapper.mapToListDto(wishList1.getBook()))
+				.map(wishList1 -> getBookListDto(wishList1.getBook()))
 				.collect(Collectors.toList());
+	}
+
+	private BookListDto getBookListDto(Book book) {
+
+		book.getBookCategories();
+		BookListDto bookDto = bookMapper.mapToListDto(book);
+
+		bookDto.setCategories(book.getBookCategories().stream().map(categ -> new CategoryDto(categ.getCategory().getCategoryName())).collect(Collectors.toList()));
+
+		return bookDto;
 	}
 
 	@Override

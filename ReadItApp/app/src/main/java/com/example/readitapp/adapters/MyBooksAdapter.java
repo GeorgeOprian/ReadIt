@@ -14,6 +14,7 @@ import com.example.readitapp.model.webserver.book.response.BookRentResponseDto;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MyBooksAdapter extends RecyclerView.Adapter<MyBooksAdapter.BooksViewHolder> {
 
@@ -60,7 +61,7 @@ public class MyBooksAdapter extends RecyclerView.Adapter<MyBooksAdapter.BooksVie
         private final ImageView poster;
         private final TextView title;
         private final TextView authors;
-        private final TextView rating;
+        private final TextView category;
         private final View view;
 
         public BooksViewHolder(@NonNull View view) {
@@ -68,7 +69,7 @@ public class MyBooksAdapter extends RecyclerView.Adapter<MyBooksAdapter.BooksVie
             poster = view.findViewById(R.id.poster);
             title = view.findViewById(R.id.title);
             authors = view.findViewById(R.id.author_value);
-            rating = view.findViewById(R.id.category_value);
+            category = view.findViewById(R.id.category_value);
 
             this.view = view;
 
@@ -81,10 +82,13 @@ public class MyBooksAdapter extends RecyclerView.Adapter<MyBooksAdapter.BooksVie
             title.setText(book.getBook().getTitle());
             authors.setText(book.getBook().getAuthor());
 
-            if (book.getBook().getRatingsCount() != null && book.getBook().getRatingsCount() != 0) {
-                rating.setText(book.getBook().getRatingsCount().toString());
+            List<String> categoriesString = book.getBook().getCategories().stream().map(categoryDto -> categoryDto.getCategoryName()).collect(Collectors.toList());
+            String categories = String.join(", ", categoriesString);
+
+            if (categories != null) {
+                category.setText(categories);
             } else {
-                rating.setText("");
+                category.setText("");
             }
 
             view.setOnClickListener(v -> bookClickListener.onBookClick(book));
