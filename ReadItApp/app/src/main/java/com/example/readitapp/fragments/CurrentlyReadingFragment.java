@@ -2,15 +2,11 @@ package com.example.readitapp.fragments;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -29,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CurrentlyReadingFragment extends Fragment implements OnMyBooksCLickListener  {
+public class CurrentlyReadingFragment extends Fragment implements OnMyBooksCLickListener {
 
     private View view;
     private MyBooksAdapter myBooksAdapter;
@@ -92,41 +88,4 @@ public class CurrentlyReadingFragment extends Fragment implements OnMyBooksCLick
 
     }
 
-    @Override
-    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v,
-                                    @Nullable ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        getActivity().getMenuInflater().inflate(R.menu.menu_my_books, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.returnn:
-                returnBook(item.getOrder());
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
-
-    private void returnBook(int bookId) {
-        Call<List<BookRentResponseDto>> call = WebServerAPIBuilder.getInstance().returnBook(books.get(bookId).getRentId());
-
-        call.enqueue(new Callback<List<BookRentResponseDto>>() {
-            @Override
-            public void onResponse(Call<List<BookRentResponseDto>> call, Response<List<BookRentResponseDto>> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Book returned", Toast.LENGTH_LONG).show();
-                    books.remove(bookId);
-                    myBooksAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<BookRentResponseDto>> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 }
