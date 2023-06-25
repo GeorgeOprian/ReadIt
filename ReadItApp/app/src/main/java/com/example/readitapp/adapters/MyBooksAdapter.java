@@ -119,19 +119,19 @@ public class MyBooksAdapter extends RecyclerView.Adapter<MyBooksAdapter.BooksVie
 
             // Add the selected option to the context menu
             menu.add(Menu.NONE, R.id.returnn, Menu.NONE, "Return").setOnMenuItemClickListener(item -> {
-                returnBook(carte.getRentId());
+                returnBook(carte);
                 return true;
             });
         }
 
-        private void returnBook(int rentId) {
-            Call<List<BookRentResponseDto>> call = WebServerAPIBuilder.getInstance().returnBook(rentId);
+        private void returnBook(BookRentResponseDto book) {
+            Call<List<BookRentResponseDto>> call = WebServerAPIBuilder.getInstance().returnBook(book.getRentId());
 
             call.enqueue(new Callback<List<BookRentResponseDto>>() {
                 @Override
                 public void onResponse(Call<List<BookRentResponseDto>> call, Response<List<BookRentResponseDto>> response) {
                     if (response.isSuccessful()) {
-                        mItemList.remove(rentId);
+                        mItemList.remove(book);
                         notifyDataSetChanged();
                     }
                 }

@@ -233,7 +233,9 @@ public class ProfileFragment extends Fragment {
         userAddressInputDto.setNumar(Integer.valueOf(nr.getText().toString().trim()));
         userAddressInputDto.setBloc(bloc.getText().toString());
         userAddressInputDto.setScara(scara.getText().toString());
-        userAddressInputDto.setNumarApartament(Integer.valueOf(ap.getText().toString().trim()));
+        if (!ap.getText().toString().trim().equals("")) {
+            userAddressInputDto.setNumarApartament(Integer.valueOf(ap.getText().toString().trim()));
+        }
         userAddressInputDto.setIdLocalitate(selectedValue.getIdLocalitate());
         return userAddressInputDto;
     }
