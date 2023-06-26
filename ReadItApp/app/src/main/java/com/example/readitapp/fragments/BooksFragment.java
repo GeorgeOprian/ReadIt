@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -24,11 +21,9 @@ import com.example.readitapp.activities.MainActivity;
 import com.example.readitapp.adapters.BooksListAdapter;
 import com.example.readitapp.adapters.OnBookListClickListener;
 import com.example.readitapp.api.webserver.WebServerAPIBuilder;
-import com.example.readitapp.model.webserver.book.response.BookDto;
 import com.example.readitapp.model.webserver.book.response.BookListDto;
 import com.example.readitapp.model.webserver.book.response.PageDto;
 import com.example.readitapp.utils.Utils;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,14 +34,14 @@ import retrofit2.Response;
 
 import static com.example.readitapp.api.webserver.WebServerAPIService.DEFAULT_PAGE_SIZE;
 
-public class BooksFragment extends Fragment implements OnBookListClickListener {
+public class BooksFragment extends Fragment implements OnBookListClickListener, BooksListAdapter.StartFragment {
 
     private RecyclerView recyclerView;
     private View view;
     private BooksListAdapter booksListAdapter;
     private SearchView searchView;
     private boolean isLoading = false;
-    private List<BookListDto> books = new ArrayList<>();
+    public static List<BookListDto> books = new ArrayList<>();
 
     private int page = 0;
     private long totalSize = 0;
@@ -87,6 +82,14 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
         initAdapter();
         loadBooks("", page, DEFAULT_PAGE_SIZE);
         initScrollListener();
+    }
+
+    @Override
+    public void startFragment(Fragment fragment) {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack("tag")
+                .commit();
     }
 
     class WrapContentLinearLayoutManager extends LinearLayoutManager {
@@ -152,7 +155,7 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
     }
 
     private void initAdapter() {
-        booksListAdapter = new BooksListAdapter(books, this);
+        booksListAdapter = new BooksListAdapter(books, this, this);
         recyclerView.setAdapter(booksListAdapter);
         registerForContextMenu(recyclerView);
     }
@@ -204,77 +207,4 @@ public class BooksFragment extends Fragment implements OnBookListClickListener {
                 .commit();
     }
 
-    @Override
-    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v,
-                                    @Nullable ContextMenu.ContextMenuInfo menuInfo) {
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        if(currentUser.equals(Utils.USER_ADMIN)) {
-            super.onCreateContextMenu(menu, v, menuInfo);
-            getActivity().getMenuInflater().inflate(R.menu.menu_floating_context, menu);
-        }
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.update:
-                updateBook(item.getOrder());
-                return true;
-            case R.id.delete:
-                deleteBook(item.getOrder());
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
-
-    private void updateBook(int bookId) {
-        final BookDto[] bookDto = new BookDto[1];
-
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        Call<BookDto> call = WebServerAPIBuilder.getInstance().getBookById(books.get(bookId).getBookId(), email);
-        call.enqueue(new Callback<BookDto>() {
-            @Override
-            public void onResponse(Call<BookDto> call, Response<BookDto> response) {
-                if (response.isSuccessful()) {
-                    bookDto[0] = response.body();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(Utils.BOOK_ID, bookDto[0]);
-                    bundle.putSerializable(Utils.UPDATE, 0);
-                    Fragment selectedFragment = new AdminBookDetailsFragment();
-                    selectedFragment.setArguments(bundle);
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, selectedFragment)
-                            .addToBackStack("tag")
-                            .commit();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BookDto> call, Throwable t) {
-                Toast.makeText(getContext(), "Fail", Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
-
-    private void deleteBook(int bookId) {
-        Call<Void> call = WebServerAPIBuilder.getInstance().deleteBook(books.get(bookId).getBookId());
-
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    books.remove(bookId);
-                    booksListAdapter.notifyDataSetChanged();
-                    Toast.makeText(getContext(), "Book deleted", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 }
