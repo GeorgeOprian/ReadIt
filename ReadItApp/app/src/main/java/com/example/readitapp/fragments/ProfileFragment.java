@@ -174,8 +174,7 @@ public class ProfileFragment extends Fragment {
 
                     fillLocalitati(mapLocalitati.get(0));
 
-                    // Check if the index is within the bounds of the adapter's data
-                    if(Utils.currentUser.getAddressDto() != null) {
+                    if (Utils.currentUser.getAddressDto() != null) {
                         if (Utils.currentUser.getAddressDto().getLocalitate().getIdLocalitate() != null) {
                             int index = Utils.currentUser.getAddressDto().getLocalitate().getIdLocalitate().intValue() - 1;
                             if (index >= 0 && index < adapterLocalitati.getCount()) {
@@ -236,7 +235,22 @@ public class ProfileFragment extends Fragment {
         if (!ap.getText().toString().trim().equals("")) {
             userAddressInputDto.setNumarApartament(Integer.valueOf(ap.getText().toString().trim()));
         }
-        userAddressInputDto.setIdLocalitate(selectedValue.getIdLocalitate());
+        if (selectedValue != null) {
+            userAddressInputDto.setIdLocalitate(selectedValue.getIdLocalitate());
+        } else if (Utils.currentUser.getAddressDto() != null) {
+            if (Utils.currentUser.getAddressDto().getLocalitate().getIdLocalitate() != null) {
+                int index = Utils.currentUser.getAddressDto().getLocalitate().getIdLocalitate().intValue() - 1;
+                if (index >= 0 && index < adapterLocalitati.getCount()) {
+                    // Retrieve the item from the adapter using the index
+                    LocalitateDto item = adapterLocalitati.getItem(index);
+                    if (item != null) {
+                        // Get the position of the item in the adapter
+                        userAddressInputDto.setIdLocalitate(item.getIdLocalitate());
+                    }
+                }
+            }
+        }
+
         return userAddressInputDto;
     }
 
