@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  postgres:
+  email-postgres:
     container_name: email-service-postgres
     image: postgres
     restart: unless-stopped
@@ -9,7 +9,7 @@ services:
       - "127.0.0.1:5433:5432"
     volumes:
       - email-service-postgres-data:/data/postgres
-      - ./sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+      - ./sql/create_schema_email.sql:/docker-entrypoint-initdb.d/create_schema_email.sql
     networks:
       - infrastucture
     env_file:
@@ -44,6 +44,31 @@ services:
     env_file:
       - env/EmailServiceApp.env
 
+  web-server-postgres:
+    container_name: web-server-postgres
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - read-it-postgres-data:/data/postgres
+      - ./sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+    networks:
+      - infrastucture
+    env_file:
+      - env/ReadIt_Postgres.env
+
+  readit-server:
+    container_name: readit-web-server
+    image: georgeoprian/readitwebserver
+    ports:
+      - "127.0.0.1:8080:8080"
+    networks:
+      - public
+      - infrastucture
+    env_file:
+      - env/ReadIt_WebServer.env
+
 networks:
   infrastucture:
     name: infrastucture
@@ -57,7 +82,7 @@ volumes:
     name: email-service-postgres-data
   email-service-rabbitmq-data:
     name: email-service-rabbitmq-data
-  mongodb-data:
-    name: mondodb-data
+  read-it-postgres-data:
+    name: read-it-postgres-data
   
 

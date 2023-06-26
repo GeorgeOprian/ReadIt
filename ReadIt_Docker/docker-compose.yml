@@ -1,27 +1,87 @@
 version: "3.7"
 
 services:
+  email-postgres:
+    container_name: email-service-postgres
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - email-service-postgres-data:/data/postgres
+      - ./sql/create_schema_email.sql:/docker-entrypoint-initdb.d/create_schema_email.sql
+    networks:
+      - infrastructure
+    env_file:
+      - env/EmailServicePostgres.env
 
-  postgres:
-    container_name: read-it-postgres
+  rabbitmq:
+    hostname: 'email-service-rabbitmq'
+    container_name: email-service-rabbitmq
+    image: rabbitmq:3.9.11-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - type: bind
+        source: ./rabbitmq-enabled-plugins
+        target: /etc/rabbitmq/enabled_plugins
+      - type: bind
+        source: ./rabbitmq.config
+        target: /etc/rabbitmq/rabbitmq.config
+      - type: bind
+        source: ./rabbitmq-defs.json
+        target: /etc/rabbitmq/rabbitmq-defs.json
+
+  email-service-app:
+    container_name: email-service-app
+    image: georgeoprian/email-service-app
+    ports:
+      - "127.0.0.1:8081:8080"
+    networks:
+      - public
+      - infrastructure
+    env_file:
+      - env/EmailServiceApp.env
+
+  web-server-postgres:
+    container_name: web-server-postgres
     image: postgres
     restart: unless-stopped
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
       - read-it-postgres-data:/data/postgres
-      - ./sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+      - ./sql/create_schema_web_server.sql:/docker-entrypoint-initdb.d/create_schema_web_server.sql
     networks:
       - infrastructure
     env_file:
       - env/ReadIt_Postgres.env
 
+  readit-server:
+    container_name: readit-web-server
+    image: georgeoprian/readitwebserver
+    ports:
+      - "127.0.0.1:8080:8080"
+    networks:
+      - infrastructure
+      - public
+    env_file:
+      - env/ReadIt_WebServer.env
+
 networks:
   infrastructure:
     name: infrastructure
     driver: bridge
+  public:
+    name: public
+    driver: bridge
 
 volumes:
+  email-service-postgres-data:
+    name: email-service-postgres-data
+  email-service-rabbitmq-data:
+    name: email-service-rabbitmq-data
   read-it-postgres-data:
     name: read-it-postgres-data
   
