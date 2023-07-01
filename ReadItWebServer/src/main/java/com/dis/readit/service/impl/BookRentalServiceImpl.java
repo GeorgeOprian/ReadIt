@@ -149,7 +149,7 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 		DataBaseUser adminUser =  userLoaderService.getUserByEmail(DataBaseUser.ADMIN_USER_EMAIL);
 		String subject = "ReadIt Book Return";
-		String emailBody = "Hi " + bookRental.getUser().getUserName() + ",\n\nYou can not return your book " + rentedBook.getTitle() +". It you will be contacted by the courier soon to let you know more details about he package.";
+		String emailBody = "Hi " + bookRental.getUser().getUserName() + ",\n\nYou can now return your book " + rentedBook.getTitle() +". It you will be contacted by the courier soon to let you know more details about he package.";
 
 		EmailRequest emailRequest = EmailRequest.createEmailForUser(adminUser.getUserId(), Arrays.asList(bookRental.getUser().getUserId()), subject, emailBody);
 

@@ -60,7 +60,7 @@ services:
 
   readit-server:
     container_name: readit-web-server
-    image: georgeoprian/readitwebserver
+    image: georgeoprian/readitwebserveremailfinal:01_07_2023
     ports:
       - "127.0.0.1:8080:8080"
     networks:
