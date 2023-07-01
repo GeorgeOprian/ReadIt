@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.readitapp.R;
@@ -53,8 +54,6 @@ public class BooksFragment extends Fragment implements OnBookListClickListener, 
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_books, container, false);
 
-        initView();
-
         return view;
     }
 
@@ -62,12 +61,12 @@ public class BooksFragment extends Fragment implements OnBookListClickListener, 
         recyclerView = view.findViewById(R.id.container);
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext()));
         searchView = view.findViewById(R.id.search_bar);
+        ImageView clearButton = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchView.clearFocus();
-
                 loadBooks(query, 0, 100);
 
                 return false;
@@ -76,6 +75,18 @@ public class BooksFragment extends Fragment implements OnBookListClickListener, 
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
+            }
+        });
+
+        clearButton.setOnClickListener(v -> {
+            if (searchView.getQuery().length() == 0) {
+                searchView.setIconified(true);
+            } else {
+                // Do your task here
+                searchView.setQuery("", false);
+                resetBooks();
+                booksListAdapter.replaceList(books);
+                loadBooks("", page, DEFAULT_PAGE_SIZE);
             }
         });
 
@@ -207,4 +218,17 @@ public class BooksFragment extends Fragment implements OnBookListClickListener, 
                 .commit();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        resetBooks();
+        initView();
+    }
+
+    private void resetBooks() {
+        page = 0;
+        totalSize = 0;
+        loadedElements = 0;
+        books = new ArrayList<>();
+    }
 }
