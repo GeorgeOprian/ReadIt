@@ -77,7 +77,7 @@ public class UserPersistenceServiceImpl implements UserPersistenceService {
 
 		String emailSubject = "New Books Added";
 
-		String emailBody = "Hi, " + user.getUserName() + ",\n\nNew Books Were added in ReadIt App.\nHurry up to rent one of them.";
+		String emailBody = "Hi, " + user.getUserName() + ",\n\nNew books Were added in ReadIt App.\nHurry up to rent one of them.";
 
 		EmailRequest emailRequest = EmailRequest.createEmailForUser(user.getUserId(), allUsersIds, emailSubject, emailBody);
 

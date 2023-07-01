@@ -80,7 +80,7 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 		saveRental(book, user);
 
-		sendEmailToUser(user);
+		sendEmailToUser(user, book.getTitle());
 
 		Optional<BookRental> bookRentedOpt = user.getBookRentals().stream().filter(bookRental -> Objects.equals(bookRental.getBook().getBookId(), book.getBookId())).findFirst();
 
@@ -90,10 +90,10 @@ public class BookRentalServiceImpl implements BookRentalService {
 		return new BookRentResponseDto(rentedBookId, dto.getReturnDate(), rented, bookMapper.mapToDto(book));
 	}
 
-	private void sendEmailToUser(DataBaseUser user) {
+	private void sendEmailToUser(DataBaseUser user, String title) {
 		DataBaseUser adminUser =  userLoaderService.getUserByEmail(DataBaseUser.ADMIN_USER_EMAIL);
 		String subject = "New ReadIt Rental";
-		String emailBody = "Hi " + user.getUserName() + ",\n\nYour newly rented book is on the way. You will be contacted by the courier soon to let you know more details about the package.";
+		String emailBody = "Hi " + user.getUserName() + ",\n\nYour book, " + title + " is on the way. You will be contacted by the courier soon to let you know more details about the package.";
 
 		EmailRequest emailRequest = EmailRequest.createEmailForUser(adminUser.getUserId(), Arrays.asList(user.getUserId()), subject, emailBody);
 
@@ -149,7 +149,7 @@ public class BookRentalServiceImpl implements BookRentalService {
 
 		DataBaseUser adminUser =  userLoaderService.getUserByEmail(DataBaseUser.ADMIN_USER_EMAIL);
 		String subject = "ReadIt Book Return";
-		String emailBody = "Hi " + bookRental.getUser().getUserName() + ",\n\nYour newly rented book is on the way. It you will be contacted by the courier soon to let you know more details about he package.";
+		String emailBody = "Hi " + bookRental.getUser().getUserName() + ",\n\nYou can not return your book " + rentedBook.getTitle() +". It you will be contacted by the courier soon to let you know more details about he package.";
 
 		EmailRequest emailRequest = EmailRequest.createEmailForUser(adminUser.getUserId(), Arrays.asList(bookRental.getUser().getUserId()), subject, emailBody);
 
