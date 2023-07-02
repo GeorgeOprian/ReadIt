@@ -151,7 +151,7 @@ public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     return true;
                 });
                 menu.add(Menu.NONE, R.id.delete, Menu.NONE, "Delete").setOnMenuItemClickListener(item -> {
-                    deleteBook(carte.getBookId());
+                    deleteBook(carte.getBookId(), position);
                     return true;
                 });
             }
@@ -182,14 +182,14 @@ public class BooksListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
         }
 
-        private void deleteBook(int bookId) {
+        private void deleteBook(int bookId, int position) {
             Call<Void> call = WebServerAPIBuilder.getInstance().deleteBook(bookId);
 
             call.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        mItemList.remove(bookId);
+                        mItemList.remove(position);
                         notifyDataSetChanged();
                     }
                 }
