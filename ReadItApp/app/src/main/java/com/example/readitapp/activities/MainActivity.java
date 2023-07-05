@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
             final JSONObject info = paymentMethodData.getJSONObject("info");
             final String billingName = info.getJSONObject("billingAddress").getString("name");
             Toast.makeText(
-                    this, getString(R.string.payments_show_name, billingName),
+                    this, getString(R.string.payments_show_name),
                     Toast.LENGTH_LONG).show();
 
             // Logging token string.
